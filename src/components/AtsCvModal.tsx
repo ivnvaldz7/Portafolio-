@@ -4,6 +4,7 @@ import { Language } from '../types';
 import { X, Printer, Copy, Check, Edit3, Sparkles, MapPin, Mail, Linkedin, Github } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { motion } from 'motion/react';
+import html2pdf from 'html2pdf.js';
 
 interface AtsCvModalProps {
   isOpen: boolean;
@@ -57,8 +58,22 @@ export const AtsCvModal: React.FC<AtsCvModalProps> = ({ isOpen, language, onClos
   };
 
   const handlePrint = () => {
-    window.print();
-    confetti({ particleCount: 30, spread: 50 });
+    const element = document.getElementById('ats-cv-document');
+    if (element) {
+      const opt = {
+        margin:       10,
+        filename:     `${customName.replace(/\s+/g, '_')}_CV.pdf`,
+        image:        { type: 'jpeg' as const, quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const }
+      };
+      html2pdf().set(opt).from(element).save().then(() => {
+        confetti({ particleCount: 50, spread: 70 });
+      });
+    } else {
+      window.print();
+      confetti({ particleCount: 30, spread: 50 });
+    }
   };
 
   const generatePlainText = () => {
@@ -246,7 +261,7 @@ EDUCACIÓN Y FORMACIÓN
         )}
 
         {/* Printable ATS Document Layout */}
-        <div className="space-y-6 font-sans text-[#1a1a1a] leading-normal bg-white p-8 border border-[#1a1a1a]/15">
+        <div id="ats-cv-document" className="space-y-6 font-sans text-[#1a1a1a] leading-normal bg-white p-8 border border-[#1a1a1a]/15">
           {/* Header CV Section */}
           <div className="border-b-2 border-[#1a1a1a] pb-4 space-y-2">
             <h1 className="font-serif-editorial text-2xl sm:text-3xl font-bold tracking-tight uppercase text-[#1a1a1a]">

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Sliders, Download, Eye, Layers } from 'lucide-react';
+import { calculateFretPos } from '../../utils/fretMath';
 
 export const FretLabsDemo: React.FC = () => {
   const [scaleLength, setScaleLength] = useState<number>(25.5); // Inches
@@ -8,12 +9,6 @@ export const FretLabsDemo: React.FC = () => {
   const [fretCount, setFretCount] = useState<number>(22);
   const [perpendicularFret, setPerpendicularFret] = useState<number>(8);
   const [microtonalSystem, setMicrotonalSystem] = useState<boolean>(false);
-
-  // Calculate fret distance from nut in mm (1 inch = 25.4mm)
-  const calculateFretPos = (scaleInches: number, fretNum: number) => {
-    const scaleMm = scaleInches * 25.4;
-    return scaleMm - scaleMm / Math.pow(2, fretNum / 12);
-  };
 
   const scaleLengthMm = scaleLength * 25.4;
   const bassScaleMm = bassScale * 25.4;
