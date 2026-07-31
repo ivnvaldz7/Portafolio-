@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-editorial: #fcfaf7;
+    --ink-editorial: #1a1a1a;
+    --accent-editorial: #0d4d4d;
+    --muted-editorial: #666666;
+    --line-editorial: rgba(26, 26, 26, 0.12);
+  }
+
+  body {
+    background-color: var(--bg-editorial);
+    color: var(--ink-editorial);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  /* Editorial Typography Helpers */
+  h1, h2, h3, .font-serif-editorial {
+    font-family: 'Georgia', 'Playfair Display', 'Times New Roman', serif;
+  }
+}
+
+.bg-editorial {
+  background-color: #fcfaf7;
+}
+
+.bg-editorial-card {
+  background-color: #ffffff;
+}
+
+.bg-editorial-highlight {
+  background-color: #f0f4f4;
+}
+
+.text-ink {
+  color: #1a1a1a;
+}
+
+.text-accent-editorial {
+  color: #0d4d4d;
+}
+
+.bg-accent-editorial {
+  background-color: #0d4d4d;
+}
+
+.border-line-editorial {
+  border-color: rgba(26, 26, 26, 0.12);
+}
+
+.btn-editorial-dark {
+  background-color: #1a1a1a;
+  color: #fcfaf7;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+}
+
+.btn-editorial-dark:hover {
+  background-color: #0d4d4d;
+}
+
+.btn-editorial-outline {
+  background-color: transparent;
+  color: #1a1a1a;
+  border: 1px solid rgba(26, 26, 26, 0.2);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+}
+
+.btn-editorial-outline:hover {
+  border-color: #0d4d4d;
+  color: #0d4d4d;
+  background-color: #f0f4f4;
+}
