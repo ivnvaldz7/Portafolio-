@@ -54,17 +54,45 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2.5">
-          {/* Language Toggle */}
-          <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onToggleLanguage}
-            title="Cambiar Idioma / Switch Language"
-            className="px-2.5 py-1.5 bg-transparent border border-[#1a1a1a]/20 hover:border-[#0d4d4d] text-[#1a1a1a] hover:text-[#0d4d4d] text-[11px] font-bold font-mono transition-all flex items-center gap-1"
-          >
-            <Globe className="w-3.5 h-3.5 text-[#0d4d4d]" />
-            <span>{language.toUpperCase()}</span>
-          </motion.button>
+          {/* Language Toggle Segmented Control */}
+          <div className="relative flex items-center bg-[#1a1a1a]/5 p-0.5 border border-[#1a1a1a]/15 text-[11px] font-bold font-mono">
+            <button
+              onClick={() => language !== 'es' && onToggleLanguage()}
+              className={`relative px-2.5 py-1 transition-colors duration-200 z-10 flex items-center gap-1 ${
+                language === 'es' ? 'text-[#0d4d4d]' : 'text-[#1a1a1a]/60 hover:text-[#1a1a1a]'
+              }`}
+              title="Cambiar a Español"
+            >
+              {language === 'es' && (
+                <motion.div
+                  layoutId="activeLangPill"
+                  className="absolute inset-0 bg-white border border-[#0d4d4d]/30 shadow-xs"
+                  transition={{ type: 'spring', stiffness: 450, damping: 30 }}
+                />
+              )}
+              <span className="relative z-10 flex items-center gap-1">
+                <span>🇪🇸</span> ES
+              </span>
+            </button>
+            <button
+              onClick={() => language !== 'en' && onToggleLanguage()}
+              className={`relative px-2.5 py-1 transition-colors duration-200 z-10 flex items-center gap-1 ${
+                language === 'en' ? 'text-[#0d4d4d]' : 'text-[#1a1a1a]/60 hover:text-[#1a1a1a]'
+              }`}
+              title="Switch to English"
+            >
+              {language === 'en' && (
+                <motion.div
+                  layoutId="activeLangPill"
+                  className="absolute inset-0 bg-white border border-[#0d4d4d]/30 shadow-xs"
+                  transition={{ type: 'spring', stiffness: 450, damping: 30 }}
+                />
+              )}
+              <span className="relative z-10 flex items-center gap-1">
+                <span>🇺🇸</span> EN
+              </span>
+            </button>
+          </div>
 
           {/* Pitches Kit Modal Button */}
           <motion.button

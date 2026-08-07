@@ -70,8 +70,13 @@ export default function App() {
         }}
       />
 
-      {/* Main Content Area */}
-      <main>
+      {/* Main Content Area with Smooth Language Transition */}
+      <motion.main
+        key={language}
+        initial={{ opacity: 0.88, y: 2 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+      >
         {/* Hero Section */}
         <Hero
           language={language}
@@ -181,7 +186,7 @@ export default function App() {
 
         {/* Contact Section */}
         <ContactSection language={language} />
-      </main>
+      </motion.main>
 
       {/* Footer */}
       <Footer language={language} />

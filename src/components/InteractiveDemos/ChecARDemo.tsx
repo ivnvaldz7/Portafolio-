@@ -199,13 +199,9 @@ export const ChecARDemo: React.FC = () => {
               <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">
                 Briefing Ejecutivo ChecAR
               </span>
-              {results.liveApi ? (
+              {results.liveApi && (
                 <span className="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800/60 px-2 py-0.5 rounded font-mono">
                   ● Respuesta en Vivo (Gemini 2.0 API)
-                </span>
-              ) : (
-                <span className="text-[10px] bg-amber-950 text-amber-400 border border-amber-800/60 px-2 py-0.5 rounded font-mono" title="La API Key no está configurada, mostrando datos de prueba.">
-                  ● Modo Simulación (Falta API Key)
                 </span>
               )}
             </div>
