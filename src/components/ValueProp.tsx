@@ -37,26 +37,42 @@ export const ValueProp: React.FC<ValuePropProps> = ({ language }) => {
             <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-sans">
               <div className="p-4 bg-[#fcfaf7] text-[#1a1a1a] border border-[#1a1a1a]/10 space-y-1.5">
                 <Target className="w-4 h-4 text-[#0d4d4d]" />
-                <h3 className="font-bold text-[#1a1a1a] text-xs uppercase tracking-wider font-mono">Detección de Fricción</h3>
-                <p className="text-[#666666] leading-snug text-[11px]">Identificación de cuellos de botella y tareas manuales repetitivas.</p>
+                <h3 className="font-bold text-[#1a1a1a] text-xs uppercase tracking-wider font-mono">
+                  {isEs ? 'Detección de Fricción' : 'Friction Detection'}
+                </h3>
+                <p className="text-[#666666] leading-snug text-[11px]">
+                  {isEs ? 'Identificación de cuellos de botella y tareas manuales repetitivas.' : 'Identifying bottlenecks and repetitive manual tasks.'}
+                </p>
               </div>
 
               <div className="p-4 bg-[#fcfaf7] text-[#1a1a1a] border border-[#1a1a1a]/10 space-y-1.5">
                 <ShieldCheck className="w-4 h-4 text-[#0d4d4d]" />
-                <h3 className="font-bold text-[#1a1a1a] text-xs uppercase tracking-wider font-mono">Criterio de Producto</h3>
-                <p className="text-[#666666] leading-snug text-[11px]">Pivotes técnicos inteligentes para priorizar estabilidad y velocidad.</p>
+                <h3 className="font-bold text-[#1a1a1a] text-xs uppercase tracking-wider font-mono">
+                  {isEs ? 'Criterio de Producto' : 'Product Judgment'}
+                </h3>
+                <p className="text-[#666666] leading-snug text-[11px]">
+                  {isEs ? 'Pivotes técnicos inteligentes para priorizar estabilidad y velocidad.' : 'Smart technical pivots prioritizing stability and speed.'}
+                </p>
               </div>
 
               <div className="p-4 bg-[#fcfaf7] text-[#1a1a1a] border border-[#1a1a1a]/10 space-y-1.5">
                 <Zap className="w-4 h-4 text-[#0d4d4d]" />
-                <h3 className="font-bold text-[#1a1a1a] text-xs uppercase tracking-wider font-mono">IA con Grounding</h3>
-                <p className="text-[#666666] leading-snug text-[11px]">Anclaje de LLMs contra datos oficiales sin alucinaciones.</p>
+                <h3 className="font-bold text-[#1a1a1a] text-xs uppercase tracking-wider font-mono">
+                  {isEs ? 'IA con Grounding' : 'Grounded AI'}
+                </h3>
+                <p className="text-[#666666] leading-snug text-[11px]">
+                  {isEs ? 'Anclaje de LLMs contra datos oficiales sin alucinaciones.' : 'Anchoring LLMs against official data for zero hallucinations.'}
+                </p>
               </div>
 
               <div className="p-4 bg-[#fcfaf7] text-[#1a1a1a] border border-[#1a1a1a]/10 space-y-1.5">
                 <Layers className="w-4 h-4 text-[#0d4d4d]" />
-                <h3 className="font-bold text-[#1a1a1a] text-xs uppercase tracking-wider font-mono">Autonomía & PWA</h3>
-                <p className="text-[#666666] leading-snug text-[11px]">Aplicaciones web independientes, offline-first y de bajo mantenimiento.</p>
+                <h3 className="font-bold text-[#1a1a1a] text-xs uppercase tracking-wider font-mono">
+                  {isEs ? 'Autonomía & PWA' : 'Autonomy & PWA'}
+                </h3>
+                <p className="text-[#666666] leading-snug text-[11px]">
+                  {isEs ? 'Aplicaciones web independientes, offline-first y de bajo mantenimiento.' : 'Independent, offline-first, low-maintenance web applications.'}
+                </p>
               </div>
             </div>
           </div>

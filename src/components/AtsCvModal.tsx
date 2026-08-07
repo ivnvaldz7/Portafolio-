@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ATS_CV_DATA } from '../data/portfolioData';
 import { Language } from '../types';
 import { X, Printer, Copy, Check, Edit3, Sparkles, MapPin, Mail, Linkedin, Github } from 'lucide-react';
@@ -12,8 +12,6 @@ interface AtsCvModalProps {
 }
 
 export const AtsCvModal: React.FC<AtsCvModalProps> = ({ isOpen, language, onClose }) => {
-  if (!isOpen) return null;
-
   const isEs = language === 'es';
   const [copied, setCopied] = useState(false);
   // Helper to get stored item or fallback if it contains obsolete placeholders
@@ -32,6 +30,25 @@ export const AtsCvModal: React.FC<AtsCvModalProps> = ({ isOpen, language, onClos
   const [customEducation, setCustomEducation] = useState(() => getSanitizedStoredItem('ats_custom_edu', ATS_CV_DATA.education[0].degree));
   const [customInstitution, setCustomInstitution] = useState(() => getSanitizedStoredItem('ats_custom_inst', ATS_CV_DATA.education[0].institution));
   const [showCustomizer, setShowCustomizer] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      modalRef.current.focus();
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
 
   // Save changes to localStorage on edit
   const handleNameChange = (val: string) => { setCustomName(val); localStorage.setItem('ats_custom_name', val); };
@@ -110,6 +127,10 @@ EDUCACIÓN Y FORMACIÓN
 
   return (
     <motion.div
+      ref={modalRef}
+      role="dialog"
+      aria-modal="true"
+      tabIndex={-1}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

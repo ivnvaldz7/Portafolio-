@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Sliders, Download, Eye, Layers } from 'lucide-react';
 
 export const FretLabsDemo: React.FC = () => {
@@ -6,8 +6,6 @@ export const FretLabsDemo: React.FC = () => {
   const [scaleType, setScaleType] = useState<'single' | 'multiscale'>('single');
   const [bassScale, setBassScale] = useState<number>(27.0); // Bass scale for multiscale
   const [fretCount, setFretCount] = useState<number>(22);
-  const [perpendicularFret, setPerpendicularFret] = useState<number>(8);
-  const [microtonalSystem, setMicrotonalSystem] = useState<boolean>(false);
 
   // Calculate fret distance from nut in mm (1 inch = 25.4mm)
   const calculateFretPos = (scaleInches: number, fretNum: number) => {
@@ -19,13 +17,16 @@ export const FretLabsDemo: React.FC = () => {
   const bassScaleMm = bassScale * 25.4;
 
   // Generate fret SVG rendering data
-  const fretPositionsTreble: number[] = [];
-  const fretPositionsBass: number[] = [];
+  const { fretPositionsTreble, fretPositionsBass } = useMemo(() => {
+    const treble: number[] = [];
+    const bass: number[] = [];
 
-  for (let i = 1; i <= fretCount; i++) {
-    fretPositionsTreble.push(calculateFretPos(scaleLength, i));
-    fretPositionsBass.push(calculateFretPos(scaleType === 'multiscale' ? bassScale : scaleLength, i));
-  }
+    for (let i = 1; i <= fretCount; i++) {
+      treble.push(calculateFretPos(scaleLength, i));
+      bass.push(calculateFretPos(scaleType === 'multiscale' ? bassScale : scaleLength, i));
+    }
+    return { fretPositionsTreble: treble, fretPositionsBass: bass };
+  }, [scaleLength, bassScale, fretCount, scaleType]);
 
   // Handle SVG Download
   const handleDownloadSVG = () => {

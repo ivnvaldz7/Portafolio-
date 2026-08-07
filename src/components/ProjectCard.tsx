@@ -21,6 +21,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   return (
     <motion.article
+      aria-label={project.name}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
@@ -102,6 +103,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       {/* Action Buttons */}
       <div className="pt-4 border-t border-[#1a1a1a]/10 flex flex-wrap items-center justify-between gap-3">
         <motion.button
+          aria-label={`Leer caso de estudio de ${project.name}`}
           whileHover={{ scale: 1.04, y: -1 }}
           whileTap={{ scale: 0.96 }}
           onClick={() => onSelectCaseStudy(project)}
@@ -112,6 +114,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         </motion.button>
 
         <motion.button
+          aria-label={`Probar demo de ${project.name}`}
           whileHover={{ scale: 1.04, y: -1 }}
           whileTap={{ scale: 0.96 }}
           onClick={() => onOpenDemo(project.demoType)}

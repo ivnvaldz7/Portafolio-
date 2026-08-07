@@ -35,7 +35,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ language }) => {
 
         {/* Steps Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {WORK_PROCESS.map((step, idx) => (
+          {(isEs ? WORK_PROCESS : ENGLISH_TRANSLATIONS.workProcess).map((step, idx) => (
             <motion.div
               key={step.number}
               initial={{ opacity: 0, y: 20 }}
@@ -68,7 +68,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ language }) => {
               <div className="pt-3 border-t border-[#1a1a1a]/10 text-[10px] font-mono text-[#0d4d4d] flex items-start gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#0d4d4d] shrink-0 mt-0.5" />
                 <span>
-                  <strong className="uppercase font-bold">Entregable: </strong>
+                  <strong className="uppercase font-bold">{isEs ? 'Entregable:' : 'Deliverable:'} </strong>
                   {step.keyDeliverable}
                 </span>
               </div>

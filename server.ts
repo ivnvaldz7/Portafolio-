@@ -1,4 +1,6 @@
+import 'dotenv/config';
 import express from "express";
+import rateLimit from "express-rate-limit";
 import path from "path";
 import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
@@ -9,17 +11,23 @@ const __dirname = path.dirname(__filename);
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = parseInt(process.env.PORT || '3000');
 
-  app.use(express.json());
+  app.use(express.json({ limit: '50kb' }));
 
   // API Routes
   app.get("/api/health", (_req, res) => {
     res.json({ status: "ok", role: "Product Web Developer Portfolio Backend" });
   });
 
+  const limiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 5,
+    message: { error: "Demasiadas peticiones. Intenta nuevamente en 1 minuto." }
+  });
+
   // ChecAR Fact-Checking endpoint powered by Gemini API or fallback
-  app.post("/api/checar/analyze", async (req, res) => {
+  app.post("/api/checar/analyze", limiter, async (req, res) => {
     const { text, url } = req.body || {};
     const contentToAnalyze = text || url || "";
 

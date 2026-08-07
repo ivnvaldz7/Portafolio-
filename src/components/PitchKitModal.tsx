@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PITCHES_DATA } from '../data/portfolioData';
 import { Language } from '../types';
 import { X, Copy, Check, Sparkles } from 'lucide-react';
@@ -12,10 +12,27 @@ interface PitchKitModalProps {
 }
 
 export const PitchKitModal: React.FC<PitchKitModalProps> = ({ isOpen, language, onClose }) => {
-  if (!isOpen) return null;
-
   const [activeTab, setActiveTab] = useState<string>('pitch-30');
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      modalRef.current.focus();
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
 
   const currentPitch = PITCHES_DATA.find(p => p.id === activeTab) || PITCHES_DATA[0];
 
@@ -28,6 +45,10 @@ export const PitchKitModal: React.FC<PitchKitModalProps> = ({ isOpen, language, 
 
   return (
     <motion.div
+      ref={modalRef}
+      role="dialog"
+      aria-modal="true"
+      tabIndex={-1}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

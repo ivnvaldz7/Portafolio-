@@ -433,5 +433,84 @@ export const ENGLISH_TRANSLATIONS = {
   stackSubtitle: "Grouped by product competency rather than arbitrary percentage bars.",
   contactTitle: "Do you have a process that should run better?",
   contactSubtitle: "Let's connect and discuss how we can turn operational friction into a streamlined web product.",
-  footerText: "Ivan Valdez — Product-focused Web Developer Portfolio. Built with React 19, TypeScript, Vite & Tailwind CSS."
+  footerText: "Ivan Valdez — Product-focused Web Developer Portfolio. Built with React 19, TypeScript, Vite & Tailwind CSS.",
+  workProcess: [
+    {
+      number: "01",
+      title: "Process & Friction Diagnosis",
+      shortDesc: "Mapping the real operational flow, identifying bottlenecks and eliminating redundant manual tasks.",
+      fullDesc: "Before writing a single line of code, I analyze how people work. I interview key stakeholders, map the current workflow, and identify exactly where time is lost, typing errors occur, or communication channels get saturated.",
+      keyDeliverable: "Friction Map & Product Scope Definition"
+    },
+    {
+      number: "02",
+      title: "Minimum Friction Architecture",
+      shortDesc: "User experience design, simplified data modeling and pragmatic stack selection.",
+      fullDesc: "I design the solution with the fewest possible steps for the user. I define the data model, application structure, and decide whether a backend, an offline PWA, or an AI integration with verifiable sources is required.",
+      keyDeliverable: "Main Flow Wireframe & Technical Specification"
+    },
+    {
+      number: "03",
+      title: "Iterative Development & Integration",
+      shortDesc: "Modular construction in React, TypeScript, and Tailwind with fast feedback and real-environment testing.",
+      fullDesc: "I build the application using modular, clean, and strongly-typed components. I implement business logic, state management (Zustand), and real-time communications (Socket.io) or AI (Gemini API).",
+      keyDeliverable: "Functional Deployed Version (Operational MVP)"
+    },
+    {
+      number: "04",
+      title: "Operation, Autonomy & Deployment",
+      shortDesc: "Deployment on serverless platforms (Vercel/Render), performance optimization and documentation.",
+      fullDesc: "I publish the application ensuring responsive compatibility, excellent performance on mobile devices, and technical SEO. I leave the tool ready to operate autonomously with low or zero maintenance cost.",
+      keyDeliverable: "Product Deployed in Production & Documentation"
+    }
+  ],
+  stackMatrix: [
+    {
+      title: "Interface Building & Web Apps",
+      subtitle: "Modern, reactive, and high visual density frontend",
+      items: [
+        { name: "React 19", description: "Base library for reactive components and declarative UI.", tag: "Core" },
+        { name: "TypeScript", description: "Static typing for maintainable, refactorable, and runtime-error-free code.", tag: "Core" },
+        { name: "Vite", description: "Ultrafast bundler for agile development and optimized builds.", tag: "Build Tool" },
+        { name: "Tailwind CSS v4", description: "Responsive component system design with utility-first approach.", tag: "Styling" },
+        { name: "Progressive Web Apps (PWA)", description: "Native mobile experience, offline installability and support.", tag: "Mobile" }
+      ]
+    },
+    {
+      title: "State, Navigation & Business Logic",
+      subtitle: "Predictable state management and frictionless flows",
+      items: [
+        { name: "Zustand", description: "Lightweight global state management, zero boilerplate and high performance.", tag: "State" },
+        { name: "React Router", description: "Smooth client-side navigation and deep route handling.", tag: "Routing" },
+        { name: "Context & Custom Hooks", description: "Encapsulation of reusable logic and application context.", tag: "Architecture" }
+      ]
+    },
+    {
+      title: "Backend, Communication & Real Time",
+      subtitle: "Lightweight services for processing and sockets",
+      items: [
+        { name: "Node.js & Express", description: "REST API servers, secure proxies, and server-side processing.", tag: "Backend" },
+        { name: "Socket.io", description: "Bidirectional real-time communication for events and streaming progress.", tag: "Real-time" },
+        { name: "REST APIs", description: "Design and integration of clean and structured endpoints.", tag: "Protocol" }
+      ]
+    },
+    {
+      title: "Applied AI & Data Processing",
+      subtitle: "Smart integration of LLMs and official sources",
+      items: [
+        { name: "Gemini 2.0 Flash SDK", description: "Fast and efficient language models for structured analysis.", tag: "AI" },
+        { name: "Google Search Grounding", description: "Anchoring responses against web results to eliminate hallucinations.", tag: "Factuality" },
+        { name: "@mozilla/readability", description: "Clean extraction of the main body of journalistic articles.", tag: "Scraping" }
+      ]
+    },
+    {
+      title: "Deployment & Operations",
+      subtitle: "Cost-effective and high-availability infrastructure",
+      items: [
+        { name: "Vercel", description: "Continuous deployment for SPA frontend and serverless functions.", tag: "Cloud" },
+        { name: "Render", description: "Hosting for Node.js backend services and web sockets.", tag: "Cloud" },
+        { name: "Git & GitHub", description: "Version control, branch workflows, and integrated CI/CD.", tag: "DevOps" }
+      ]
+    }
+  ]
 };

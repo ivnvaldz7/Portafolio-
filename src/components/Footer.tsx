@@ -20,7 +20,7 @@ export const Footer: React.FC<FooterProps> = ({ language }) => {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <span className="font-serif-editorial font-bold text-[#fcfaf7] text-base block">
-              Estrategia de producto & Desarrollo Web
+              {isEs ? 'Estrategia de producto & Desarrollo Web' : 'Product Strategy & Web Development'}
             </span>
             <p className="text-stone-400 text-xs mt-0.5 font-mono">
               React 19 • TypeScript • Vite • Tailwind CSS • Gemini API Grounding

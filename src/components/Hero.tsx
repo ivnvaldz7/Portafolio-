@@ -131,9 +131,13 @@ export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenPitch
               <div className="w-1.5 h-1.5 bg-[#0d4d4d] shrink-0 mt-1.5" />
               <div>
                 <strong className="block text-[#1a1a1a] font-bold uppercase tracking-wider text-[11px] font-mono mb-0.5">
-                  Criterio de Producto
+                  {isEs ? 'Criterio de Producto' : 'Product Judgment'}
                 </strong>
-                <span>Priorización de estabilidad y valor real sobre complejidad innecesaria.</span>
+                <span>
+                  {isEs
+                    ? 'Priorización de estabilidad y valor real sobre complejidad innecesaria.'
+                    : 'Prioritizing stability and real value over unnecessary complexity.'}
+                </span>
               </div>
             </div>
 
@@ -141,9 +145,13 @@ export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenPitch
               <div className="w-1.5 h-1.5 bg-[#0d4d4d] shrink-0 mt-1.5" />
               <div>
                 <strong className="block text-[#1a1a1a] font-bold uppercase tracking-wider text-[11px] font-mono mb-0.5">
-                  Automatización de Procesos
+                  {isEs ? 'Automatización de Procesos' : 'Process Automation'}
                 </strong>
-                <span>Reducción de trabajo manual repetitivo en logística, deportes y redacción.</span>
+                <span>
+                  {isEs
+                    ? 'Reducción de trabajo manual repetitivo en logística, deportes y redacción.'
+                    : 'Reducing repetitive manual work in logistics, sports, and reporting.'}
+                </span>
               </div>
             </div>
 
@@ -151,9 +159,13 @@ export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenPitch
               <div className="w-1.5 h-1.5 bg-[#0d4d4d] shrink-0 mt-1.5" />
               <div>
                 <strong className="block text-[#1a1a1a] font-bold uppercase tracking-wider text-[11px] font-mono mb-0.5">
-                  IA Aplicada con Grounding
+                  {isEs ? 'IA Aplicada con Grounding' : 'Grounded Applied AI'}
                 </strong>
-                <span>Uso pragmático de Gemini 2.0 con fuentes oficializadas y cero alucinaciones.</span>
+                <span>
+                  {isEs
+                    ? 'Uso pragmático de Gemini 2.0 con fuentes oficializadas y cero alucinaciones.'
+                    : 'Pragmatic use of Gemini 2.0 with official sources and zero hallucinations.'}
+                </span>
               </div>
             </div>
           </motion.div>

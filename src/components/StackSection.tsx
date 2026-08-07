@@ -50,7 +50,7 @@ export const StackSection: React.FC<StackSectionProps> = ({ language }) => {
 
         {/* Stack Grid Grouped by Capability */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {STACK_MATRIX.map((cat, idx) => (
+          {(isEs ? STACK_MATRIX : ENGLISH_TRANSLATIONS.stackMatrix).map((cat, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 20 }}

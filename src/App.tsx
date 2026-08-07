@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ValueProp } from './components/ValueProp';
@@ -12,13 +12,12 @@ import { AtsCvModal } from './components/AtsCvModal';
 import { PitchKitModal } from './components/PitchKitModal';
 import { PROJECTS_DATA, ENGLISH_TRANSLATIONS } from './data/portfolioData';
 import { Project, Language } from './types';
-import { Search, Sparkles, Filter, Layers } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
   const [language, setLanguage] = useState<Language>('es');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [activeDemo, setActiveDemo] = useState<Project['demoType'] | null>(null);
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [isPitchOpen, setIsPitchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,13 +25,17 @@ export default function App() {
 
   const isEs = language === 'es';
 
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
   // Toggle Language
   const toggleLanguage = () => {
     setLanguage((prev) => (prev === 'es' ? 'en' : 'es'));
   };
 
   // Filter projects by category & search query
-  const filteredProjects = PROJECTS_DATA.filter((proj) => {
+  const filteredProjects = useMemo(() => PROJECTS_DATA.filter((proj) => {
     const matchesSearch =
       proj.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       proj.tagline.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -45,7 +48,7 @@ export default function App() {
     if (selectedCategory === 'ai') return matchesSearch && proj.demoType === 'checar';
 
     return matchesSearch;
-  });
+  }), [searchQuery, selectedCategory]);
 
   // Handler when user clicks "Probar Demo Interactiva" on a project card
   const handleOpenDemo = (demoType: Project['demoType']) => {

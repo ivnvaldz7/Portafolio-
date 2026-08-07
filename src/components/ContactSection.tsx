@@ -16,17 +16,32 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    confetti({ particleCount: 50, spread: 70, origin: { y: 0.7 } });
-    setTimeout(() => {
-      setSubmitted(false);
-      setName('');
-      setEmail('');
-      setMessage('');
-    }, 4000);
+    setIsLoading(true);
+    try {
+      const res = await fetch('https://formspree.io/f/REPLACE_WITH_YOUR_ID', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ topic, name, email, message })
+      });
+      if (res.ok) {
+        setSubmitted(true);
+        confetti({ particleCount: 50, spread: 70, origin: { y: 0.7 } });
+        setTimeout(() => {
+          setSubmitted(false);
+          setName('');
+          setEmail('');
+          setMessage('');
+        }, 4000);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -142,10 +157,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 text-xs font-sans">
                 <div>
-                  <label className="text-[#1a1a1a] font-mono block mb-1.5 font-bold uppercase text-[10px]">
+                  <label htmlFor="topic" className="text-[#1a1a1a] font-mono block mb-1.5 font-bold uppercase text-[10px]">
                     Motivo de la consulta:
                   </label>
                   <select
+                    id="topic"
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
                     className="w-full bg-white border border-[#1a1a1a]/20 p-3 text-[#1a1a1a] focus:outline-none focus:border-[#0d4d4d] font-mono text-xs"
@@ -158,8 +174,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[#1a1a1a] font-mono block mb-1 font-bold uppercase text-[10px]">Tu Nombre:</label>
+                    <label htmlFor="name" className="text-[#1a1a1a] font-mono block mb-1 font-bold uppercase text-[10px]">Tu Nombre:</label>
                     <input
+                      id="name"
                       type="text"
                       required
                       value={name}
@@ -169,8 +186,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
                     />
                   </div>
                   <div>
-                    <label className="text-[#1a1a1a] font-mono block mb-1 font-bold uppercase text-[10px]">Tu Email:</label>
+                    <label htmlFor="email" className="text-[#1a1a1a] font-mono block mb-1 font-bold uppercase text-[10px]">Tu Email:</label>
                     <input
+                      id="email"
                       type="email"
                       required
                       value={email}
@@ -182,8 +200,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
                 </div>
 
                 <div>
-                  <label className="text-[#1a1a1a] font-mono block mb-1 font-bold uppercase text-[10px]">Mensaje o Detalle:</label>
+                  <label htmlFor="message" className="text-[#1a1a1a] font-mono block mb-1 font-bold uppercase text-[10px]">Mensaje o Detalle:</label>
                   <textarea
+                    id="message"
                     rows={4}
                     required
                     value={message}
@@ -197,10 +216,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
                   type="submit"
-                  className="w-full py-3.5 btn-editorial-dark flex items-center justify-center gap-2"
+                  disabled={isLoading}
+                  className={`w-full py-3.5 btn-editorial-dark flex items-center justify-center gap-2 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
                   <Send className="w-4 h-4 text-[#fcfaf7]" />
-                  <span>Enviar Mensaje</span>
+                  <span>{isLoading ? 'Enviando...' : 'Enviar Mensaje'}</span>
                 </motion.button>
               </form>
             )}

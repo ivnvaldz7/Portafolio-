@@ -73,7 +73,7 @@ export const AutomationLogo: React.FC<AutomationLogoProps> = ({
   const currentScenario = SCENARIOS[scenarioIndex];
 
   return (
-    <a href="#top" className={`flex items-center gap-3.5 group py-1 select-none ${className}`}>
+    <a href="#top" aria-label="Ivan Valdez - Volver al inicio" className={`flex items-center gap-3.5 group py-1 select-none ${className}`}>
       {/* Animated Automation Emblem */}
       <motion.div
         whileHover={{ scale: 1.03 }}
@@ -86,6 +86,7 @@ export const AutomationLogo: React.FC<AutomationLogoProps> = ({
           xmlns="http://www.w3.org/2000/svg"
           className="w-12 h-5 text-[#fcfaf7]"
         >
+          <title>Diagrama de automatización de flujo</title>
           {/* Main Input Trunk Path */}
           <path
             d="M 6 12 L 20 12"

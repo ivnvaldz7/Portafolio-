@@ -1,5 +1,5 @@
-import React from 'react';
-import { FileText, Sparkles, Globe } from 'lucide-react';
+import React, { useState } from 'react';
+import { FileText, Sparkles, Globe, Menu, X } from 'lucide-react';
 import { Language } from '../types';
 import { motion } from 'motion/react';
 import { AutomationLogo } from './AutomationLogo';
@@ -18,6 +18,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenCvModal,
   onOpenPitchModal,
 }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <header className="sticky top-0 z-40 bg-[#fcfaf7]/95 backdrop-blur-md border-b border-[#1a1a1a]/10 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
@@ -54,6 +56,14 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2.5">
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 text-[#1a1a1a] hover:bg-black/5 transition-colors"
+            aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+          >
+            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
           {/* Language Toggle Segmented Control */}
           <div className="relative flex items-center bg-[#1a1a1a]/5 p-0.5 border border-[#1a1a1a]/15 text-[11px] font-bold font-mono">
             <button
@@ -117,6 +127,29 @@ export const Header: React.FC<HeaderProps> = ({
           </motion.button>
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-[#fcfaf7] border-b border-[#1a1a1a]/10 shadow-sm">
+          <nav className="flex flex-col px-4 py-4 space-y-4 text-xs font-bold uppercase tracking-widest text-[#1a1a1a]/80 font-sans">
+            {[
+              { href: '#proyectos', label: language === 'es' ? 'Proyectos' : 'Case Studies' },
+              { href: '#proceso', label: language === 'es' ? 'Proceso' : 'Process' },
+              { href: '#stack', label: language === 'es' ? 'Capacidades' : 'Capabilities' },
+              { href: '#contacto', label: language === 'es' ? 'Contacto' : 'Contact' },
+            ].map((item, idx) => (
+              <a
+                key={idx}
+                href={item.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="hover:text-[#0d4d4d] transition-colors py-2"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      )}
     </header>
   );
 };
