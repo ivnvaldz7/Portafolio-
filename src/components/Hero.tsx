@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowDownRight, FileText, Sparkles } from 'lucide-react';
 import { PERSONAL_INFO, ENGLISH_TRANSLATIONS } from '../data/portfolioData';
 import { Language } from '../types';
-import { motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 
 interface HeroProps {
   language: Language;
@@ -12,6 +12,42 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenPitchModal }) => {
   const isEs = language === 'es';
+  const capabilities = isEs
+    ? [
+        { label: 'React', outcome: 'Interfaces claras' },
+        { label: 'TypeScript', outcome: 'Sistemas mantenibles' },
+        { label: 'Automatización', outcome: 'Menos trabajo manual' },
+        { label: 'Orquestación de modelos', outcome: 'IA aplicada con criterio' },
+      ]
+    : [
+        { label: 'React', outcome: 'Clear interfaces' },
+        { label: 'TypeScript', outcome: 'Maintainable systems' },
+        { label: 'Automation', outcome: 'Less manual work' },
+        { label: 'Model orchestration', outcome: 'Applied AI with judgment' },
+      ];
+  const [activeCapability, setActiveCapability] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updateMotionPreference = () => setPrefersReducedMotion(mediaQuery.matches);
+
+    updateMotionPreference();
+    mediaQuery.addEventListener('change', updateMotionPreference);
+    return () => mediaQuery.removeEventListener('change', updateMotionPreference);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const interval = window.setInterval(() => {
+      setActiveCapability((current) => (current + 1) % capabilities.length);
+    }, 3200);
+
+    return () => window.clearInterval(interval);
+  }, [capabilities.length, prefersReducedMotion]);
+
+  const currentCapability = capabilities[activeCapability];
 
   return (
     <section id="top" className="relative pt-12 pb-16 md:pt-20 md:pb-24 border-b border-[#1a1a1a]/10 bg-[#fcfaf7]">
@@ -33,9 +69,24 @@ export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenPitch
               <span className="w-2 h-2 rounded-full bg-[#0d4d4d] animate-pulse" />
               <span>{isEs ? PERSONAL_INFO.location : ENGLISH_TRANSLATIONS.availableBadge}</span>
             </div>
-            <span className="text-[#666666] font-normal tracking-normal lowercase font-sans text-xs bg-black/5 px-2.5 py-1">
-              {PERSONAL_INFO.secondaryDescriptor}
-            </span>
+            <div className="flex min-h-8 max-w-full items-center gap-2 bg-black/5 px-2.5 py-1 text-[#1a1a1a]">
+              <span className="shrink-0 font-mono text-[10px] font-bold uppercase tracking-widest text-[#0d4d4d]">
+                {currentCapability.label}
+              </span>
+              <span aria-hidden="true" className="text-xs text-[#999999]">→</span>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={currentCapability.outcome}
+                  initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -4 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : 0.25 }}
+                  className="truncate font-serif-editorial text-sm italic"
+                >
+                  {currentCapability.outcome}
+                </motion.span>
+              </AnimatePresence>
+            </div>
           </motion.div>
 
           {/* Main Editorial Value Title */}
