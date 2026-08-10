@@ -285,7 +285,7 @@ export const STACK_MATRIX: StackCategory[] = [
 export const ATS_CV_DATA: ATSCVData = {
   title: "Ivan Valdez | Product-focused Web Developer | React · TypeScript · Automatización · IA aplicada",
   locationAvailability: "Argentina | Disponible para roles Remotos / Híbridos en Argentina y Latinoamérica",
-  summary: "Desarrollador Web orientado a Producto (Product-focused Web Developer) con amplia experiencia en React, TypeScript y Node.js. Especializado en traducir necesidades operativas y de negocio complejas en aplicaciones web fluidas, automatizaciones de procesos e integraciones pragmáticas de IA. Capacidad demostrada para abarcar todo el ciclo de vida del producto: desde el diagnóstico del problema real de los usuarios hasta la arquitectura frontend, la comunicación en tiempo real y el despliegue en producción.",
+  summary: "Soy desarrollador web orientado a producto (Product-focused Web Developer), con amplia experiencia en React, TypeScript y Node.js. Me especializo en traducir necesidades operativas y de negocio complejas en aplicaciones web fluidas, automatizaciones de procesos e integraciones pragmáticas de IA. Puedo abarcar todo el ciclo de vida del producto: desde diagnosticar el problema real de los usuarios hasta diseñar la arquitectura frontend, implementar comunicación en tiempo real y desplegar en producción.",
   targetRoles: [
     "Frontend Developer",
     "Full-Stack JavaScript/TypeScript Developer",
@@ -327,10 +327,10 @@ export const ATS_CV_DATA: ATSCVData = {
       period: "2024 - Presente",
       techStack: "React, TypeScript, Zustand, Node.js, Express, Socket.io, Gemini 2.0 Flash, Grounding, Vercel/Render",
       highlights: [
-        "Diseñó e implementó una aplicación web para la verificación automática de discurso político argentino, extrayendo hasta 7 afirmaciones clave por texto.",
-        "Integra Gemini 2.0 Flash con Google Search Grounding configurado con dominios oficiales (INDEC, MECON, BCRA) para fundamentar veredictos con cero alucinación.",
-        "Tomó la decisión técnica estratégica de pivotar de transcripción de video a análisis de texto puro, reduciendo tiempos de respuesta a menos de 15s y aumentando la estabilidad operativa al 99.9%.",
-        "Implementó comunicación bidireccional con Socket.io para informar el estado de procesamiento en tiempo real, mejorando la confianza del usuario."
+        "Diseñé e implementé una aplicación web para la verificación automática de discurso político argentino, extrayendo hasta 7 afirmaciones clave por texto.",
+        "Integré Gemini 2.0 Flash con Google Search Grounding configurado con dominios oficiales (INDEC, MECON, BCRA) para fundamentar veredictos con cero alucinación.",
+        "Tomé la decisión técnica estratégica de pivotar de transcripción de video a análisis de texto puro, reduciendo tiempos de respuesta a menos de 15s y aumentando la estabilidad operativa al 99.9%.",
+        "Implementé comunicación bidireccional con Socket.io para informar el estado de procesamiento en tiempo real, mejorando la confianza del usuario."
       ]
     },
     {
@@ -339,9 +339,9 @@ export const ATS_CV_DATA: ATSCVData = {
       period: "2024",
       techStack: "React, TypeScript, Tailwind CSS, Zustand, Node.js, REST API",
       highlights: [
-        "Llevó adelante la digitalización completa del proceso operativo de despacho y gestión de insumos para laboratorio veterinario.",
-        "Diseñó una interfaz de alta densidad visual adaptada para tabletas de depósito, reduciendo los errores de despacho por confusión de lotes a cero.",
-        "Optimizó el flujo de empaque mediante indicadores visuales de vencimiento (método FEFO), acortando el tiempo de preparación de pedidos."
+        "Lideré la digitalización completa del proceso operativo de despacho y gestión de insumos para laboratorio veterinario.",
+        "Diseñé una interfaz de alta densidad visual adaptada para tabletas de depósito, reduciendo los errores de despacho por confusión de lotes a cero.",
+        "Optimicé el flujo de empaque mediante indicadores visuales de vencimiento (método FEFO), acortando el tiempo de preparación de pedidos."
       ]
     },
     {
@@ -350,9 +350,9 @@ export const ATS_CV_DATA: ATSCVData = {
       period: "2023 - 2024",
       techStack: "React, TypeScript, Vite, PWA, Tailwind CSS, Canvas API",
       highlights: [
-        "Construyó una PWA recurrente para la coordinación de eventos deportivos, confirmación de asistencia y sorteo equilibrado de equipos.",
-        "Desarrolló un generador de fichas compartibles mediante Canvas API para integrarse directamente con grupos de WhatsApp sin forzar la descarga de apps pesadas.",
-        "Implementó arquitectura offline-first garantizando usabilidad en entornos de baja cobertura de datos."
+        "Construí una PWA recurrente para la coordinación de eventos deportivos, confirmación de asistencia y sorteo equilibrado de equipos.",
+        "Desarrollé un generador de fichas compartibles mediante Canvas API para integrarse directamente con grupos de WhatsApp sin forzar la descarga de apps pesadas.",
+        "Implementé una arquitectura offline-first para garantizar la usabilidad en entornos de baja cobertura de datos."
       ]
     },
     {
@@ -361,9 +361,9 @@ export const ATS_CV_DATA: ATSCVData = {
       period: "2023",
       techStack: "React, TypeScript, Tailwind CSS v4, SVG Engine, PWA Standalone",
       highlights: [
-        "Creó una herramienta de precisión matemática para luthiers que calcula distancias de trastes simples, fanned frets y escalas microtonales.",
-        "Desarrolló un motor de renderizado vectorial SVG nativo en el cliente que exporta archivos DXF/SVG para maquinaria CNC y corte láser.",
-        "Ejecución 100% en el navegador sin costo de servidor ni dependencias de backend."
+        "Creé una herramienta de precisión matemática para luthiers que calcula distancias de trastes simples, fanned frets y escalas microtonales.",
+        "Desarrollé un motor de renderizado vectorial SVG nativo en el cliente que exporta archivos DXF/SVG para maquinaria CNC y corte láser.",
+        "Desarrollé una solución ejecutable 100% en el navegador, sin costo de servidor ni dependencias de backend."
       ]
     }
   ],

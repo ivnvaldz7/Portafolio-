@@ -23,7 +23,9 @@ export const Footer: React.FC<FooterProps> = ({ language }) => {
               {isEs ? 'Estrategia de producto & Desarrollo Web' : 'Product Strategy & Web Development'}
             </span>
             <p className="text-stone-400 text-xs mt-0.5 font-mono">
-              React 19 • TypeScript • Vite • Tailwind CSS • Gemini API Grounding
+              {isEs
+                ? 'Desarrollo de software • Automatización de procesos • Orquestación de modelos de IA'
+                : 'Software Development • Process Automation • AI Model Orchestration'}
             </p>
           </div>
 
@@ -41,7 +43,7 @@ export const Footer: React.FC<FooterProps> = ({ language }) => {
             © {new Date().getFullYear()} — {PERSONAL_INFO.location}
           </span>
           <span>
-            {isEs ? 'Diseño editorial sobrio y arquitectura de producto.' : 'Editorial product architecture.'}
+            Ivan Valdez Software Development
           </span>
         </div>
       </div>
