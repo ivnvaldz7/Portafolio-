@@ -202,7 +202,7 @@ export const AutomationLogo: React.FC<AutomationLogoProps> = ({
 
       {/* Uppercase Personal Name Identity */}
       {showText && (
-        <span className="font-sans font-extrabold text-sm sm:text-base text-[#1a1a1a] group-hover:text-[#0d4d4d] transition-colors tracking-wider uppercase">
+        <span className="hidden sm:inline font-sans font-extrabold text-sm sm:text-base text-[#1a1a1a] group-hover:text-[#0d4d4d] transition-colors tracking-wider uppercase">
           IVAN VALDEZ
         </span>
       )}

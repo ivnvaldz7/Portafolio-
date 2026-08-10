@@ -120,10 +120,10 @@ export const Header: React.FC<HeaderProps> = ({
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.96 }}
             onClick={onOpenCvModal}
-            className="flex items-center gap-1.5 px-4 py-1.5 btn-editorial-dark"
+            className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 btn-editorial-dark"
           >
             <FileText className="w-3.5 h-3.5 text-[#fcfaf7]" />
-            <span>Descargar CV</span>
+            <span className="hidden sm:inline">Descargar CV</span>
           </motion.button>
         </div>
       </div>

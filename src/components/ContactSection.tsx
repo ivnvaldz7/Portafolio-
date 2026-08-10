@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { PERSONAL_INFO, ENGLISH_TRANSLATIONS } from '../data/portfolioData';
 import { Language } from '../types';
-import { Mail, Linkedin, Github, Send, Check, MapPin, MessageCircle } from 'lucide-react';
+import { AlertTriangle, Mail, Linkedin, Github, Send, Check, MapPin, MessageCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { motion } from 'motion/react';
 
 interface ContactSectionProps {
   language: Language;
 }
+
+const FORMSPREE_FORM_ID = 'xeajagqa';
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
   const isEs = language === 'es';
@@ -17,12 +19,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
     try {
-      const res = await fetch('https://formspree.io/f/REPLACE_WITH_YOUR_ID', {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ topic, name, email, message })
@@ -36,13 +40,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
           setEmail('');
           setMessage('');
         }, 4000);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || (isEs ? 'Error al enviar el mensaje. Intenta de nuevo.' : 'Failed to send message. Please try again.'));
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setError(isEs ? 'Error de conexión. Verificá tu internet e intentá de nuevo.' : 'Connection error. Check your internet and try again.');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [topic, name, email, message, isEs]);
 
   return (
     <section id="contacto" className="py-16 md:py-24 bg-[#1a1a1a] text-[#fcfaf7] border-b border-[#1a1a1a]">
@@ -211,6 +218,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
                     className="w-full bg-white border border-[#1a1a1a]/20 p-3 text-[#1a1a1a] placeholder-stone-400 focus:outline-none focus:border-[#0d4d4d]"
                   />
                 </div>
+
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start gap-2 font-sans"
+                  >
+                    <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                    <span>{error}</span>
+                  </motion.div>
+                )}
 
                 <motion.button
                   whileHover={{ scale: 1.02 }}
