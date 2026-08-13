@@ -6,6 +6,7 @@ import { motion } from 'motion/react';
 interface ProjectCardProps {
   project: Project;
   language: Language;
+  isFullWidth: boolean;
   onSelectCaseStudy: (project: Project) => void;
   onOpenDemo: (demoType: Project['demoType']) => void;
 }
@@ -13,6 +14,7 @@ interface ProjectCardProps {
 export const ProjectCard: React.FC<ProjectCardProps> = ({
   project,
   language,
+  isFullWidth,
   onSelectCaseStudy,
   onOpenDemo,
 }) => {
@@ -28,8 +30,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       whileHover={{ y: -6, scale: 1.01 }}
       transition={{ duration: 0.25, ease: [0.25, 1, 0.5, 1] }}
       className={`border transition-all duration-300 flex flex-col justify-between p-6 sm:p-8 ${
+        isFullWidth ? 'lg:col-span-2' : ''
+      } ${
         isHero
-          ? 'lg:col-span-2 bg-[#f0f4f4] border-[#0d4d4d] hover:border-[#0d4d4d] hover:shadow-lg'
+          ? 'bg-[#f0f4f4] border-[#0d4d4d] hover:border-[#0d4d4d] hover:shadow-lg'
           : 'bg-white border-[#1a1a1a]/15 hover:border-[#0d4d4d]/80 hover:shadow-md'
       }`}
     >

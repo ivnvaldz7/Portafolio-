@@ -18,6 +18,8 @@ export const CoverLetterModal: React.FC<CoverLetterModalProps> = ({ isOpen, lang
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedText, setGeneratedText] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState<'coverLetter' | 'bio'>('coverLetter');
+  const [bioCopied, setBioCopied] = useState(false);
   
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -138,8 +140,24 @@ export const CoverLetterModal: React.FC<CoverLetterModalProps> = ({ isOpen, lang
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Form Side */}
+        <div className="flex items-center gap-2 mb-6 border-b border-white/10 pb-4">
+          <button 
+            onClick={() => setActiveTab('coverLetter')}
+            className={`px-4 py-2 text-xs font-mono font-bold transition-colors ${activeTab === 'coverLetter' ? 'bg-[#0d4d4d] text-white' : 'text-stone-400 hover:bg-white/5'}`}
+          >
+            COVER LETTER IA
+          </button>
+          <button 
+            onClick={() => setActiveTab('bio')}
+            className={`px-4 py-2 text-xs font-mono font-bold transition-colors ${activeTab === 'bio' ? 'bg-[#0d4d4d] text-white' : 'text-stone-400 hover:bg-white/5'}`}
+          >
+            BIO PROFESIONAL
+          </button>
+        </div>
+
+        {activeTab === 'coverLetter' ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Form Side */}
           <div className="space-y-4">
             <div>
               <label className="text-[#fcfaf7] text-xs font-mono uppercase tracking-wider block mb-1.5 flex items-center gap-1.5">
@@ -279,6 +297,37 @@ export const CoverLetterModal: React.FC<CoverLetterModalProps> = ({ isOpen, lang
             
           </div>
         </div>
+        ) : (
+          <div className="bg-[#1a1a1a] p-6 border border-white/20">
+            <div className="flex items-center justify-between mb-4 pb-4 border-b border-white/10">
+              <span className="text-xs font-mono text-stone-400 uppercase tracking-widest">
+                {language === 'es' ? 'Presentación Ejecutiva' : 'Executive Overview'}
+              </span>
+              <button 
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    language === 'es' 
+                    ? "Soy Iván Valdez, Desarrollador Full Stack con foco en la creación de productos digitales que resuelven problemas reales de negocio. Especializado en arquitecturas escalables, diseño de interfaces precisas (UI/UX) y rendimiento. Construyo puentes entre requerimientos complejos y soluciones tecnológicas elegantes, utilizando ecosistemas modernos." 
+                    : "I am Iván Valdez, a Full Stack Developer focused on creating digital products that solve real business problems. Specialized in scalable architectures, precise interface design (UI/UX), and performance. I build bridges between complex requirements and elegant technological solutions using modern ecosystems."
+                  );
+                  setBioCopied(true);
+                  setTimeout(() => setBioCopied(false), 2000);
+                }}
+                className="flex items-center gap-1.5 text-xs font-bold text-[#0d4d4d] hover:text-white transition-colors"
+              >
+                {bioCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                {bioCopied ? (language === 'es' ? '¡Copiado!' : 'Copied!') : (language === 'es' ? 'Copiar Bio' : 'Copy Bio')}
+              </button>
+            </div>
+            <p className="text-sm text-stone-200 leading-relaxed font-sans whitespace-pre-line">
+              {language === 'es' ? (
+                "Soy Iván Valdez, Desarrollador Full Stack con foco en la creación de productos digitales que resuelven problemas reales de negocio. Especializado en arquitecturas escalables, diseño de interfaces precisas (UI/UX) y rendimiento. Construyo puentes entre requerimientos complejos y soluciones tecnológicas elegantes, utilizando ecosistemas modernos."
+              ) : (
+                "I am Iván Valdez, a Full Stack Developer focused on creating digital products that solve real business problems. Specialized in scalable architectures, precise interface design (UI/UX), and performance. I build bridges between complex requirements and elegant technological solutions using modern ecosystems."
+              )}
+            </p>
+          </div>
+        )}
       </motion.div>
     </motion.div>
   );

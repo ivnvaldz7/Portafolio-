@@ -5,15 +5,18 @@ import { ChecARDemo } from './InteractiveDemos/ChecARDemo';
 import { FretLabsDemo } from './InteractiveDemos/FretLabsDemo';
 import { ElFulboDemo } from './InteractiveDemos/ElFulboDemo';
 import { AleBetDemo } from './InteractiveDemos/AleBetDemo';
+import { MapiaDemo } from './InteractiveDemos/MapiaDemo';
 import { motion } from 'motion/react';
 
 interface CaseStudyModalProps {
   project: Project | null;
   language: Language;
+  initialTab: 'caseStudy' | 'demo';
   onClose: () => void;
 }
 
-export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, language, onClose }) => {
+export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, language, initialTab, onClose }) => {
+  const [activeTab, setActiveTab] = React.useState<'caseStudy' | 'demo'>(initialTab);
   if (!project) return null;
 
   const isEs = language === 'es';
@@ -34,6 +37,10 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
     }
   }, [project]);
 
+  useEffect(() => {
+    setActiveTab(initialTab);
+  }, [initialTab, project]);
+
   const renderDemoWidget = () => {
     switch (project.demoType) {
       case 'checar':
@@ -44,6 +51,8 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
         return <ElFulboDemo />;
       case 'alebet':
         return <AleBetDemo />;
+      case 'mapia':
+        return <MapiaDemo />;
       default:
         return null;
     }
@@ -100,23 +109,55 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
             {project.typeBadge}
           </span>
           <h2 className="font-serif-editorial text-3xl sm:text-4xl font-normal text-[#1a1a1a] tracking-tight">
-            {project.name}: {isEs ? 'Caso de Estudio Completo' : 'Full Case Study'}
+            {project.name}
           </h2>
           <p className="text-sm text-[#666666] font-sans">
             {project.tagline}
           </p>
         </div>
 
-        {/* Interactive Live Demo Embedded Section */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-bold font-mono text-[#1a1a1a] uppercase tracking-widest flex items-center gap-2">
-            <Play className="w-3.5 h-3.5 text-[#0d4d4d] fill-current" />
-            {isEs ? 'Simulación / Demo Interactiva del Producto' : 'Interactive Product Simulation / Demo'}
-          </h3>
-          {renderDemoWidget()}
+        {/* Tab Switcher */}
+        <div className="flex flex-wrap items-center gap-2 border-b border-[#1a1a1a]/10 pb-4">
+          <button
+            onClick={() => setActiveTab('caseStudy')}
+            className={`px-4 py-2 text-xs font-mono font-bold transition-all ${
+              activeTab === 'caseStudy'
+                ? 'bg-[#0d4d4d] text-white'
+                : 'text-[#666666] hover:bg-black/5'
+            }`}
+          >
+            {isEs ? 'CASO DE ESTUDIO' : 'CASE STUDY'}
+          </button>
+          <button
+            onClick={() => setActiveTab('demo')}
+            className={`px-4 py-2 text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
+              activeTab === 'demo'
+                ? 'bg-[#0d4d4d] text-white'
+                : 'text-[#666666] hover:bg-black/5'
+            }`}
+          >
+            <Play className={`w-3 h-3 ${activeTab === 'demo' ? 'fill-current' : ''}`} />
+            {isEs ? 'DEMO INTERACTIVA' : 'INTERACTIVE DEMO'}
+          </button>
         </div>
 
-        {/* 1. Contexto & Problema */}
+        {activeTab === 'demo' ? (
+          /* Interactive Live Demo Embedded Section */
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-3"
+          >
+            {renderDemoWidget()}
+          </motion.div>
+        ) : (
+          /* Case Study Sections */
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-8"
+          >
+            {/* 1. Contexto & Problema */}
         <div className="p-6 bg-white border border-[#1a1a1a]/15 space-y-3">
           <h3 className="font-serif-editorial text-lg text-[#1a1a1a] font-normal flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-[#0d4d4d]" />
@@ -219,6 +260,8 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
             <strong>Key Takeaway: </strong> {caseStudy.keyTakeaway}
           </div>
         </div>
+      </motion.div>
+      )}
 
         {/* Footer Links */}
         <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#1a1a1a]/10">

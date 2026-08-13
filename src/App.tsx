@@ -11,6 +11,7 @@ import { Footer } from './components/Footer';
 import { AtsCvModal } from './components/AtsCvModal';
 import { CoverLetterModal } from './components/CoverLetterModal';
 import { PROJECTS_DATA, ENGLISH_TRANSLATIONS } from './data/portfolioData';
+import { PROJECTS_DATA_EN } from './data/portfolioDataEn';
 import { Project, Language } from './types';
 import { Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -22,6 +23,7 @@ export default function App() {
   const [isCoverLetterOpen, setIsCoverLetterOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [modalInitialTab, setModalInitialTab] = useState<'caseStudy' | 'demo'>('caseStudy');
 
   const isEs = language === 'es';
 
@@ -35,7 +37,9 @@ export default function App() {
   };
 
   // Filter projects by category & search query
-  const filteredProjects = useMemo(() => PROJECTS_DATA.filter((proj) => {
+  const filteredProjects = useMemo(() => {
+    const activeProjects = language === 'en' ? PROJECTS_DATA_EN : PROJECTS_DATA;
+    return activeProjects.filter((proj) => {
     const matchesSearch =
       proj.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       proj.tagline.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -48,14 +52,23 @@ export default function App() {
     if (selectedCategory === 'ai') return matchesSearch && proj.demoType === 'checar';
 
     return matchesSearch;
-  }), [searchQuery, selectedCategory]);
+    });
+  }, [searchQuery, selectedCategory, language]);
 
   // Handler when user clicks "Probar Demo Interactiva" on a project card
   const handleOpenDemo = (demoType: Project['demoType']) => {
-    const matchingProj = PROJECTS_DATA.find((p) => p.demoType === demoType);
+    const activeProjects = language === 'en' ? PROJECTS_DATA_EN : PROJECTS_DATA;
+    const matchingProj = activeProjects.find((p) => p.demoType === demoType);
     if (matchingProj) {
+      setModalInitialTab('demo');
       setSelectedProject(matchingProj);
     }
+  };
+
+  // Handler when user clicks "Leer Caso de Estudio"
+  const handleOpenCaseStudy = (project: Project) => {
+    setModalInitialTab('caseStudy');
+    setSelectedProject(project);
   };
 
   return (
@@ -169,15 +182,19 @@ export default function App() {
 
           {/* Projects Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {filteredProjects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                language={language}
-                onSelectCaseStudy={(p) => setSelectedProject(p)}
-                onOpenDemo={handleOpenDemo}
-              />
-            ))}
+            {filteredProjects.map((project, index) => {
+              const isLastOdd = filteredProjects.length % 2 !== 0 && index === filteredProjects.length - 1;
+              return (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  language={language}
+                  isFullWidth={isLastOdd}
+                  onSelectCaseStudy={handleOpenCaseStudy}
+                  onOpenDemo={handleOpenDemo}
+                />
+              );
+            })}
           </div>
         </section>
 
@@ -200,6 +217,7 @@ export default function App() {
           <CaseStudyModal
             project={selectedProject}
             language={language}
+            initialTab={modalInitialTab}
             onClose={() => setSelectedProject(null)}
           />
         )}
