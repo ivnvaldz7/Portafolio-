@@ -7,10 +7,10 @@ import { AnimatePresence, motion } from 'motion/react';
 interface HeroProps {
   language: Language;
   onOpenCvModal: () => void;
-  onOpenPitchModal: () => void;
+  onOpenCoverLetter: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenPitchModal }) => {
+export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenCoverLetter }) => {
   const isEs = language === 'es';
   const capabilities = isEs
     ? [
@@ -163,11 +163,11 @@ export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenPitch
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={onOpenPitchModal}
+              onClick={onOpenCoverLetter}
               className="px-4 py-3.5 bg-transparent text-[#1a1a1a] hover:text-[#0d4d4d] font-bold text-xs uppercase tracking-wider underline underline-offset-4 transition-all flex items-center gap-1.5"
             >
               <Sparkles className="w-4 h-4 text-[#0d4d4d]" />
-              <span>{isEs ? 'Pitches & Bio' : ENGLISH_TRANSLATIONS.ctaPitch}</span>
+              <span>{isEs ? 'Pitches & Bio' : (isEs ? 'Generar Cover Letter (IA)' : 'Generate Cover Letter (AI)')}</span>
             </motion.button>
           </motion.div>
 

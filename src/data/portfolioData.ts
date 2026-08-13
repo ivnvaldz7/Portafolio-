@@ -25,6 +25,54 @@ export const PERSONAL_INFO = {
 
 export const PROJECTS_DATA: Project[] = [
   {
+    id: "mapia",
+    name: "Mapia - Route Optimizer",
+    typeBadge: "Geospatial & Route Optimization",
+    priority: "featured",
+    tagline: "Planificador de rutas ligero que encuentra el orden más eficiente para paradas múltiples.",
+    problemSummary: "Determinar manualmente la ruta óptima para visitar múltiples destinos (Traveling Salesperson Problem) resulta ineficiente, consumiendo más tiempo y combustible del necesario.",
+    targetUser: "Repartidores de última milla, viajantes de comercio y turistas planificando recorridos.",
+    myContribution: "Desarrollo frontend completo, integración de mapas vectoriales interactivos, resolución del problema del viajante vía API y reordenamiento fluido drag-and-drop.",
+    period: "2026",
+    role: "Frontend Engineer & Creador",
+    cvHighlights: [
+      "Construí un optimizador de rutas conectando la API de OpenRouteService para resolver el problema del viajante (TSP).",
+      "Implementé mapas vectoriales interactivos de alto rendimiento utilizando MapLibre GL JS sin dependencias de APIs pagas (OpenFreeMap).",
+      "Diseñé una UX resiliente de listas drag-and-drop usando dnd-kit, permitiendo fijar paradas y recalcular distancias en tiempo real.",
+      "Agregué generación dinámica de URLs compartibles que restauran el estado completo del viaje, y redirecciones deep-link a Waze y Google Maps."
+    ],
+    stack: ["React 19", "TypeScript", "Vite 8", "MapLibre GL JS", "OpenRouteService", "dnd-kit", "Tailwind CSS 4"],
+    skills: ["Geospatial UI", "API Integration", "State Management", "Routing Algorithms"],
+    demoType: "mapia",
+    githubUrl: "https://github.com/ivnvaldz7/mapia",
+    caseStudy: {
+      contextAndProblem: "Organizar una serie de destinos de manera eficiente no es intuitivo. Trazar la ruta de un punto a otro no garantiza que el recorrido total sea el más rápido o corto.",
+      affectedUsers: "Cualquier persona que requiera visitar múltiples puntos (ej. entregas, turismo) y quiera minimizar tiempo de conducción y gasto de combustible.",
+      realConstraints: [
+        "Depender de Google Maps para TSP masivo suele requerir APIs pagas costosas.",
+        "El reordenamiento en pantallas móviles debe ser intuitivo sin disparar recálculos innecesarios."
+      ],
+      developedSolution: "Mapia es una aplicación web que permite buscar direcciones o marcar puntos en el mapa, y con un solo botón optimiza el recorrido total utilizando algoritmos avanzados de grafos, ofreciendo deep-links para iniciar la navegación giro a giro.",
+      productDecisions: [
+        {
+          title: "URLs Compartibles vs Base de Datos",
+          description: "Codificar el viaje en la URL para compartir rutas.",
+          reasoning: "Evita requerir autenticación o bases de datos, permitiendo a los usuarios pasarse rutas completas por chat de manera instantánea."
+        }
+      ],
+      techDecisions: [
+        {
+          title: "MapLibre + OpenFreeMap",
+          description: "Uso de tiles gratuitos en lugar de Google Maps JS SDK.",
+          reasoning: "Reduce radicalmente los costos operativos, manteniendo un renderizado vectorial nativo (WebGL) veloz y personalizable."
+        }
+      ],
+      resultAndLearnings: "Construir una herramienta de mapas interactivos requiere sincronizar fuertemente el estado de React con el ciclo de vida del mapa (canvas WebGL) sin perder rendimiento.",
+      keyTakeaway: "Las herramientas operativas brillan cuando no tienen fricción de inicio de sesión y resuelven un problema matemático concreto de manera visual."
+    }
+  },
+
+  {
     id: "checar",
     name: "ChecAR",
     typeBadge: "AI Application & Fact-Checking Assist",
@@ -33,7 +81,7 @@ export const PROJECTS_DATA: Project[] = [
     problemSummary: "El chequeo periodístico tradicional requiere contrastar manualmente declaraciones públicas contra múltiples fuentes oficiales, bases tributarias y presupuestarias, insumiendo horas de investigación bajo presión editorial.",
     targetUser: "Periodistas, chequeadores de datos (fact-checkers), analistas de medios y comunicación política.",
     myContribution: "Diseño de arquitectura completa frontend y backend, flujo de extracción con Readability, pipeline de verificación con Gemini 2.0 Flash + Search Grounding y Socket.io para comunicación streaming.",
-    stack: ["React 19", "TypeScript", "Vite", "Zustand", "Node.js", "Express", "Socket.io", "Gemini 2.0 Flash", "Google Search Grounding", "@mozilla/readability"],
+    period: "2025 - Presente", role: "Creador & Desarrollador Principal de Producto", cvHighlights: ["Diseñé e implementé una aplicación web para la verificación automática de discurso político argentino, extrayendo hasta 7 afirmaciones clave por texto.", "Integré Gemini 2.0 Flash con Google Search Grounding configurado con dominios oficiales (INDEC, MECON, BCRA) para fundamentar veredictos con cero alucinación.", "Tomé la decisión técnica estratégica de pivotar de transcripción de video a análisis de texto puro, reduciendo tiempos de respuesta a menos de 15s y aumentando la estabilidad operativa al 99.9%.", "Implementé comunicación bidireccional con Socket.io para informar el estado de procesamiento en tiempo real, mejorando la confianza del usuario."], stack: ["React 19", "TypeScript", "Vite", "Zustand", "Node.js", "Express", "Socket.io", "Gemini 2.0 Flash", "Google Search Grounding", "@mozilla/readability"],
     skills: ["AI Application Engineering", "Prompt Design", "Real-time Streaming", "Architectural Pivot", "Content Scraping"],
     demoType: "checar",
     githubUrl: "https://github.com/ivnvaldz7/checar",
@@ -85,7 +133,7 @@ export const PROJECTS_DATA: Project[] = [
     problemSummary: "El laboratorio operaba con planillas físicas, registros dispersos en WhatsApp e insumos con trazabilidad manual, lo que generaba demoras en despachos, inconsistencias en stock y pérdida de tiempo administrativo.",
     targetUser: "Gerentes de logística, personal de depósito y administradores de despacho veterinario.",
     myContribution: "Relevamiento de procesos en planta, diseño de arquitectura de datos, interfaz de usuario adaptada a tabletas/escritorio de depósito y automatización de alertas de rotación.",
-    stack: ["React", "TypeScript", "Tailwind CSS", "Zustand", "Node.js", "Express", "REST API"],
+    period: "2025", role: "Desarrollador de Producto & Automatización de Procesos", cvHighlights: ["Lideré la digitalización completa del proceso operativo de despacho y gestión de insumos para laboratorio veterinario.", "Diseñé una interfaz de alta densidad visual adaptada para tabletas de depósito, reduciendo los errores de despacho por confusión de lotes a cero.", "Optimicé el flujo de empaque mediante indicadores visuales de vencimiento (método FEFO), acortando el tiempo de preparación de pedidos."], stack: ["React", "TypeScript", "Tailwind CSS", "Zustand", "Node.js", "Express", "REST API"],
     skills: ["Process Digitalization", "Workflow Optimization", "UX for Operations", "Data Modeling", "Error Reduction"],
     demoType: "alebet",
     githubUrl: "https://github.com/ivnvaldz7/ale-bet-manager",
@@ -126,7 +174,7 @@ export const PROJECTS_DATA: Project[] = [
     problemSummary: "Organizar partidos semanales genera decenas de mensajes en WhatsApp: confirmaciones de asistencia a último momento, desbalance de equipos, peleas por la recaudación y falta de historial de partidos.",
     targetUser: "Organizadores de grupos de fútbol amateur y jugadores recurrentes.",
     myContribution: "Concepción de producto, diseño UX móvil PWA, algoritmo de sorteo equilibrado basado en nivel y notificaciones push.",
-    stack: ["React 19", "TypeScript", "Vite", "PWA Manifest / Workbox", "Tailwind CSS", "Zustand", "Canvas API"],
+    period: "2026", role: "Desarrollador Full-Stack Frontend & UX", cvHighlights: ["Construí una PWA recurrente para la coordinación de eventos deportivos, confirmación de asistencia y sorteo equilibrado de equipos.", "Desarrollé un generador de fichas compartibles mediante Canvas API para integrarse directamente con grupos de WhatsApp sin forzar la descarga de apps pesadas.", "Implementé una arquitectura offline-first para garantizar la usabilidad en entornos de baja cobertura de datos."], stack: ["React 19", "TypeScript", "Vite", "PWA Manifest / Workbox", "Tailwind CSS", "Zustand", "Canvas API"],
     skills: ["Mobile First UX", "PWA Architecture", "Social Flow Design", "Image Generation / Share Cards"],
     demoType: "elfulbo",
     githubUrl: "https://github.com/ivnvaldz7/el-fulbo-pwa",
@@ -167,7 +215,7 @@ export const PROJECTS_DATA: Project[] = [
     problemSummary: "Calcular la escala de trastes (especialmente multiescala/fanned frets y sistemas microtonales) requiere fórmulas matemáticas complejas y software CAD pesado de difícil acceso en talleres de luthería.",
     targetUser: "Luthiers, fabricantes de guitarras/bajos y diseñadores de instrumentos de cuerda.",
     myContribution: "Motor matemático de cálculo de trastes, renderizado SVG en tiempo real en el navegador, generador de archivos DXF/SVG para CNC y soporte PWA 100% offline.",
-    stack: ["React", "TypeScript", "Tailwind CSS v4", "SVG Engine", "PWA Offline"],
+    period: "2026", role: "Desarrollador Frontend & Creador", cvHighlights: ["Creé una herramienta de precisión matemática para luthiers que calcula distancias de trastes simples, fanned frets y escalas microtonales.", "Desarrollé un motor de renderizado vectorial SVG nativo en el cliente que exporta archivos DXF/SVG para maquinaria CNC y corte láser.", "Desarrollé una solución ejecutable 100% en el navegador, sin costo de servidor ni dependencias de backend."], stack: ["React", "TypeScript", "Tailwind CSS v4", "SVG Engine", "PWA Offline"],
     skills: ["Precision Mathematics", "Vector Graphics Rendering", "Standalone Browser Architecture", "Niche Domain Translation"],
     demoType: "fretlabs",
     githubUrl: "https://github.com/ivnvaldz7/fretlabs",
@@ -320,53 +368,7 @@ export const ATS_CV_DATA: ATSCVData = {
       skills: ["Gemini 2.0 Flash", "Google Search Grounding", "Prompt Engineering", "Vercel", "Render", "Git/GitHub"]
     }
   ],
-  projectExperience: [
-    {
-      name: "ChecAR - Asistente de Verificación Periodística con IA",
-      role: "Creador & Desarrollador Principal de Producto",
-      period: "2024 - Presente",
-      techStack: "React, TypeScript, Zustand, Node.js, Express, Socket.io, Gemini 2.0 Flash, Grounding, Vercel/Render",
-      highlights: [
-        "Diseñé e implementé una aplicación web para la verificación automática de discurso político argentino, extrayendo hasta 7 afirmaciones clave por texto.",
-        "Integré Gemini 2.0 Flash con Google Search Grounding configurado con dominios oficiales (INDEC, MECON, BCRA) para fundamentar veredictos con cero alucinación.",
-        "Tomé la decisión técnica estratégica de pivotar de transcripción de video a análisis de texto puro, reduciendo tiempos de respuesta a menos de 15s y aumentando la estabilidad operativa al 99.9%.",
-        "Implementé comunicación bidireccional con Socket.io para informar el estado de procesamiento en tiempo real, mejorando la confianza del usuario."
-      ]
-    },
-    {
-      name: "Ale-Bet Manager - Sistema de Gestión Logística Veterinaria",
-      role: "Desarrollador de Producto & Automatización de Procesos",
-      period: "2024",
-      techStack: "React, TypeScript, Tailwind CSS, Zustand, Node.js, REST API",
-      highlights: [
-        "Lideré la digitalización completa del proceso operativo de despacho y gestión de insumos para laboratorio veterinario.",
-        "Diseñé una interfaz de alta densidad visual adaptada para tabletas de depósito, reduciendo los errores de despacho por confusión de lotes a cero.",
-        "Optimicé el flujo de empaque mediante indicadores visuales de vencimiento (método FEFO), acortando el tiempo de preparación de pedidos."
-      ]
-    },
-    {
-      name: "El Fulbo - PWA de Organización de Fútbol Amateur",
-      role: "Desarrollador Full-Stack Frontend & UX",
-      period: "2023 - 2024",
-      techStack: "React, TypeScript, Vite, PWA, Tailwind CSS, Canvas API",
-      highlights: [
-        "Construí una PWA recurrente para la coordinación de eventos deportivos, confirmación de asistencia y sorteo equilibrado de equipos.",
-        "Desarrollé un generador de fichas compartibles mediante Canvas API para integrarse directamente con grupos de WhatsApp sin forzar la descarga de apps pesadas.",
-        "Implementé una arquitectura offline-first para garantizar la usabilidad en entornos de baja cobertura de datos."
-      ]
-    },
-    {
-      name: "FretLabs - Calculador y Diseñador CAD de Diapasones",
-      role: "Desarrollador Frontend & Creador",
-      period: "2023",
-      techStack: "React, TypeScript, Tailwind CSS v4, SVG Engine, PWA Standalone",
-      highlights: [
-        "Creé una herramienta de precisión matemática para luthiers que calcula distancias de trastes simples, fanned frets y escalas microtonales.",
-        "Desarrollé un motor de renderizado vectorial SVG nativo en el cliente que exporta archivos DXF/SVG para maquinaria CNC y corte láser.",
-        "Desarrollé una solución ejecutable 100% en el navegador, sin costo de servidor ni dependencias de backend."
-      ]
-    }
-  ],
+  projectExperience: PROJECTS_DATA.map(p => ({ name: p.name, role: p.role, period: p.period, techStack: p.stack.join(", "), highlights: p.cvHighlights })),
   education: [
     {
       degree: "Formación Autodidacta en Sistemas / Desarrollo Web",

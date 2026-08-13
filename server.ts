@@ -132,6 +132,57 @@ Devuelve ÚNICAMENTE un objeto JSON válido con la siguiente estructura (sin mar
     }, 1200);
   });
 
+  
+  app.post("/api/cover-letter/generate", limiter, async (req, res) => {
+    const { company, role, description } = req.body || {};
+    
+    if (!company || !role) {
+      return res.status(400).json({ error: "Faltan datos requeridos: empresa o rol." });
+    }
+
+    const apiKey = process.env.GEMINI_API_KEY;
+    const prompt = `
+Actúa como Ivan Valdez, un Product-focused Web Developer.
+Escribe una Cover Letter ultraprofesional, concisa y orientada a impacto para postular al rol de "${role}" en la empresa "${company}".
+${description ? `Descripción de la oferta:\n"${description}"` : ''}
+
+El tono debe ser directo, seguro y centrado en cómo la ingeniería frontend y la automatización resuelven problemas operativos reales.
+No uses clichés genéricos. Menciona experiencia en React, TypeScript y Node.js.
+Solo devuelve el texto de la cover letter.
+`;
+
+    if (apiKey && apiKey !== "MY_GEMINI_API_KEY") {
+      try {
+        const ai = new GoogleGenAI({ apiKey });
+        const response = await ai.models.generateContent({
+          model: "gemini-2.0-flash",
+          contents: prompt
+        });
+        return res.json({ success: true, text: response.text });
+      } catch (err) {
+        console.error("Gemini Cover Letter Error:", err.message);
+      }
+    }
+
+    // Fallback simulation
+    setTimeout(() => {
+      const template = `Hola Hiring Manager de ${company},
+
+Me pongo en contacto para presentar mi candidatura al rol de ${role}. Soy Ivan Valdez, Product-focused Web Developer con experiencia sólida en React, TypeScript y Node.js.
+
+Mi enfoque técnico no se limita a construir interfaces, sino a resolver fricciones operativas reales. Me especializo en transformar procesos manuales y complejos en aplicaciones web fluidas, automatizadas y escalables. Ya sea diseñando arquitecturas offline-first (PWA), sistemas logísticos de alta densidad visual o integrando IA aplicada con fuentes verificables, priorizo la estabilidad, el pragmatismo y la experiencia del usuario final.
+
+${description ? 'He analizado detenidamente los requerimientos de la oferta y considero que mi capacidad para alinear decisiones técnicas con objetivos de negocio me permite aportar valor desde el primer día.' : 'Considero que mi perfil técnico, enfocado en impacto de producto, se alinea perfectamente con los objetivos técnicos de su equipo.'}
+
+Los invito a revisar mi portfolio interactivo para explorar los casos de estudio de mis proyectos recientes. Quedo a disposición para conversar sobre cómo puedo sumar a ${company}.
+
+Saludos cordiales,
+Ivan Valdez`;
+
+      res.json({ success: true, text: template });
+    }, 2500);
+  });
+
   // Vite Integration
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({

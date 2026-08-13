@@ -30,10 +30,13 @@ export interface Project {
   targetUser: string;
   myContribution: string;
   priority: ProjectPriority;
+  period: string;
+  role: string;
+  cvHighlights: string[];
   stack: string[];
   skills: string[];
   caseStudy: CaseStudy;
-  demoType: 'checar' | 'fretlabs' | 'elfulbo' | 'alebet';
+  demoType: string;
   githubUrl?: string;
   liveUrl?: string;
 }

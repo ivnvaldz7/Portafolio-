@@ -8,7 +8,7 @@ interface HeaderProps {
   language: Language;
   onToggleLanguage: () => void;
   onOpenCvModal: () => void;
-  onOpenPitchModal: () => void;
+  onOpenCoverLetter: () => void;
   onOpenContact: () => void;
 }
 
@@ -16,7 +16,7 @@ export const Header: React.FC<HeaderProps> = ({
   language,
   onToggleLanguage,
   onOpenCvModal,
-  onOpenPitchModal,
+  onOpenCoverLetter,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -104,15 +104,15 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
 
-          {/* Pitches Kit Modal Button */}
+          {/* Cover Letter Kit Modal Button */}
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.96 }}
-            onClick={onOpenPitchModal}
+            onClick={onOpenCoverLetter}
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-transparent border border-[#1a1a1a]/20 hover:border-[#0d4d4d] text-[#1a1a1a] text-[11px] font-bold uppercase tracking-wider transition-all"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#0d4d4d]" />
-            <span>Pitches & Bio</span>
+            <span>Cover Letter & Bio</span>
           </motion.button>
 
           {/* Download ATS CV Button */}

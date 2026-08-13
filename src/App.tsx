@@ -9,7 +9,7 @@ import { StackSection } from './components/StackSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { AtsCvModal } from './components/AtsCvModal';
-import { PitchKitModal } from './components/PitchKitModal';
+import { CoverLetterModal } from './components/CoverLetterModal';
 import { PROJECTS_DATA, ENGLISH_TRANSLATIONS } from './data/portfolioData';
 import { Project, Language } from './types';
 import { Search } from 'lucide-react';
@@ -19,7 +19,7 @@ export default function App() {
   const [language, setLanguage] = useState<Language>('es');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isCvOpen, setIsCvOpen] = useState(false);
-  const [isPitchOpen, setIsPitchOpen] = useState(false);
+  const [isCoverLetterOpen, setIsCoverLetterOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
@@ -66,7 +66,7 @@ export default function App() {
         language={language}
         onToggleLanguage={toggleLanguage}
         onOpenCvModal={() => setIsCvOpen(true)}
-        onOpenPitchModal={() => setIsPitchOpen(true)}
+        onOpenCoverLetter={() => setIsCoverLetterOpen(true)}
         onOpenContact={() => {
           const el = document.getElementById('contacto');
           el?.scrollIntoView({ behavior: 'smooth' });
@@ -84,7 +84,7 @@ export default function App() {
         <Hero
           language={language}
           onOpenCvModal={() => setIsCvOpen(true)}
-          onOpenPitchModal={() => setIsPitchOpen(true)}
+          onOpenCoverLetter={() => setIsCoverLetterOpen(true)}
         />
 
         {/* Value Proposition Philosophy */}
@@ -216,13 +216,13 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Pitches & Bio Kit Modal */}
+      {/* Cover Letter Generator Modal */}
       <AnimatePresence>
-        {isPitchOpen && (
-          <PitchKitModal
-            isOpen={isPitchOpen}
+        {isCoverLetterOpen && (
+          <CoverLetterModal
+            isOpen={isCoverLetterOpen}
             language={language}
-            onClose={() => setIsPitchOpen(false)}
+            onClose={() => setIsCoverLetterOpen(false)}
           />
         )}
       </AnimatePresence>
