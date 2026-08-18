@@ -129,3 +129,61 @@
   transform: translateY(0);
 }
 
+.cv-section h2 {
+  border-bottom: 1px solid rgba(26, 26, 26, 0.2);
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+  color: #1a1a1a;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@page {
+  size: A4;
+  margin: 14mm;
+}
+
+@media print {
+  html, body {
+    background: #fff !important;
+    color: #1a1a1a !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  body * {
+    animation: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    visibility: hidden !important;
+  }
+
+  .cv-print-document, .cv-print-document * {
+    visibility: visible !important;
+  }
+
+  .cv-print-document {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #fff !important;
+  }
+
+  .cv-section, .cv-project {
+    break-inside: avoid-page;
+    page-break-inside: avoid;
+  }
+
+  .cv-print-document a {
+    color: #1a1a1a !important;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+}
+

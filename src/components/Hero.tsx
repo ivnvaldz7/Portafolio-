@@ -7,10 +7,10 @@ import { AnimatePresence, motion } from 'motion/react';
 interface HeroProps {
   language: Language;
   onOpenCvModal: () => void;
-  onOpenCoverLetter: () => void;
+  onOpenJobProfile: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenCoverLetter }) => {
+export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenJobProfile }) => {
   const isEs = language === 'es';
   const capabilities = isEs
     ? [
@@ -157,17 +157,17 @@ export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenCover
               className="px-5 py-3.5 btn-editorial-outline flex items-center gap-2"
             >
               <FileText className="w-4 h-4 text-[#0d4d4d]" />
-              <span>{isEs ? 'Descargar CV (ATS)' : ENGLISH_TRANSLATIONS.ctaCv}</span>
+              <span>{isEs ? 'Ver perfil CV' : 'View CV profile'}</span>
             </motion.button>
 
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={onOpenCoverLetter}
+              onClick={onOpenJobProfile}
               className="px-4 py-3.5 bg-transparent text-[#1a1a1a] hover:text-[#0d4d4d] font-bold text-xs uppercase tracking-wider underline underline-offset-4 transition-all flex items-center gap-1.5"
             >
               <Sparkles className="w-4 h-4 text-[#0d4d4d]" />
-              <span>{isEs ? 'Pitches & Bio' : (isEs ? 'Generar Cover Letter (IA)' : 'Generate Cover Letter (AI)')}</span>
+              <span>{isEs ? 'Perfil de búsqueda' : 'Job-search profile'}</span>
             </motion.button>
           </motion.div>
 
@@ -225,3 +225,4 @@ export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenCover
     </section>
   );
 };
+

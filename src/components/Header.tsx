@@ -8,7 +8,7 @@ interface HeaderProps {
   language: Language;
   onToggleLanguage: () => void;
   onOpenCvModal: () => void;
-  onOpenCoverLetter: () => void;
+  onOpenJobProfile: () => void;
   onOpenContact: () => void;
 }
 
@@ -16,7 +16,7 @@ export const Header: React.FC<HeaderProps> = ({
   language,
   onToggleLanguage,
   onOpenCvModal,
-  onOpenCoverLetter,
+  onOpenJobProfile,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -104,15 +104,15 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
 
-          {/* Cover Letter Kit Modal Button */}
+          {/* Professional introduction */}
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.96 }}
-            onClick={onOpenCoverLetter}
+            onClick={onOpenJobProfile}
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-transparent border border-[#1a1a1a]/20 hover:border-[#0d4d4d] text-[#1a1a1a] text-[11px] font-bold uppercase tracking-wider transition-all"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#0d4d4d]" />
-            <span>Cover Letter & Bio</span>
+            <span>{language === 'es' ? 'Perfil profesional' : 'Professional profile'}</span>
           </motion.button>
 
           {/* Download ATS CV Button */}
@@ -123,7 +123,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 btn-editorial-dark"
           >
             <FileText className="w-3.5 h-3.5 text-[#fcfaf7]" />
-            <span className="hidden sm:inline">Descargar CV</span>
+            <span className="hidden sm:inline">{language === 'es' ? 'Ver perfil CV' : 'View CV profile'}</span>
           </motion.button>
         </div>
       </div>
@@ -153,3 +153,4 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
+

@@ -9,7 +9,7 @@ import { StackSection } from './components/StackSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { AtsCvModal } from './components/AtsCvModal';
-import { CoverLetterModal } from './components/CoverLetterModal';
+import { JobProfileModal } from './components/JobProfileModal';
 import { PROJECTS_DATA, ENGLISH_TRANSLATIONS } from './data/portfolioData';
 import { PROJECTS_DATA_EN } from './data/portfolioDataEn';
 import { Project, Language } from './types';
@@ -20,7 +20,7 @@ export default function App() {
   const [language, setLanguage] = useState<Language>('es');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isCvOpen, setIsCvOpen] = useState(false);
-  const [isCoverLetterOpen, setIsCoverLetterOpen] = useState(false);
+  const [isJobProfileOpen, setIsJobProfileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [modalInitialTab, setModalInitialTab] = useState<'caseStudy' | 'demo'>('caseStudy');
@@ -79,7 +79,7 @@ export default function App() {
         language={language}
         onToggleLanguage={toggleLanguage}
         onOpenCvModal={() => setIsCvOpen(true)}
-        onOpenCoverLetter={() => setIsCoverLetterOpen(true)}
+        onOpenJobProfile={() => setIsJobProfileOpen(true)}
         onOpenContact={() => {
           const el = document.getElementById('contacto');
           el?.scrollIntoView({ behavior: 'smooth' });
@@ -97,7 +97,7 @@ export default function App() {
         <Hero
           language={language}
           onOpenCvModal={() => setIsCvOpen(true)}
-          onOpenCoverLetter={() => setIsCoverLetterOpen(true)}
+          onOpenJobProfile={() => setIsJobProfileOpen(true)}
         />
 
         {/* Value Proposition Philosophy */}
@@ -223,7 +223,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* ATS CV Printable Generator Modal */}
+      {/* Professional profile modal */}
       <AnimatePresence>
         {isCvOpen && (
           <AtsCvModal
@@ -234,16 +234,17 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Cover Letter Generator Modal */}
+      {/* Fixed job-search introduction */}
       <AnimatePresence>
-        {isCoverLetterOpen && (
-          <CoverLetterModal
-            isOpen={isCoverLetterOpen}
+        {isJobProfileOpen && (
+          <JobProfileModal
+            isOpen={isJobProfileOpen}
             language={language}
-            onClose={() => setIsCoverLetterOpen(false)}
+            onClose={() => setIsJobProfileOpen(false)}
           />
         )}
       </AnimatePresence>
     </div>
   );
 }
+

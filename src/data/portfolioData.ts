@@ -1,4 +1,4 @@
-import { Project, PitchVersion, WorkProcessStep, StackCategory, ATSCVData } from '../types';
+import { Project, PitchVersion, WorkProcessStep, StackCategory } from '../types';
 
 export const PERSONAL_INFO = {
   name: "Ivan Valdez",
@@ -330,59 +330,6 @@ export const STACK_MATRIX: StackCategory[] = [
   }
 ];
 
-export const ATS_CV_DATA: ATSCVData = {
-  title: "Ivan Valdez | Product-focused Web Developer | React · TypeScript · Automatización · IA aplicada",
-  locationAvailability: "Argentina | Disponible para roles Remotos / Híbridos en Argentina y Latinoamérica",
-  summary: "Soy desarrollador web orientado a producto (Product-focused Web Developer), con amplia experiencia en React, TypeScript y Node.js. Me especializo en traducir necesidades operativas y de negocio complejas en aplicaciones web fluidas, automatizaciones de procesos e integraciones pragmáticas de IA. Puedo abarcar todo el ciclo de vida del producto: desde diagnosticar el problema real de los usuarios hasta diseñar la arquitectura frontend, implementar comunicación en tiempo real y desplegar en producción.",
-  targetRoles: [
-    "Frontend Developer",
-    "Full-Stack JavaScript/TypeScript Developer",
-    "Automation Developer",
-    "AI Application Developer",
-    "Product Engineer"
-  ],
-  coreCompetencies: [
-    "Desarrollo de Producto Web (End-to-End)",
-    "Arquitectura Frontend (React, TypeScript, Zustand)",
-    "Automatización y Optimización de Procesos Operativos",
-    "Integración de IA Aplicada con Grounding (Gemini API)",
-    "Aplicaciones Web Progresivas (PWA Offline-First)",
-    "Comunicación en Tiempo Real (Socket.io, Express)",
-    "Diseño de Experiencia de Usuario (UX) Orientado a Reducción de Fricción"
-  ],
-  skillsByCategory: [
-    {
-      category: "Frontend Core",
-      skills: ["React 19", "TypeScript", "JavaScript (ES6+)", "Tailwind CSS", "HTML5", "CSS3", "Vite", "PWA"]
-    },
-    {
-      category: "Estado & Arquitectura",
-      skills: ["Zustand", "React Router", "Context API", "Component Modular Design", "Custom Hooks"]
-    },
-    {
-      category: "Backend & Integración",
-      skills: ["Node.js", "Express", "Socket.io", "REST APIs", "JSON/Webhooks", "Scraping (@mozilla/readability)"]
-    },
-    {
-      category: "IA & Herramientas",
-      skills: ["Gemini 2.0 Flash", "Google Search Grounding", "Prompt Engineering", "Vercel", "Render", "Git/GitHub"]
-    }
-  ],
-  projectExperience: PROJECTS_DATA.map(p => ({ name: p.name, role: p.role, period: p.period, techStack: p.stack.join(", "), highlights: p.cvHighlights })),
-  education: [
-    {
-      degree: "Formación Autodidacta en Sistemas / Desarrollo Web",
-      institution: "Platzi / Cursos Especializados",
-      status: "Completado"
-    }
-  ],
-  contactInfo: {
-    email: "ivnvaldz@gmail.com",
-    linkedIn: "https://www.linkedin.com/in/ivnvaldz/",
-    github: "https://github.com/ivnvaldz7",
-    location: "Argentina (Remoto / Híbrido)"
-  }
-};
 
 export const PITCHES_DATA: PitchVersion[] = [
   {
@@ -425,7 +372,7 @@ export const ENGLISH_TRANSLATIONS = {
   targetRolesLabel: "Target Roles",
   availableBadge: "Available for Remote / Hybrid roles in LatAm & Argentina",
   ctaProjects: "Explore Case Studies",
-  ctaCv: "View / Download ATS CV",
+  ctaCv: "View / Print ATS CV",
   ctaPitch: "Copy Pitches & Bio",
   projectsTitle: "Featured Case Studies & Products",
   projectsSubtitle: "Deep dive into real problem solving, product trade-offs, and technical architecture.",
@@ -516,3 +463,4 @@ export const ENGLISH_TRANSLATIONS = {
     }
   ]
 };
+
