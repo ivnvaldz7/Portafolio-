@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Sparkles, CheckCircle2, AlertTriangle, XCircle, HelpCircle, ExternalLink, RefreshCw, Layers } from 'lucide-react';
+import { Language } from '../../types';
 
 interface ClaimResult {
   claim: string;
@@ -20,7 +21,8 @@ const SAMPLE_ARTICLES = [
   }
 ];
 
-export const ChecARDemo: React.FC = () => {
+export const ChecARDemo: React.FC<{ language: Language }> = ({ language }) => {
+  const isEs = language === 'es';
   const [inputText, setInputText] = useState(SAMPLE_ARTICLES[0].text);
   const [loading, setLoading] = useState(false);
   const [progressStep, setProgressStep] = useState<string>('');
@@ -36,12 +38,19 @@ export const ChecARDemo: React.FC = () => {
     setResults(null);
 
     // Simulate real-time streaming progress steps
-    const steps = [
-      "Extrayendo texto con @mozilla/readability...",
-      "Identificando afirmaciones verificables clave...",
-      "Anclando búsquedas en fuentes oficiales (INDEC, MECON, BCRA)...",
-      "Sintetizando veredictos con Gemini 2.0 Flash..."
-    ];
+    const steps = isEs
+      ? [
+          "Extrayendo texto con @mozilla/readability...",
+          "Identificando afirmaciones verificables clave...",
+          "Anclando búsquedas en fuentes oficiales (INDEC, MECON, BCRA)...",
+          "Sintetizando veredictos con Gemini 2.0 Flash..."
+        ]
+      : [
+          "Extracting text with @mozilla/readability...",
+          "Identifying key verifiable claims...",
+          "Grounding searches in official sources (INDEC, MECON, BCRA)...",
+          "Synthesizing verdicts with Gemini 2.0 Flash..."
+        ];
 
     for (let i = 0; i < steps.length; i++) {
       setProgressStep(steps[i]);
@@ -56,18 +65,18 @@ export const ChecARDemo: React.FC = () => {
       });
 
       const data = await response.json();
-      if (data.success) {
+      if (data.success && typeof data.summary === 'string' && Array.isArray(data.claims)) {
         setResults({
           summary: data.summary,
           claims: data.claims,
           liveApi: data.liveApi
         });
       } else {
-        setError(data.error || 'Error al procesar el análisis.');
+        setError(data.error || (isEs ? 'Error al procesar el análisis.' : 'Could not process the analysis.'));
       }
     } catch (err: any) {
       console.error(err);
-      setError('Error de conexión con el servidor de análisis.');
+      setError(isEs ? 'Error de conexión con el servidor de análisis.' : 'Could not connect to the analysis server.');
     } finally {
       setLoading(false);
       setProgressStep('');
@@ -113,9 +122,9 @@ export const ChecARDemo: React.FC = () => {
           </div>
           <div>
             <h3 className="font-bold text-base text-white flex items-center gap-2">
-              ChecAR <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">Live Demo</span>
+              ChecAR <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">{isEs ? 'Muestra' : 'Sample'}</span>
             </h3>
-            <p className="text-xs text-slate-400">Verificación asistida con IA & Grounding de datos oficiales</p>
+            <p className="text-xs text-slate-400">{isEs ? 'Verificación asistida con IA & Grounding de datos oficiales' : 'AI-assisted verification with official data grounding'}</p>
           </div>
         </div>
         <div className="text-xs text-slate-400 flex items-center gap-2 font-mono">
@@ -127,13 +136,14 @@ export const ChecARDemo: React.FC = () => {
       {/* Preset Selectors */}
       <div className="mt-4">
         <label className="text-xs font-semibold text-slate-300 block mb-2">
-          Cargar artículo de prueba o pegar texto político:
+          {isEs ? 'Cargar artículo de prueba o pegar texto político:' : 'Load a sample article or paste political text:'}
         </label>
         <div className="flex flex-wrap gap-2 mb-3">
           {SAMPLE_ARTICLES.map((art, idx) => (
             <button
               key={idx}
               type="button"
+              disabled={loading}
               onClick={() => {
                 setInputText(art.text);
                 handleAnalyze(art.text);
@@ -151,7 +161,7 @@ export const ChecARDemo: React.FC = () => {
             rows={3}
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            placeholder="Pega aquí el texto de la noticia, discurso o publicación para verificar..."
+            placeholder={isEs ? 'Pega aquí el texto de la noticia, discurso o publicación para verificar...' : 'Paste a news article, speech, or post to verify...'}
             className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-all font-mono"
           />
           <button
@@ -168,7 +178,7 @@ export const ChecARDemo: React.FC = () => {
             ) : (
               <>
                 <Search className="w-4 h-4" />
-                <span>Ejecutar Análisis ChecAR</span>
+                <span>{isEs ? 'Ejecutar Análisis ChecAR' : 'Run ChecAR Analysis'}</span>
               </>
             )}
           </button>
@@ -197,11 +207,11 @@ export const ChecARDemo: React.FC = () => {
           <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
             <div className="flex items-center justify-between mb-1">
               <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">
-                Briefing Ejecutivo ChecAR
+                {isEs ? 'Briefing Ejecutivo ChecAR' : 'ChecAR Executive Briefing'}
               </span>
               {results.liveApi && (
                 <span className="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800/60 px-2 py-0.5 rounded font-mono">
-                  ● Respuesta en Vivo (Gemini 2.0 API)
+                   ● {isEs ? 'Respuesta en Vivo (Gemini 2.0 API)' : 'Live Response (Gemini 2.0 API)'}
                 </span>
               )}
             </div>
@@ -211,7 +221,7 @@ export const ChecARDemo: React.FC = () => {
           {/* Claims List */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider font-mono">
-              Afirmaciones Analizadas ({results.claims.length})
+              {isEs ? 'Afirmaciones Analizadas' : 'Analyzed Claims'} ({results.claims.length})
             </h4>
 
             {results.claims.map((item, idx) => (
@@ -233,11 +243,11 @@ export const ChecARDemo: React.FC = () => {
                 <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400 pt-1 border-t border-slate-900 font-mono">
                   <span className="flex items-center gap-1.5 text-emerald-400">
                     <ExternalLink className="w-3 h-3" />
-                    Fuente: {item.source}
+                     {isEs ? 'Fuente:' : 'Source:'} {item.source}
                   </span>
                   {item.historicalContext && (
                     <span className="text-slate-400 truncate max-w-full">
-                      📊 Contexto: {item.historicalContext}
+                       📊 {isEs ? 'Contexto:' : 'Context:'} {item.historicalContext}
                     </span>
                   )}
                 </div>

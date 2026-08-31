@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MapPin, Navigation, GripVertical, Plus, Route, Check, Car } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Language } from '../../types';
 
 interface Stop {
   id: string;
@@ -15,7 +16,8 @@ const INITIAL_STOPS: Stop[] = [
   { id: '4', address: 'Puerto Madero, CABA', pinned: false },
 ];
 
-export const MapiaDemo: React.FC = () => {
+export const MapiaDemo: React.FC<{ language: Language }> = ({ language }) => {
+  const isEs = language === 'es';
   const [stops, setStops] = useState<Stop[]>(INITIAL_STOPS);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [optimized, setOptimized] = useState(false);
@@ -60,14 +62,14 @@ export const MapiaDemo: React.FC = () => {
             <h3 className="font-bold text-sm">Mapia Optimizer</h3>
           </div>
           <p className="text-[10px] text-[#666666] font-mono uppercase tracking-widest">
-            TSP Route Planner (Demo)
+             {isEs ? 'Planificador de Rutas TSP (Muestra)' : 'TSP Route Planner (Sample)'}
           </p>
         </div>
 
         <div className="flex-1 p-4 overflow-y-auto">
           <div className="flex items-center justify-between mb-3 text-xs font-bold uppercase tracking-wider text-[#1a1a1a]">
-            <span>Paradas ({stops.length})</span>
-            {optimized && <span className="text-emerald-600 flex items-center gap-1"><Check className="w-3 h-3" /> Optimizado</span>}
+             <span>{isEs ? 'Paradas' : 'Stops'} ({stops.length})</span>
+             {optimized && <span className="text-emerald-600 flex items-center gap-1"><Check className="w-3 h-3" /> {isEs ? 'Optimizado' : 'Optimized'}</span>}
           </div>
 
           <div className="space-y-2">
@@ -81,9 +83,9 @@ export const MapiaDemo: React.FC = () => {
                   exit={{ opacity: 0, scale: 0.9 }}
                   className={`group flex items-center gap-2 p-2 border ${stop.pinned ? 'bg-black/5 border-[#1a1a1a]/20' : 'bg-white border-[#1a1a1a]/10 hover:border-[#0d4d4d]/50'}`}
                 >
-                  <button className="text-[#666666] cursor-grab active:cursor-grabbing hover:text-[#1a1a1a]">
-                    <GripVertical className="w-4 h-4" />
-                  </button>
+                   <span className="text-[#666666] cursor-grab active:cursor-grabbing" aria-hidden="true">
+                     <GripVertical className="w-4 h-4" />
+                   </span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
                       <span className="flex-shrink-0 w-4 h-4 bg-[#1a1a1a] text-white text-[9px] flex items-center justify-center font-bold">
@@ -96,12 +98,14 @@ export const MapiaDemo: React.FC = () => {
                     <button 
                       onClick={() => togglePin(stop.id)}
                       className="p-1 hover:bg-black/5 text-[#666666]"
-                      title={stop.pinned ? 'Desfijar' : 'Fijar parada (no se moverá al optimizar)'}
+                       title={stop.pinned ? (isEs ? 'Desfijar' : 'Unpin') : (isEs ? 'Fijar parada (no se moverá al optimizar)' : 'Pin stop (it will stay in place when optimizing)')}
+                       aria-label={stop.pinned ? (isEs ? 'Desfijar parada' : 'Unpin stop') : (isEs ? 'Fijar parada' : 'Pin stop')}
                     >
                       <MapPin className={`w-3.5 h-3.5 ${stop.pinned ? 'fill-current text-[#0d4d4d]' : ''}`} />
                     </button>
                     <button 
                       onClick={() => handleRemove(stop.id)}
+                      aria-label={isEs ? `Eliminar parada ${stop.address}` : `Remove stop ${stop.address}`}
                       className="p-1 hover:bg-black/5 text-rose-500"
                     >
                       &times;
@@ -112,14 +116,14 @@ export const MapiaDemo: React.FC = () => {
             </AnimatePresence>
           </div>
 
-          <button className="w-full mt-3 p-2 border border-dashed border-[#1a1a1a]/30 text-xs text-[#666666] hover:text-[#1a1a1a] hover:border-[#1a1a1a]/50 hover:bg-black/5 flex items-center justify-center gap-1.5 transition-colors">
-            <Plus className="w-3.5 h-3.5" /> Agregar parada
+          <button type="button" disabled aria-disabled="true" className="w-full mt-3 p-2 border border-dashed border-[#1a1a1a]/30 text-xs text-[#666666] opacity-60 cursor-not-allowed flex items-center justify-center gap-1.5 transition-colors">
+            <Plus className="w-3.5 h-3.5" /> {isEs ? 'Agregar parada' : 'Add stop'}
           </button>
         </div>
 
         <div className="p-4 border-t border-[#1a1a1a]/10 bg-black/5">
           <div className="flex items-center justify-between text-xs mb-3 font-mono">
-            <span className="text-[#666666]">Distancia est.</span>
+            <span className="text-[#666666]">{isEs ? 'Distancia est.' : 'Est. distance'}</span>
             <span className="font-bold">{optimized ? '12.4 km' : '18.7 km'}</span>
           </div>
           <button
@@ -136,7 +140,7 @@ export const MapiaDemo: React.FC = () => {
             ) : (
               <Route className="w-4 h-4" />
             )}
-            {isOptimizing ? 'Optimizando...' : 'Optimizar Ruta'}
+            {isOptimizing ? (isEs ? 'Optimizando...' : 'Optimizing...') : (isEs ? 'Optimizar Ruta' : 'Optimize Route')}
           </button>
         </div>
       </div>
@@ -178,8 +182,8 @@ export const MapiaDemo: React.FC = () => {
         {/* Map Markers */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-10 p-4 bg-white/90 backdrop-blur border border-[#1a1a1a]/10 shadow-lg">
           <Car className="w-8 h-8 text-[#0d4d4d] mx-auto mb-2" />
-          <p className="text-xs font-bold uppercase tracking-widest text-[#1a1a1a]">Interactive Map UI</p>
-          <p className="text-[10px] text-[#666666]">OpenRouteService + MapLibre</p>
+           <p className="text-xs font-bold uppercase tracking-widest text-[#1a1a1a]">{isEs ? 'Interfaz de Mapa' : 'Interactive Map UI'}</p>
+           <p className="text-[10px] text-[#666666]">OpenRouteService + MapLibre</p>
           <div className="mt-3 flex justify-center gap-1 text-[10px]">
             <span className="px-2 py-0.5 bg-[#0d4d4d] text-white">WebGL</span>
             <span className="px-2 py-0.5 bg-[#0d4d4d] text-white">TSP</span>
@@ -188,13 +192,13 @@ export const MapiaDemo: React.FC = () => {
 
         {/* Floating Controls */}
         <div className="absolute bottom-4 right-4 flex flex-col gap-2">
-          <button className="w-8 h-8 bg-white shadow border border-[#1a1a1a]/10 flex items-center justify-center hover:bg-black/5 text-[#1a1a1a]">
+          <button type="button" disabled aria-label={isEs ? 'Acercar mapa (muestra)' : 'Zoom in (sample)'} className="w-8 h-8 bg-white shadow border border-[#1a1a1a]/10 flex items-center justify-center text-[#1a1a1a] opacity-60 cursor-not-allowed">
             +
           </button>
-          <button className="w-8 h-8 bg-white shadow border border-[#1a1a1a]/10 flex items-center justify-center hover:bg-black/5 text-[#1a1a1a]">
+          <button type="button" disabled aria-label={isEs ? 'Alejar mapa (muestra)' : 'Zoom out (sample)'} className="w-8 h-8 bg-white shadow border border-[#1a1a1a]/10 flex items-center justify-center text-[#1a1a1a] opacity-60 cursor-not-allowed">
             -
           </button>
-          <button className="w-8 h-8 bg-white shadow border border-[#1a1a1a]/10 flex items-center justify-center hover:bg-black/5 text-[#0d4d4d] mt-2">
+          <button type="button" disabled aria-label={isEs ? 'Centrar mapa (muestra)' : 'Center map (sample)'} className="w-8 h-8 bg-white shadow border border-[#1a1a1a]/10 flex items-center justify-center text-[#0d4d4d] mt-2 opacity-60 cursor-not-allowed">
             <Navigation className="w-4 h-4 fill-current" />
           </button>
         </div>

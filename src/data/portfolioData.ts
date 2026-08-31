@@ -45,6 +45,7 @@ export const PROJECTS_DATA: Project[] = [
     skills: ["Geospatial UI", "API Integration", "State Management", "Routing Algorithms"],
     demoType: "mapia",
     githubUrl: "https://github.com/ivnvaldz7/mapia",
+    liveUrl: "https://mapia-ivan.netlify.app/",
     caseStudy: {
       contextAndProblem: "Organizar una serie de destinos de manera eficiente no es intuitivo. Trazar la ruta de un punto a otro no garantiza que el recorrido total sea el más rápido o corto.",
       affectedUsers: "Cualquier persona que requiera visitar múltiples puntos (ej. entregas, turismo) y quiera minimizar tiempo de conducción y gasto de combustible.",
@@ -85,7 +86,6 @@ export const PROJECTS_DATA: Project[] = [
     skills: ["AI Application Engineering", "Prompt Design", "Real-time Streaming", "Architectural Pivot", "Content Scraping"],
     demoType: "checar",
     githubUrl: "https://github.com/ivnvaldz7/checar",
-    liveUrl: "https://checar-demo.render.com",
     caseStudy: {
       contextAndProblem: "Durante períodos electorales y de debate legislativo en Argentina, la velocidad de difusión de datos erróneos o engañosos supera la capacidad de respuesta de las redacciones periodísticas. El proceso manual implica identificar la afirmación en un discurso, buscar el documento normativo o base de datos correspondiente (INDEC, Presupuesto Abierto, BCRA) y redactar la contextualización.",
       affectedUsers: "Periodistas de investigación y equipos de fact-checking que necesitan verificar hasta 10 afirmaciones en simultáneo con rigor metódico y fuentes trazables.",
@@ -95,7 +95,7 @@ export const PROJECTS_DATA: Project[] = [
         "Necesidad de tiempo de respuesta inferior a 15 segundos por artículo.",
         "Inestabilidad y fragilidad operativa en la extracción de video/audio en servidores serverless."
       ],
-      developedSolution: "Una aplicación web ligera donde el usuario pega un texto periodístico o URL. ChecAR limpia el contenido con @mozilla/readability, identifica automáticamente hasta 7 afirmaciones verificables clave y ejecuta un pipeline paralelo en Gemini 2.0 Flash utilizando Google Search Grounding configurado con dominios oficiales. Retorna un briefing estructurado con veredicto (Verdadero, Engañoso, Falso, Incomprobable), explicación fundamentada, enlace a la fuente primaria y contexto histórico cuantitativo.",
+      developedSolution: "Una aplicación web ligera donde el usuario pega un texto periodístico. ChecAR limpia el contenido con @mozilla/readability, identifica automáticamente hasta 7 afirmaciones verificables clave y ejecuta un pipeline paralelo en Gemini 2.0 Flash utilizando Google Search Grounding configurado con dominios oficiales. Retorna un briefing estructurado con veredicto (Verdadero, Engañoso, Falso, Incomprobable), explicación fundamentada, enlace a la fuente primaria y contexto histórico cuantitativo.",
       productDecisions: [
         {
           title: "Pivot Estratégico: De Transcripción de Video a Análisis de Texto Puro",
@@ -125,47 +125,6 @@ export const PROJECTS_DATA: Project[] = [
     }
   },
   {
-    id: "ale-bet",
-    name: "Ale-Bet Manager",
-    typeBadge: "B2B Logistics & Operations Management",
-    priority: "hero",
-    tagline: "Sistema de gestión logística y digitalización operativa para laboratorio veterinario.",
-    problemSummary: "El laboratorio operaba con planillas físicas, registros dispersos en WhatsApp e insumos con trazabilidad manual, lo que generaba demoras en despachos, inconsistencias en stock y pérdida de tiempo administrativo.",
-    targetUser: "Gerentes de logística, personal de depósito y administradores de despacho veterinario.",
-    myContribution: "Relevamiento de procesos en planta, diseño de arquitectura de datos, interfaz de usuario adaptada a tabletas/escritorio de depósito y automatización de alertas de rotación.",
-    period: "2025", role: "Desarrollador de Producto & Automatización de Procesos", cvHighlights: ["Lideré la digitalización completa del proceso operativo de despacho y gestión de insumos para laboratorio veterinario.", "Diseñé una interfaz de alta densidad visual adaptada para tabletas de depósito, reduciendo los errores de despacho por confusión de lotes a cero.", "Optimicé el flujo de empaque mediante indicadores visuales de vencimiento (método FEFO), acortando el tiempo de preparación de pedidos."], stack: ["React", "TypeScript", "Tailwind CSS", "Zustand", "Node.js", "Express", "REST API"],
-    skills: ["Process Digitalization", "Workflow Optimization", "UX for Operations", "Data Modeling", "Error Reduction"],
-    demoType: "alebet",
-    githubUrl: "https://github.com/ivnvaldz7/ale-bet-manager",
-    liveUrl: "https://alebet-logistics.vercel.app",
-    caseStudy: {
-      contextAndProblem: "Un laboratorio veterinario en crecimiento experimentaba cuellos de botella diarios al gestionar el empaque y envío de reactivos y medicamentos con requisitos de cadena de frío y vencimientos estrictos.",
-      affectedUsers: "3 operadores de depósito y 2 coordinadores logísticos gestionando más de 120 pedidos diarios.",
-      realConstraints: [
-        "El personal de depósito no tenía tiempo para capacitaciones complejas de software tradicional.",
-        "Operación en ambientes de alta movilidad donde se requiere uso con una sola mano en tabletas.",
-        "Cero margen de error en etiquetado de lote y temperatura de preservación."
-      ],
-      developedSolution: "Se desarrolló una plataforma web centralizada con panel táctil simplificado para el seguimiento de órdenes en tiempo real, gestión visual de lote y estado de despacho, reduciendo el ingreso manual de datos a sólo 2 toques por caja.",
-      productDecisions: [
-        {
-          title: "Interfaz de Alta Densidad Visual con Códigos de Color por Urgencia",
-          description: "Sustitución de tablas extensas por tarjetas de despacho interactivas.",
-          reasoning: "Permite al operador identificar de un vistazo qué lotes vencen primero (método FEFO - First Expired, First Out) sin leer filas de texto."
-        }
-      ],
-      techDecisions: [
-        {
-          title: "Manejo de Estado Local Resiliente con Zustand",
-          description: "Sincronización en segundo plano con la API de Express.",
-          reasoning: "Garantiza que la interfaz responda instantáneamente incluso si la conexión Wi-Fi del depósito sufre microcortes."
-        }
-      ],
-      resultAndLearnings: "Digitalización exitosa del 100% de la hoja de ruta diaria, reduciendo el tiempo de preparación de pedidos y eliminando errores de despacho por confusión de lotes.",
-      keyTakeaway: "El software de operaciones debe adaptarse al ritmo físico del trabajo en planta, no forzar a los trabajadores a convertirse en ingresadores de datos."
-    }
-  },
-  {
     id: "el-fulbo",
     name: "El Fulbo",
     typeBadge: "Consumer PWA & Social Group Management",
@@ -177,8 +136,8 @@ export const PROJECTS_DATA: Project[] = [
     period: "2026", role: "Desarrollador Full-Stack Frontend & UX", cvHighlights: ["Construí una PWA recurrente para la coordinación de eventos deportivos, confirmación de asistencia y sorteo equilibrado de equipos.", "Desarrollé un generador de fichas compartibles mediante Canvas API para integrarse directamente con grupos de WhatsApp sin forzar la descarga de apps pesadas.", "Implementé una arquitectura offline-first para garantizar la usabilidad en entornos de baja cobertura de datos."], stack: ["React 19", "TypeScript", "Vite", "PWA Manifest / Workbox", "Tailwind CSS", "Zustand", "Canvas API"],
     skills: ["Mobile First UX", "PWA Architecture", "Social Flow Design", "Image Generation / Share Cards"],
     demoType: "elfulbo",
-    githubUrl: "https://github.com/ivnvaldz7/el-fulbo-pwa",
-    liveUrl: "https://elfulbo-app.vercel.app",
+    githubUrl: "https://github.com/ivnvaldz7/el-fulbo",
+    liveUrl: "https://el-fulbo.vercel.app",
     caseStudy: {
       contextAndProblem: "Coordinar a 10 a 14 personas semanalmente implica un esfuerzo operativo desproporcionado para el organizador, quien invierte hasta 3 horas semanales persiguiendo confirmaciones.",
       affectedUsers: "Grupos de amigos y torneos amateurs que juegan 1 a 3 veces por semana.",
@@ -361,7 +320,7 @@ export const PITCHES_DATA: PitchVersion[] = [
     title: "Sección 'Acerca de' para LinkedIn",
     badge: "LinkedIn Bio",
     subtitle: "Copia y pega este texto directamente en tu perfil profesional de LinkedIn",
-    content: "Ivan Valdez | Product-focused Web Developer | React · TypeScript · Automatización · IA aplicada\n\nNo construyo solo interfaces; construyo herramientas que resuelven problemas operativos reales.\n\nMi enfoque combina desarrollo frontend moderno con comprensión profunda del flujo de trabajo. Me dedico a identificar puntos de fricción, eliminar tareas repetitivas y crear productos web intuitivos que las personas disfrutan usar.\n\n📍 ¿Qué hago?\n- Desarrollo aplicaciones web responsivas e interactivas con React 19, TypeScript y Tailwind CSS.\n- Diseño arquitecturas frontend limpias con gestión de estado optimizada (Zustand) y navegación fluida.\n- Automatizo flujos de trabajo e integro modelos de Inteligencia Artificial (Gemini API) con anclaje en fuentes verificables (Grounding) para evitar alucinaciones.\n- Construyo soluciones offline-first (PWA) y herramientas de tiempo real (Socket.io, Express).\n\n💡 Proyectos destacados:\n- ChecAR: Asistente con IA para la verificación periodística de contenido político mediante fuentes oficiales.\n- Ale-Bet Manager: Sistema de gestión y digitalización de logística para laboratorio veterinario.\n- El Fulbo: PWA para la organización y coordinación de fútbol amateur.\n- FretLabs: Diseñador CAD y calculador numérico para luthiers con exportación CNC/Láser.\n\n🎯 Busco oportunidades como Frontend Developer, Full-Stack Developer, Automation Developer, AI Application Developer o Product Engineer en modalidades remotas o híbridas en Argentina y Latinoamérica.\n\n📬 Contacto: ivnvaldz@gmail.com | LinkedIn: https://www.linkedin.com/in/ivnvaldz/ | GitHub: https://github.com/ivnvaldz7",
+    content: "Ivan Valdez | Product-focused Web Developer | React · TypeScript · Automatización · IA aplicada\n\nNo construyo solo interfaces; construyo herramientas que resuelven problemas operativos reales.\n\nMi enfoque combina desarrollo frontend moderno con comprensión profunda del flujo de trabajo. Me dedico a identificar puntos de fricción, eliminar tareas repetitivas y crear productos web intuitivos que las personas disfrutan usar.\n\n📍 ¿Qué hago?\n- Desarrollo aplicaciones web responsivas e interactivas con React 19, TypeScript y Tailwind CSS.\n- Diseño arquitecturas frontend limpias con gestión de estado optimizada (Zustand) y navegación fluida.\n- Automatizo flujos de trabajo e integro modelos de Inteligencia Artificial (Gemini API) con anclaje en fuentes verificables (Grounding) para evitar alucinaciones.\n- Construyo soluciones offline-first (PWA) y herramientas de tiempo real (Socket.io, Express).\n\n💡 Proyectos destacados:\n- ChecAR: Asistente con IA para la verificación periodística de contenido político mediante fuentes oficiales.\n- El Fulbo: PWA para la organización y coordinación de fútbol amateur.\n- FretLabs: Diseñador CAD y calculador numérico para luthiers con exportación CNC/Láser.\n\n🎯 Busco oportunidades como Frontend Developer, Full-Stack Developer, Automation Developer, AI Application Developer o Product Engineer en modalidades remotas o híbridas en Argentina y Latinoamérica.\n\n📬 Contacto: ivnvaldz@gmail.com | LinkedIn: https://www.linkedin.com/in/ivnvaldz/ | GitHub: https://github.com/ivnvaldz7",
     usageAdvice: "Copia este bloque en la sección 'Acerca de' / 'About' de tu LinkedIn."
   }
 ];

@@ -8,16 +8,14 @@ Este es un portfolio interactivo full-stack y hub de productos diseñado para ex
 
 ## 🚀 Características Principales
 
-- **Demos Interactivas Integradas**:
+- **Muestras conceptuales integradas**:
   - **ChecAR**: Asistente con Inteligencia Artificial (Gemini API) para la verificación periodística de afirmaciones políticas con fuentes oficiales.
-  - **Ale-Bet Manager**: Sistema de digitalización logística para laboratorio veterinario (control de cadena de frío y lotes).
   - **El Fulbo**: PWA para la organización de partidos de fútbol amateur y generación de placas sociales.
   - **FretLabs**: Calculador CAD numérico y diseñador SVG para luthiers con exportación de medidas de trastes.
-- **Generador de CV ATS Personalizable**: Modal interactivo que permite previsualizar, editar datos de contacto/formación en tiempo real y exportar un currículum limpio optimizado para sistemas ATS en PDF o impresión.
-- **Generador de Copy para LinkedIn**: Copia con un solo clic el resumen profesional y fragmentos listos para pegar en redes sociales.
+- **Perfil profesional y CV**: Modales bilingües de lectura rápida para revisar el posicionamiento, la experiencia seleccionada y el perfil de búsqueda.
 - **Logotipo Animado de Automatización**: Emblema interactivo en la cabecera que simula la evaluación de rutas, toma de decisiones y redirección de flujos en tiempo real.
 - **Soporte Bilingüe (Español / Inglés)**: Alternancia fluida de idioma en toda la interfaz.
-- **Persistencia Local**: Guardado de personalizaciones del CV en el almacenamiento del navegador.
+- **Enlaces a productos reales**: Cada caso enlaza al repositorio y, cuando existe, a la aplicación desplegada.
 
 ---
 
@@ -32,7 +30,7 @@ Este es un portfolio interactivo full-stack y hub de productos diseñado para ex
 ## 💻 Desarrollo Local
 
 ### Requisitos Previos
-- **Node.js**: v18 o superior.
+- **Node.js**: v20 o superior.
 - **npm** o **bun**.
 
 ### Pasos de Instalación
@@ -83,16 +81,16 @@ npm run start
 
 Puedes desplegar este proyecto en múltiples plataformas gratuitas o de bajo costo:
 
-### Option A: Despliegue en **Vercel** o **Netlify** (Solo Frontend / SPA)
+### Option A: Despliegue en **Netlify** (Frontend SPA + función ChecAR)
 Si deseas desplegarlo rápidamente como una Single Page Application (SPA):
 1. Sube el código a tu repositorio de GitHub.
 2. Conecta el repositorio en [Vercel](https://vercel.com) o [Netlify](https://netlify.com).
 3. Configura los parámetros del proyecto:
-   - **Build Command**: `npm run build` o `npx vite build`
+   - **Build Command**: `npm run build`
    - **Output Directory**: `dist`
-4. *(Opcional)* Si deseas habilitar la API de Gemini en la demo de ChecAR en producción, agrega la variable de entorno `GEMINI_API_KEY` en el panel de configuración de la plataforma.
+4. *(Opcional)* Para habilitar el análisis real de ChecAR, agrega la variable de entorno `GEMINI_API_KEY` en el panel de configuración. Sin esa clave, la función devuelve una simulación demostrativa.
 
-### Option B: Despliegue Full-Stack en **Render** / **Railway** / **Fly.io** (Recomendado)
+### Option B: Despliegue Full-Stack en **Render** / **Railway** / **Fly.io**
 Para mantener el servidor Node.js/Express ejecutándose con el proxy seguro de Gemini:
 1. Crea un nuevo **Web Service** en Render/Railway conectado a tu repositorio GitHub.
 2. Configura los comandos:

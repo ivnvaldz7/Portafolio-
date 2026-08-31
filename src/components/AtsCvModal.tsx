@@ -27,6 +27,17 @@ export const AtsCvModal: React.FC<AtsCvModalProps> = ({ isOpen, language, onClos
     if (isOpen) modalRef.current?.focus();
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (

@@ -4,7 +4,6 @@ import { X, ExternalLink, ShieldCheck, Cpu, ArrowLeft, Lightbulb, AlertTriangle,
 import { ChecARDemo } from './InteractiveDemos/ChecARDemo';
 import { FretLabsDemo } from './InteractiveDemos/FretLabsDemo';
 import { ElFulboDemo } from './InteractiveDemos/ElFulboDemo';
-import { AleBetDemo } from './InteractiveDemos/AleBetDemo';
 import { MapiaDemo } from './InteractiveDemos/MapiaDemo';
 import { motion } from 'motion/react';
 
@@ -22,6 +21,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
   const isEs = language === 'es';
   const { caseStudy } = project;
   const modalRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -32,10 +32,22 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
   }, [onClose]);
 
   useEffect(() => {
-    if (modalRef.current) {
-      modalRef.current.focus();
-    }
+    previousFocusRef.current = document.activeElement as HTMLElement | null;
+    modalRef.current?.focus();
+
+    return () => {
+      previousFocusRef.current?.focus();
+    };
   }, [project]);
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
 
   useEffect(() => {
     setActiveTab(initialTab);
@@ -44,15 +56,13 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
   const renderDemoWidget = () => {
     switch (project.demoType) {
       case 'checar':
-        return <ChecARDemo />;
+        return <ChecARDemo language={language} />;
       case 'fretlabs':
-        return <FretLabsDemo />;
+        return <FretLabsDemo language={language} />;
       case 'elfulbo':
-        return <ElFulboDemo />;
-      case 'alebet':
-        return <AleBetDemo />;
+        return <ElFulboDemo language={language} />;
       case 'mapia':
-        return <MapiaDemo />;
+        return <MapiaDemo language={language} />;
       default:
         return null;
     }
@@ -63,6 +73,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
       ref={modalRef}
       role="dialog"
       aria-modal="true"
+      aria-labelledby="case-study-title"
       tabIndex={-1}
       onClick={onClose}
       initial={{ opacity: 0 }}
@@ -97,6 +108,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
 
           <button
             onClick={onClose}
+            aria-label={isEs ? 'Cerrar caso de estudio' : 'Close case study'}
             className="p-2 text-[#666666] hover:text-[#1a1a1a] transition-colors"
           >
             <X className="w-5 h-5" />
@@ -108,7 +120,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
           <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#0d4d4d] bg-black/5 px-2.5 py-1 inline-block">
             {project.typeBadge}
           </span>
-          <h2 className="font-serif-editorial text-3xl sm:text-4xl font-normal text-[#1a1a1a] tracking-tight">
+          <h2 id="case-study-title" className="font-serif-editorial text-3xl sm:text-4xl font-normal text-[#1a1a1a] tracking-tight">
             {project.name}
           </h2>
           <p className="text-sm text-[#666666] font-sans">
@@ -137,7 +149,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
             }`}
           >
             <Play className={`w-3 h-3 ${activeTab === 'demo' ? 'fill-current' : ''}`} />
-            {isEs ? 'DEMO INTERACTIVA' : 'INTERACTIVE DEMO'}
+            {isEs ? 'MUESTRA INTERACTIVA' : 'INTERACTIVE SAMPLE'}
           </button>
         </div>
 
@@ -148,6 +160,11 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
             animate={{ opacity: 1, y: 0 }}
             className="space-y-3"
           >
+            <div className="border border-[#0d4d4d]/20 bg-[#f0f4f4] px-4 py-3 text-xs leading-relaxed text-[#315555]">
+              {isEs
+                ? `Esta es una muestra conceptual del flujo principal. Para verificar el producto completo, usá el ${project.liveUrl ? 'enlace de la aplicación real' : 'enlace al repositorio'} al final del caso.`
+                : `This is a conceptual sample of the main flow. To verify the complete product, use the ${project.liveUrl ? 'live application link' : 'repository link'} at the end of the case study.`}
+            </div>
             {renderDemoWidget()}
           </motion.div>
         ) : (
@@ -270,11 +287,22 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
               <a
                 href={project.githubUrl}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="px-4 py-2.5 btn-editorial-outline text-xs font-mono flex items-center gap-1.5"
               >
                 <ExternalLink className="w-3.5 h-3.5 text-[#0d4d4d]" />
                 <span>{isEs ? 'Repositorio GitHub' : 'GitHub Repository'}</span>
+              </a>
+            )}
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2.5 btn-editorial-dark text-xs font-mono flex items-center gap-1.5"
+              >
+                <ExternalLink className="w-3.5 h-3.5 text-[#fcfaf7]" />
+                <span>{isEs ? 'Abrir aplicación real' : 'Open live application'}</span>
               </a>
             )}
           </div>

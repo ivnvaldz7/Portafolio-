@@ -11,7 +11,7 @@ export interface CareerProfile {
   principles: string[];
   capabilities: Array<{ title: string; description: string }>;
   selectedProjects: Array<{
-    id: 'mapia' | 'checar' | 'ale-bet' | 'fretlabs';
+    id: 'mapia' | 'checar' | 'fretlabs';
     name: string;
     role: string;
     period: string;
@@ -47,10 +47,6 @@ const profileByLanguage: Record<Language, CareerProfile> = {
         evidence: ['Diseñé la arquitectura de una aplicación que extrae afirmaciones de texto y las contrasta con fuentes oficiales.', 'Integré Gemini con Search Grounding y estado en tiempo real para priorizar trazabilidad y una experiencia confiable.'],
       },
       {
-        id: 'ale-bet', name: 'Ale-Bet Manager', role: 'Desarrollador de Producto & Automatización de Procesos', period: '2025', focus: 'Digitalización de logística operativa',
-        evidence: ['Digitalicé el flujo de despacho e insumos de un laboratorio veterinario desde el relevamiento del proceso.', 'Diseñé una interfaz operativa para tabletas con señales visuales de vencimiento y prioridad.'],
-      },
-      {
         id: 'fretlabs', name: 'FretLabs', role: 'Desarrollador Frontend & Creador', period: '2026', focus: 'Herramienta de precisión para luthería',
         evidence: ['Construí una herramienta web que traduce cálculos complejos de trastes en una experiencia visual precisa.', 'Implementé renderizado SVG y exportación para CNC/láser, con funcionamiento offline en el navegador.'],
       },
@@ -80,10 +76,6 @@ const profileByLanguage: Record<Language, CareerProfile> = {
       {
         id: 'checar', name: 'ChecAR', role: 'Creator & Lead Product Developer', period: '2025 — present', focus: 'Assisted verification of political discourse',
         evidence: ['Designed the architecture for an application that extracts claims from text and checks them against official sources.', 'Integrated Gemini with Search Grounding and real-time status to prioritize traceability and a trustworthy experience.'],
-      },
-      {
-        id: 'ale-bet', name: 'Ale-Bet Manager', role: 'Product Developer & Process Automation', period: '2025', focus: 'Operational logistics digitization',
-        evidence: ['Digitized dispatch and inventory workflows for a veterinary laboratory, starting from process discovery.', 'Designed a tablet-oriented operational interface with visual expiry and priority cues.'],
       },
       {
         id: 'fretlabs', name: 'FretLabs', role: 'Frontend Developer & Creator', period: '2026', focus: 'Precision tool for luthiery',

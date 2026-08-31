@@ -9,7 +9,6 @@ interface HeaderProps {
   onToggleLanguage: () => void;
   onOpenCvModal: () => void;
   onOpenJobProfile: () => void;
-  onOpenContact: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({

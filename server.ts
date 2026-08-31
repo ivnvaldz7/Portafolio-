@@ -2,12 +2,50 @@ import 'dotenv/config';
 import express from "express";
 import rateLimit from "express-rate-limit";
 import path from "path";
-import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const MIN_ANALYSIS_LENGTH = 5;
+const ALLOWED_VERDICTS = new Set(['VERDADERO', 'ENGAÑOSO', 'FALSO', 'INCOMPROBABLE']);
+
+type AnalysisClaim = {
+  claim: string;
+  verdict: "VERDADERO" | "ENGAÑOSO" | "FALSO" | "INCOMPROBABLE";
+  explanation: string;
+  source: string;
+  historicalContext: string;
+};
+
+type AnalysisResult = {
+  summary: string;
+  claims: AnalysisClaim[];
+};
+
+const getContentToAnalyze = (body: unknown): string => {
+  if (!body || typeof body !== "object" || Array.isArray(body)) return "";
+
+  const payload = body as Record<string, unknown>;
+  const text = typeof payload.text === "string" ? payload.text : "";
+  return text.trim();
+};
+
+const isAnalysisResult = (value: unknown): value is AnalysisResult => {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+
+  const result = value as Record<string, unknown>;
+  return typeof result.summary === "string"
+    && Array.isArray(result.claims)
+    && result.claims.every((claim) => {
+      if (!claim || typeof claim !== "object") return false;
+      const item = claim as Record<string, unknown>;
+      return typeof item.claim === "string"
+        && typeof item.verdict === "string"
+        && ALLOWED_VERDICTS.has(item.verdict)
+        && typeof item.explanation === "string"
+        && typeof item.source === "string"
+        && typeof item.historicalContext === "string";
+    });
+};
 
 async function startServer() {
   const app = express();
@@ -28,11 +66,10 @@ async function startServer() {
 
   // ChecAR Fact-Checking endpoint powered by Gemini API or fallback
   app.post("/api/checar/analyze", limiter, async (req, res) => {
-    const { text, url } = req.body || {};
-    const contentToAnalyze = text || url || "";
+    const contentToAnalyze = getContentToAnalyze(req.body);
 
-    if (!contentToAnalyze || contentToAnalyze.trim().length < 5) {
-      return res.status(400).json({ error: "Proporciona un texto o URL válido para verificar." });
+    if (contentToAnalyze.length < MIN_ANALYSIS_LENGTH) {
+      return res.status(400).json({ error: "Proporciona un texto válido para verificar." });
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
@@ -73,7 +110,8 @@ Devuelve ÚNICAMENTE un objeto JSON válido con la siguiente estructura (sin mar
 
         let rawText = response.text || "{}";
         rawText = rawText.replace(/```json/gi, "").replace(/```/g, "").trim();
-        const parsed = JSON.parse(rawText);
+        const parsed: unknown = JSON.parse(rawText);
+        if (!isAnalysisResult(parsed)) throw new Error("Gemini returned an invalid analysis shape");
         return res.json({ success: true, liveApi: true, ...parsed });
       } catch (err: any) {
         console.error("Gemini API error, falling back to smart simulation:", err.message);
@@ -132,6 +170,14 @@ Devuelve ÚNICAMENTE un objeto JSON válido con la siguiente estructura (sin mar
     }, 1200);
   });
 
+  app.use((error: unknown, _req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (error instanceof SyntaxError && typeof error === "object" && error !== null && "body" in error) {
+      return res.status(400).json({ error: "El cuerpo de la solicitud no es un JSON válido." });
+    }
+
+    return next(error);
+  });
+
   // Vite Integration
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
@@ -142,7 +188,7 @@ Devuelve ÚNICAMENTE un objeto JSON válido con la siguiente estructura (sin mar
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
-    app.get("*all", (_req, res) => {
+    app.get("*", (_req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });
   }

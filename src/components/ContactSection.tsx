@@ -90,7 +90,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-[10px] text-stone-400 block uppercase">Correo Electrónico Directo</span>
+                <span className="text-[10px] text-stone-400 block uppercase">{isEs ? 'Correo Electrónico Directo' : 'Direct Email'}</span>
                   <strong className="text-sm text-white">{PERSONAL_INFO.contact.email}</strong>
                 </div>
               </motion.a>
@@ -107,7 +107,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
                   <Linkedin className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-[10px] text-stone-400 block uppercase">Perfil Profesional</span>
+                <span className="text-[10px] text-stone-400 block uppercase">{isEs ? 'Perfil Profesional' : 'Professional Profile'}</span>
                   <strong className="text-sm text-white">LinkedIn</strong>
                 </div>
               </motion.a>
@@ -124,7 +124,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
                   <Github className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-[10px] text-stone-400 block uppercase">Repositorios & Código</span>
+                <span className="text-[10px] text-stone-400 block uppercase">{isEs ? 'Repositorios & Código' : 'Repositories & Code'}</span>
                   <strong className="text-sm text-white">GitHub</strong>
                 </div>
               </motion.a>
@@ -144,9 +144,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
             transition={{ duration: 0.4 }}
             className="lg:col-span-7 bg-[#fcfaf7] text-[#1a1a1a] p-6 sm:p-8 border border-[#1a1a1a]/20 space-y-4 shadow-sm"
           >
-            <h3 className="font-serif-editorial text-xl font-bold text-[#1a1a1a] flex items-center gap-2">
-              <MessageCircle className="w-5 h-5 text-[#0d4d4d]" />
-              Enviar Mensaje o Propuesta
+              <h3 className="font-serif-editorial text-xl font-bold text-[#1a1a1a] flex items-center gap-2">
+                <MessageCircle className="w-5 h-5 text-[#0d4d4d]" />
+              {isEs ? 'Enviar Mensaje o Propuesta' : 'Send a Message or Proposal'}
             </h3>
 
             {submitted ? (
@@ -156,16 +156,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
                 className="p-6 bg-[#f0f4f4] border border-[#0d4d4d] text-center space-y-2 animate-fade-in my-8"
               >
                 <Check className="w-8 h-8 text-[#0d4d4d] mx-auto" />
-                <h4 className="font-bold text-[#1a1a1a] text-base font-serif-editorial">¡Mensaje enviado con éxito!</h4>
+                <h4 className="font-bold text-[#1a1a1a] text-base font-serif-editorial">{isEs ? '¡Mensaje enviado con éxito!' : 'Message sent successfully!'}</h4>
                 <p className="text-xs text-[#666666]">
-                  Gracias por conectar. Responderé a tu correo en menos de 24 horas.
+                  {isEs ? 'Gracias por conectar. Responderé a tu correo en menos de 24 horas.' : 'Thanks for reaching out. I will reply to your email within 24 hours.'}
                 </p>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 text-xs font-sans">
                 <div>
                   <label htmlFor="topic" className="text-[#1a1a1a] font-mono block mb-1.5 font-bold uppercase text-[10px]">
-                    Motivo de la consulta:
+                    {isEs ? 'Motivo de la consulta:' : 'Inquiry type:'}
                   </label>
                   <select
                     id="topic"
@@ -173,48 +173,48 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
                     onChange={(e) => setTopic(e.target.value)}
                     className="w-full bg-white border border-[#1a1a1a]/20 p-3 text-[#1a1a1a] focus:outline-none focus:border-[#0d4d4d] font-mono text-xs"
                   >
-                    <option value="Diagnóstico de Proceso Operativo">Diagnóstico de Proceso Operativo / Software a medida</option>
-                    <option value="Propuesta de Empleo Remoto / Híbrido">Propuesta de Empleo Remoto / Híbrido (Product Engineer)</option>
-                    <option value="Consulta General de Producto">Consulta General de Producto o IA</option>
+                    <option value="Diagnóstico de Proceso Operativo">{isEs ? 'Diagnóstico de Proceso Operativo / Software a medida' : 'Operational Process Diagnosis / Custom Software'}</option>
+                    <option value="Propuesta de Empleo Remoto / Híbrido">{isEs ? 'Propuesta de Empleo Remoto / Híbrido (Product Engineer)' : 'Remote / Hybrid Job Opportunity (Product Engineer)'}</option>
+                    <option value="Consulta General de Producto">{isEs ? 'Consulta General de Producto o IA' : 'Product or AI Inquiry'}</option>
                   </select>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label htmlFor="name" className="text-[#1a1a1a] font-mono block mb-1 font-bold uppercase text-[10px]">Tu Nombre:</label>
+                    <label htmlFor="name" className="text-[#1a1a1a] font-mono block mb-1 font-bold uppercase text-[10px]">{isEs ? 'Tu Nombre:' : 'Your Name:'}</label>
                     <input
                       id="name"
                       type="text"
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="Ej. Martín González"
+                      placeholder={isEs ? 'Ej. Martín González' : 'e.g. Alex Morgan'}
                       className="w-full bg-white border border-[#1a1a1a]/20 p-3 text-[#1a1a1a] placeholder-stone-400 focus:outline-none focus:border-[#0d4d4d]"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="text-[#1a1a1a] font-mono block mb-1 font-bold uppercase text-[10px]">Tu Email:</label>
+                    <label htmlFor="email" className="text-[#1a1a1a] font-mono block mb-1 font-bold uppercase text-[10px]">{isEs ? 'Tu Email:' : 'Your Email:'}</label>
                     <input
                       id="email"
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="nombre@empresa.com"
+                      placeholder={isEs ? 'nombre@empresa.com' : 'name@company.com'}
                       className="w-full bg-white border border-[#1a1a1a]/20 p-3 text-[#1a1a1a] placeholder-stone-400 focus:outline-none focus:border-[#0d4d4d]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="text-[#1a1a1a] font-mono block mb-1 font-bold uppercase text-[10px]">Mensaje o Detalle:</label>
+                  <label htmlFor="message" className="text-[#1a1a1a] font-mono block mb-1 font-bold uppercase text-[10px]">{isEs ? 'Mensaje o Detalle:' : 'Message or Details:'}</label>
                   <textarea
                     id="message"
                     rows={4}
                     required
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Describe brevemente el proceso a mejorar o el rol disponible..."
+                    placeholder={isEs ? 'Describe brevemente el proceso a mejorar o el rol disponible...' : 'Briefly describe the process to improve or the available role...'}
                     className="w-full bg-white border border-[#1a1a1a]/20 p-3 text-[#1a1a1a] placeholder-stone-400 focus:outline-none focus:border-[#0d4d4d]"
                   />
                 </div>
@@ -238,7 +238,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ language }) => {
                   className={`w-full py-3.5 btn-editorial-dark flex items-center justify-center gap-2 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
                   <Send className="w-4 h-4 text-[#fcfaf7]" />
-                  <span>{isLoading ? 'Enviando...' : 'Enviar Mensaje'}</span>
+                  <span>{isLoading ? (isEs ? 'Enviando...' : 'Sending...') : (isEs ? 'Enviar Mensaje' : 'Send Message')}</span>
                 </motion.button>
               </form>
             )}

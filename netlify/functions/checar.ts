@@ -13,10 +13,41 @@ interface Claim {
   historicalContext: string;
 }
 
+const ALLOWED_VERDICTS = new Set(['VERDADERO', 'ENGAÑOSO', 'FALSO', 'INCOMPROBABLE']);
+
+const isAnalysisResult = (value: unknown): value is { summary: string; claims: Claim[] } => {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+
+  const result = value as Record<string, unknown>;
+  return typeof result.summary === 'string'
+    && Array.isArray(result.claims)
+    && result.claims.every((claim) => {
+      if (!claim || typeof claim !== 'object') return false;
+      const item = claim as Record<string, unknown>;
+      return typeof item.claim === 'string'
+        && typeof item.verdict === 'string'
+        && ALLOWED_VERDICTS.has(item.verdict)
+        && typeof item.explanation === 'string'
+        && typeof item.source === 'string'
+        && typeof item.historicalContext === 'string';
+    });
+};
+
 const jsonResponse = (body: unknown, status = 200) => new Response(JSON.stringify(body), {
   status,
-  headers: { 'Content-Type': 'application/json' },
+  headers: {
+    'Cache-Control': 'no-store',
+    'Content-Type': 'application/json',
+  },
 });
+
+const getContentToAnalyze = (body: unknown): string => {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return '';
+
+  const payload = body as Record<string, unknown>;
+  const text = typeof payload.text === 'string' ? payload.text : '';
+  return text.trim();
+};
 
 const getFallbackClaims = (content: string): Claim[] => {
   const isEconomic = /inflac|dólar|pbi|presupuesto/i.test(content);
@@ -75,9 +106,9 @@ export default async (request: Request) => {
     return jsonResponse({ error: 'El cuerpo de la solicitud no es válido.' }, 400);
   }
 
-  const contentToAnalyze = body.text || body.url || '';
-  if (contentToAnalyze.trim().length < 5) {
-    return jsonResponse({ error: 'Proporciona un texto o URL válido para verificar.' }, 400);
+  const contentToAnalyze = getContentToAnalyze(body);
+  if (contentToAnalyze.length < 5) {
+    return jsonResponse({ error: 'Proporciona un texto válido para verificar.' }, 400);
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -117,7 +148,9 @@ Devuelve ÚNICAMENTE un objeto JSON válido con la siguiente estructura (sin mar
         .replace(/```json/gi, '')
         .replace(/```/g, '')
         .trim();
-      return jsonResponse({ success: true, liveApi: true, ...JSON.parse(rawText) });
+      const parsed: unknown = JSON.parse(rawText);
+      if (!isAnalysisResult(parsed)) throw new Error('Gemini returned an invalid analysis shape');
+      return jsonResponse({ success: true, liveApi: true, ...parsed });
     } catch (error) {
       console.error('Gemini API error, falling back to smart simulation:', error);
     }

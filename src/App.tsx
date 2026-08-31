@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { lazy, Suspense, useState, useEffect, useMemo } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ValueProp } from './components/ValueProp';
 import { ProjectCard } from './components/ProjectCard';
-import { CaseStudyModal } from './components/CaseStudyModal';
 import { ProcessSection } from './components/ProcessSection';
 import { StackSection } from './components/StackSection';
 import { ContactSection } from './components/ContactSection';
@@ -15,6 +14,8 @@ import { PROJECTS_DATA_EN } from './data/portfolioDataEn';
 import { Project, Language } from './types';
 import { Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+
+const CaseStudyModal = lazy(() => import('./components/CaseStudyModal').then(({ CaseStudyModal }) => ({ default: CaseStudyModal })));
 
 export default function App() {
   const [language, setLanguage] = useState<Language>('es');
@@ -80,15 +81,10 @@ export default function App() {
         onToggleLanguage={toggleLanguage}
         onOpenCvModal={() => setIsCvOpen(true)}
         onOpenJobProfile={() => setIsJobProfileOpen(true)}
-        onOpenContact={() => {
-          const el = document.getElementById('contacto');
-          el?.scrollIntoView({ behavior: 'smooth' });
-        }}
       />
 
       {/* Main Content Area with Smooth Language Transition */}
       <motion.main
-        key={language}
         initial={{ opacity: 0.88, y: 2 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
@@ -212,16 +208,22 @@ export default function App() {
       <Footer language={language} />
 
       {/* Deep Case Study Modal / Drawer */}
-      <AnimatePresence>
-        {selectedProject && (
-          <CaseStudyModal
-            project={selectedProject}
-            language={language}
-            initialTab={modalInitialTab}
-            onClose={() => setSelectedProject(null)}
-          />
-        )}
-      </AnimatePresence>
+      <Suspense fallback={selectedProject ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6 text-center text-sm text-white" role="status">
+          {isEs ? 'Cargando caso de estudio…' : 'Loading case study…'}
+        </div>
+      ) : null}>
+        <AnimatePresence>
+          {selectedProject && (
+            <CaseStudyModal
+              project={selectedProject}
+              language={language}
+              initialTab={modalInitialTab}
+              onClose={() => setSelectedProject(null)}
+            />
+          )}
+        </AnimatePresence>
+      </Suspense>
 
       {/* Professional profile modal */}
       <AnimatePresence>

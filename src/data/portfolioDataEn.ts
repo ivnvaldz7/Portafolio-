@@ -22,6 +22,7 @@ export const PROJECTS_DATA_EN: Project[] = [
     skills: ["Geospatial UI", "API Integration", "State Management", "Routing Algorithms"],
     demoType: "mapia",
     githubUrl: "https://github.com/ivnvaldz7/mapia",
+    liveUrl: "https://mapia-ivan.netlify.app/",
     caseStudy: {
       contextAndProblem: "Organizing a series of destinations efficiently is not intuitive. Plotting the route from point A to point B does not guarantee the overall path is the fastest or shortest.",
       affectedUsers: "Anyone needing to visit multiple points (e.g., deliveries, tourism) and wanting to minimize driving time and fuel consumption.",
@@ -69,7 +70,6 @@ export const PROJECTS_DATA_EN: Project[] = [
     skills: ["AI Application Engineering", "Prompt Design", "Real-time Streaming", "Architectural Pivot", "Content Scraping"],
     demoType: "checar",
     githubUrl: "https://github.com/ivnvaldz7/checar",
-    liveUrl: "https://checar-demo.render.com",
     caseStudy: {
       contextAndProblem: "During electoral periods and legislative debates in Argentina, the speed of dissemination of erroneous or misleading data exceeds the response capacity of newsrooms. The manual process involves identifying the claim in a speech, finding the corresponding regulatory document or database (INDEC, Open Budget, BCRA), and writing the contextualization.",
       affectedUsers: "Investigative journalists and fact-checking teams who need to verify up to 10 claims simultaneously with methodical rigor and traceable sources.",
@@ -79,7 +79,7 @@ export const PROJECTS_DATA_EN: Project[] = [
         "Need for a response time of under 15 seconds per article.",
         "Operational instability and fragility in video/audio extraction on serverless servers."
       ],
-      developedSolution: "A lightweight web application where the user pastes a news text or URL. ChecAR cleans the content with @mozilla/readability, automatically identifies up to 7 key verifiable claims, and runs a parallel pipeline in Gemini 2.0 Flash using Google Search Grounding configured with official domains. It returns a structured briefing with a verdict (True, Misleading, False, Untestable), grounded explanation, link to the primary source, and quantitative historical context.",
+      developedSolution: "A lightweight web application where the user pastes a news text. ChecAR cleans the content with @mozilla/readability, automatically identifies up to 7 key verifiable claims, and runs a parallel pipeline in Gemini 2.0 Flash using Google Search Grounding configured with official domains. It returns a structured briefing with a verdict (True, Misleading, False, Untestable), grounded explanation, link to the primary source, and quantitative historical context.",
       productDecisions: [
         {
           title: "Strategic Pivot: From Video Transcription to Pure Text Analysis",
@@ -109,54 +109,6 @@ export const PROJECTS_DATA_EN: Project[] = [
     }
   },
   {
-    id: "ale-bet",
-    name: "Ale-Bet Manager",
-    typeBadge: "B2B Logistics & Operations Management",
-    priority: "hero",
-    tagline: "Logistics management and operational digitalization system for a veterinary laboratory.",
-    problemSummary: "The laboratory operated with physical spreadsheets, scattered records on WhatsApp, and manual traceability of supplies, causing dispatch delays, stock inconsistencies, and lost administrative time.",
-    targetUser: "Logistics managers, warehouse staff, and veterinary dispatch administrators.",
-    myContribution: "Survey of plant processes, data architecture design, UI adapted for warehouse tablets/desktops, and automation of rotation alerts.",
-    period: "2025", 
-    role: "Product Developer & Process Automation", 
-    cvHighlights: [
-      "Led the complete digitalization of the dispatch and supply management operational process for a veterinary laboratory.",
-      "Designed a high visual density interface adapted for warehouse tablets, reducing dispatch errors due to batch confusion to zero.",
-      "Optimized the packaging flow through visual expiration indicators (FEFO method), shortening order preparation time."
-    ], 
-    stack: ["React", "TypeScript", "Tailwind CSS", "Zustand", "Node.js", "Express", "REST API"],
-    skills: ["Process Digitalization", "Workflow Optimization", "UX for Operations", "Data Modeling", "Error Reduction"],
-    demoType: "alebet",
-    githubUrl: "https://github.com/ivnvaldz7/ale-bet-manager",
-    liveUrl: "https://alebet-logistics.vercel.app",
-    caseStudy: {
-      contextAndProblem: "A growing veterinary laboratory experienced daily bottlenecks when managing the packaging and shipping of reagents and medications with strict cold chain and expiration requirements.",
-      affectedUsers: "3 warehouse operators and 2 logistics coordinators managing over 120 daily orders.",
-      realConstraints: [
-        "Warehouse staff lacked the time for complex training on traditional software.",
-        "Operation in high-mobility environments requiring one-handed use on tablets.",
-        "Zero margin for error in batch labeling and preservation temperature."
-      ],
-      developedSolution: "A centralized web platform was developed with a simplified touch panel for real-time order tracking, visual batch management, and dispatch status, reducing manual data entry to just 2 taps per box.",
-      productDecisions: [
-        {
-          title: "High Visual Density Interface with Urgency Color Codes",
-          description: "Replacing extensive tables with interactive dispatch cards.",
-          reasoning: "Allows the operator to identify at a glance which batches expire first (FEFO method - First Expired, First Out) without reading text rows."
-        }
-      ],
-      techDecisions: [
-        {
-          title: "Resilient Local State Management with Zustand",
-          description: "Background synchronization with the Express API.",
-          reasoning: "Ensures the interface responds instantly even if the warehouse Wi-Fi connection suffers micro-drops."
-        }
-      ],
-      resultAndLearnings: "Successful digitalization of 100% of the daily route sheet, reducing order preparation time and eliminating dispatch errors due to batch confusion.",
-      keyTakeaway: "Operations software must adapt to the physical pace of work on the plant floor, not force workers to become data entry clerks."
-    }
-  },
-  {
     id: "el-fulbo",
     name: "El Fulbo",
     typeBadge: "Consumer PWA & Social Group Management",
@@ -175,8 +127,8 @@ export const PROJECTS_DATA_EN: Project[] = [
     stack: ["React 19", "TypeScript", "Vite", "PWA Manifest / Workbox", "Tailwind CSS", "Zustand", "Canvas API"],
     skills: ["Mobile First UX", "PWA Architecture", "Social Flow Design", "Image Generation / Share Cards"],
     demoType: "elfulbo",
-    githubUrl: "https://github.com/ivnvaldz7/el-fulbo-pwa",
-    liveUrl: "https://elfulbo-app.vercel.app",
+    githubUrl: "https://github.com/ivnvaldz7/el-fulbo",
+    liveUrl: "https://el-fulbo.vercel.app",
     caseStudy: {
       contextAndProblem: "Coordinating 10 to 14 people weekly implies a disproportionate operational effort for the organizer, who invests up to 3 hours a week chasing confirmations.",
       affectedUsers: "Groups of friends and amateur tournaments who play 1 to 3 times a week.",

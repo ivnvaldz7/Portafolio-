@@ -1,7 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { Sliders, Download, Eye, Layers } from 'lucide-react';
+import { Language } from '../../types';
 
-export const FretLabsDemo: React.FC = () => {
+export const FretLabsDemo: React.FC<{ language: Language }> = ({ language }) => {
+  const isEs = language === 'es';
   const [scaleLength, setScaleLength] = useState<number>(25.5); // Inches
   const [scaleType, setScaleType] = useState<'single' | 'multiscale'>('single');
   const [bassScale, setBassScale] = useState<number>(27.0); // Bass scale for multiscale
@@ -41,6 +43,7 @@ export const FretLabsDemo: React.FC = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
   };
 
   return (
@@ -55,7 +58,7 @@ export const FretLabsDemo: React.FC = () => {
             <h3 className="font-bold text-base text-white flex items-center gap-2">
               FretLabs CAD <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono">Live Demo</span>
             </h3>
-            <p className="text-xs text-slate-400">Calculador numérico y motor gráfico de diapasones para Luthiers</p>
+            <p className="text-xs text-slate-400">{isEs ? 'Calculador numérico y motor gráfico de diapasones para luthiers' : 'Numerical calculator and fretboard graphics engine for luthiers'}</p>
           </div>
         </div>
         <button
@@ -63,27 +66,28 @@ export const FretLabsDemo: React.FC = () => {
           className="px-3.5 py-1.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs rounded-lg transition-all flex items-center gap-1.5 shadow-md shadow-amber-950/40"
         >
           <Download className="w-3.5 h-3.5" />
-          Exportar SVG CNC
+          {isEs ? 'Exportar SVG CNC' : 'Export CNC SVG'}
         </button>
       </div>
 
       {/* Controls Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 my-4 p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs">
         <div>
-          <label className="text-slate-400 block mb-1 font-mono">Tipo de Escala:</label>
+          <label htmlFor="fret-scale-type" className="text-slate-400 block mb-1 font-mono">{isEs ? 'Tipo de Escala:' : 'Scale Type:'}</label>
           <select
+            id="fret-scale-type"
             value={scaleType}
-            onChange={(e) => setScaleType(e.target.value as any)}
+            onChange={(e) => setScaleType(e.target.value === 'multiscale' ? 'multiscale' : 'single')}
             className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200 font-semibold focus:border-amber-500"
           >
-            <option value="single">Escala Simple (Standard)</option>
-            <option value="multiscale">Multiescala / Fanned Frets</option>
+            <option value="single">{isEs ? 'Escala Simple (Estándar)' : 'Single Scale (Standard)'}</option>
+            <option value="multiscale">{isEs ? 'Multiescala / Fanned Frets' : 'Multiscale / Fanned Frets'}</option>
           </select>
         </div>
 
         <div>
           <label className="text-slate-400 block mb-1 font-mono">
-            Escala Agudos ({scaleLength}"):
+            {isEs ? 'Escala Agudos' : 'Treble Scale'} ({scaleLength}"):
           </label>
           <input
             type="range"
@@ -100,7 +104,7 @@ export const FretLabsDemo: React.FC = () => {
         {scaleType === 'multiscale' && (
           <div>
             <label className="text-slate-400 block mb-1 font-mono">
-              Escala Graves ({bassScale}"):
+              {isEs ? 'Escala Graves' : 'Bass Scale'} ({bassScale}"):
             </label>
             <input
               type="range"
@@ -115,8 +119,8 @@ export const FretLabsDemo: React.FC = () => {
           </div>
         )}
 
-        <div>
-          <label className="text-slate-400 block mb-1 font-mono">Cantidad de Trastes: ({fretCount})</label>
+          <div>
+          <label className="text-slate-400 block mb-1 font-mono">{isEs ? 'Cantidad de Trastes' : 'Number of Frets'}: ({fretCount})</label>
           <input
             type="range"
             min={12}
@@ -133,9 +137,9 @@ export const FretLabsDemo: React.FC = () => {
       <div className="p-4 rounded-xl bg-stone-950 border border-slate-800 space-y-2">
         <div className="flex items-center justify-between text-xs text-slate-400 font-mono pb-2">
           <span className="flex items-center gap-1">
-            <Eye className="w-3.5 h-3.5 text-amber-400" /> Previsualización Vectorial SVG (Anatomía del Diapasón)
+            <Eye className="w-3.5 h-3.5 text-amber-400" /> {isEs ? 'Previsualización Vectorial SVG (Anatomía del Diapasón)' : 'SVG Vector Preview (Fretboard Layout)'}
           </span>
-          <span>Precisión: 0.01mm</span>
+          <span>{isEs ? 'Precisión: 0.01mm' : 'Precision: 0.01mm'}</span>
         </div>
 
         <div className="w-full overflow-x-auto p-3 bg-stone-900 rounded-lg border border-amber-950/40">
@@ -211,12 +215,12 @@ export const FretLabsDemo: React.FC = () => {
 
       {/* Measurement Table Summary */}
       <div className="mt-4 p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono">
-        <span className="text-slate-400 block mb-2 font-bold">Cálculo de Distancias (Cejuela a Traste):</span>
+          <span className="text-slate-400 block mb-2 font-bold">{isEs ? 'Cálculo de Distancias (Cejuela a Traste):' : 'Distance Calculation (Nut to Fret):'}</span>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-slate-300">
           <div>Traste 1: <span className="text-amber-400 font-bold">{calculateFretPos(scaleLength, 1).toFixed(2)} mm</span></div>
           <div>Traste 5: <span className="text-amber-400 font-bold">{calculateFretPos(scaleLength, 5).toFixed(2)} mm</span></div>
-          <div>Traste 12 (Octava): <span className="text-amber-400 font-bold">{calculateFretPos(scaleLength, 12).toFixed(2)} mm</span></div>
-          <div>Traste {fretCount}: <span className="text-amber-400 font-bold">{calculateFretPos(scaleLength, fretCount).toFixed(2)} mm</span></div>
+          <div>{isEs ? 'Traste 12 (Octava)' : 'Fret 12 (Octave)'}: <span className="text-amber-400 font-bold">{calculateFretPos(scaleLength, 12).toFixed(2)} mm</span></div>
+          <div>{isEs ? 'Traste' : 'Fret'} {fretCount}: <span className="text-amber-400 font-bold">{calculateFretPos(scaleLength, fretCount).toFixed(2)} mm</span></div>
         </div>
       </div>
     </div>
