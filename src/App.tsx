@@ -8,6 +8,7 @@ import { StackSection } from './components/StackSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { AtsCvModal } from './components/AtsCvModal';
+import { PortfolioSummaryPrint } from './components/PortfolioSummaryPrint';
 import { JobProfileModal } from './components/JobProfileModal';
 import { PROJECTS_DATA, ENGLISH_TRANSLATIONS } from './data/portfolioData';
 import { PROJECTS_DATA_EN } from './data/portfolioDataEn';
@@ -25,6 +26,10 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [modalInitialTab, setModalInitialTab] = useState<'caseStudy' | 'demo'>('caseStudy');
+
+  const handleDownloadSummary = () => {
+    window.print();
+  };
 
   const isEs = language === 'es';
 
@@ -206,6 +211,9 @@ export default function App() {
 
       {/* Footer */}
       <Footer language={language} />
+
+      {/* Printable Portfolio Summary Document */}
+      <PortfolioSummaryPrint language={language} projects={isEs ? PROJECTS_DATA : PROJECTS_DATA_EN} />
 
       {/* Deep Case Study Modal / Drawer */}
       <Suspense fallback={selectedProject ? (

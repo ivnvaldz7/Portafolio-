@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowDownRight, FileText, Sparkles } from 'lucide-react';
+import { ArrowDownRight, FileText, Sparkles, Download } from 'lucide-react';
 import { PERSONAL_INFO, ENGLISH_TRANSLATIONS } from '../data/portfolioData';
 import { Language } from '../types';
 import { AnimatePresence, motion } from 'motion/react';
@@ -8,9 +8,10 @@ interface HeroProps {
   language: Language;
   onOpenCvModal: () => void;
   onOpenJobProfile: () => void;
+  onDownloadSummary: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenJobProfile }) => {
+export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenJobProfile, onDownloadSummary }) => {
   const isEs = language === 'es';
   const capabilities = isEs
     ? [
@@ -158,6 +159,17 @@ export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenJobPr
             >
               <FileText className="w-4 h-4 text-[#0d4d4d]" />
               <span>{isEs ? 'Ver perfil CV' : 'View CV profile'}</span>
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={onDownloadSummary}
+              title={isEs ? 'Descargar resumen general del portafolio en PDF' : 'Download general portfolio summary as PDF'}
+              className="px-5 py-3.5 btn-editorial-outline flex items-center gap-2 border-[#0d4d4d]/40 hover:border-[#0d4d4d]"
+            >
+              <Download className="w-4 h-4 text-[#0d4d4d]" />
+              <span>{isEs ? 'Descargar resumen' : 'Download summary'}</span>
             </motion.button>
 
             <motion.button
