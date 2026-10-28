@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileText, Sparkles, Globe, Menu, X } from 'lucide-react';
+import { FileText, Sparkles, Globe, Menu, X, Download } from 'lucide-react';
 import { Language } from '../types';
 import { motion } from 'motion/react';
 import { AutomationLogo } from './AutomationLogo';
@@ -17,6 +17,7 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleLanguage,
   onOpenCvModal,
   onOpenJobProfile,
+  onDownloadSummary,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
