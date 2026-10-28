@@ -9,6 +9,7 @@ interface HeaderProps {
   onToggleLanguage: () => void;
   onOpenCvModal: () => void;
   onOpenJobProfile: () => void;
+  onDownloadSummary?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -113,6 +114,20 @@ export const Header: React.FC<HeaderProps> = ({
             <Sparkles className="w-3.5 h-3.5 text-[#0d4d4d]" />
             <span>{language === 'es' ? 'Perfil profesional' : 'Professional profile'}</span>
           </motion.button>
+
+                    {/* Download Summary Button */}
+          {onDownloadSummary && (
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
+              onClick={onDownloadSummary}
+              title={language === 'es' ? 'Descargar resumen general' : 'Download general summary'}
+              className="flex items-center gap-1.5 px-3 py-1.5 btn-editorial-outline text-[11px]"
+            >
+              <Download className="w-3.5 h-3.5 text-[#0d4d4d]" />
+              <span className="hidden md:inline">{language === 'es' ? 'Descargar resumen' : 'Summary'}</span>
+            </motion.button>
+          )}
 
           {/* Download ATS CV Button */}
           <motion.button
