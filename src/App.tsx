@@ -99,6 +99,7 @@ export default function App() {
           language={language}
           onOpenCvModal={() => setIsCvOpen(true)}
           onOpenJobProfile={() => setIsJobProfileOpen(true)}
+          onDownloadSummary={handleDownloadSummary}
         />
 
         {/* Value Proposition Philosophy */}
