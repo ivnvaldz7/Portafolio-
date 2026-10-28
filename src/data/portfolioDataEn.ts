@@ -2,54 +2,6 @@ import { Project } from '../types';
 
 export const PROJECTS_DATA_EN: Project[] = [
   {
-    id: "mapia",
-    name: "Mapia - Route Optimizer",
-    typeBadge: "Geospatial & Route Optimization",
-    priority: "featured",
-    tagline: "Lightweight route planner that finds the most efficient order for multiple stops.",
-    problemSummary: "Manually determining the optimal route to visit multiple destinations (Traveling Salesperson Problem) is inefficient, consuming more time and fuel than necessary.",
-    targetUser: "Last-mile delivery drivers, traveling salespeople, and tourists planning tours.",
-    myContribution: "Full frontend development, integration of interactive vector maps, solving the TSP via API, and fluid drag-and-drop reordering.",
-    period: "2026",
-    role: "Frontend Engineer & Creator",
-    cvHighlights: [
-      "Built a route optimizer connecting the OpenRouteService API to solve the Traveling Salesperson Problem (TSP).",
-      "Implemented high-performance interactive vector maps using MapLibre GL JS without paid API dependencies (OpenFreeMap).",
-      "Designed a resilient drag-and-drop UX using dnd-kit, allowing users to pin stops and recalculate distances in real-time.",
-      "Added dynamic generation of shareable URLs that restore the full trip state, and deep-link redirects to Waze and Google Maps."
-    ],
-    stack: ["React 19", "TypeScript", "Vite 8", "MapLibre GL JS", "OpenRouteService", "dnd-kit", "Tailwind CSS 4"],
-    skills: ["Geospatial UI", "API Integration", "State Management", "Routing Algorithms"],
-    demoType: "mapia",
-    githubUrl: "https://github.com/ivnvaldz7/mapia",
-    liveUrl: "https://mapia-ivan.netlify.app/",
-    caseStudy: {
-      contextAndProblem: "Organizing a series of destinations efficiently is not intuitive. Plotting the route from point A to point B does not guarantee the overall path is the fastest or shortest.",
-      affectedUsers: "Anyone needing to visit multiple points (e.g., deliveries, tourism) and wanting to minimize driving time and fuel consumption.",
-      realConstraints: [
-        "Relying on Google Maps for massive TSP usually requires expensive paid APIs.",
-        "Reordering on mobile screens must be intuitive without triggering unnecessary recalculations."
-      ],
-      developedSolution: "Mapia is a web application that allows searching for addresses or dropping pins on the map, and with a single button it optimizes the entire route using advanced graph algorithms, offering deep-links to start turn-by-turn navigation.",
-      productDecisions: [
-        {
-          title: "Shareable URLs vs Database",
-          description: "Encoding the trip into the URL for route sharing.",
-          reasoning: "Avoids requiring authentication or databases, allowing users to pass full routes through chat instantly."
-        }
-      ],
-      techDecisions: [
-        {
-          title: "MapLibre + OpenFreeMap",
-          description: "Using free tiles instead of the Google Maps JS SDK.",
-          reasoning: "Radically reduces operational costs while maintaining fast and customizable native vector rendering (WebGL)."
-        }
-      ],
-      resultAndLearnings: "Building an interactive map tool requires tightly synchronizing React state with the map's lifecycle (WebGL canvas) without losing performance.",
-      keyTakeaway: "Operational tools shine when they have zero login friction and solve a concrete mathematical problem visually."
-    }
-  },
-  {
     id: "checar",
     name: "ChecAR",
     typeBadge: "AI Application & Fact-Checking Assist",

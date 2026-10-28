@@ -4,7 +4,6 @@ import { X, ExternalLink, ShieldCheck, Cpu, ArrowLeft, Lightbulb, AlertTriangle,
 import { ChecARDemo } from './InteractiveDemos/ChecARDemo';
 import { FretLabsDemo } from './InteractiveDemos/FretLabsDemo';
 import { ElFulboDemo } from './InteractiveDemos/ElFulboDemo';
-import { MapiaDemo } from './InteractiveDemos/MapiaDemo';
 import { motion } from 'motion/react';
 
 interface CaseStudyModalProps {
@@ -61,8 +60,6 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
         return <FretLabsDemo language={language} />;
       case 'elfulbo':
         return <ElFulboDemo language={language} />;
-      case 'mapia':
-        return <MapiaDemo language={language} />;
       default:
         return null;
     }

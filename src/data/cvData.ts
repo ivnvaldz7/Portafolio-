@@ -11,7 +11,7 @@ export interface CareerProfile {
   principles: string[];
   capabilities: Array<{ title: string; description: string }>;
   selectedProjects: Array<{
-    id: 'mapia' | 'checar' | 'fretlabs';
+    id: 'checar' | 'fretlabs';
     name: string;
     role: string;
     period: string;
@@ -39,10 +39,6 @@ const profileByLanguage: Record<Language, CareerProfile> = {
     ],
     selectedProjects: [
       {
-        id: 'mapia', name: 'Mapia', role: 'Frontend Engineer & Creador', period: '2026', focus: 'Optimización de rutas para múltiples paradas',
-        evidence: ['Construí un optimizador de rutas con OpenRouteService para resolver recorridos de múltiples destinos.', 'Diseñé una experiencia de mapa interactiva, reordenamiento drag-and-drop y enlaces compartibles que recuperan el viaje.'],
-      },
-      {
         id: 'checar', name: 'ChecAR', role: 'Creador & Desarrollador Principal de Producto', period: '2025 — presente', focus: 'Verificación asistida de discurso político',
         evidence: ['Diseñé la arquitectura de una aplicación que extrae afirmaciones de texto y las contrasta con fuentes oficiales.', 'Integré Gemini con Search Grounding y estado en tiempo real para priorizar trazabilidad y una experiencia confiable.'],
       },
@@ -69,10 +65,6 @@ const profileByLanguage: Record<Language, CareerProfile> = {
       { title: 'Automation and integration', description: 'I connect APIs, processes, and AI tools when they reduce manual work or improve traceability.' },
     ],
     selectedProjects: [
-      {
-        id: 'mapia', name: 'Mapia', role: 'Frontend Engineer & Creator', period: '2026', focus: 'Multi-stop route optimization',
-        evidence: ['Built a route optimizer with OpenRouteService to solve multi-destination journeys.', 'Designed an interactive map experience, drag-and-drop ordering, and shareable links that restore the trip.'],
-      },
       {
         id: 'checar', name: 'ChecAR', role: 'Creator & Lead Product Developer', period: '2025 — present', focus: 'Assisted verification of political discourse',
         evidence: ['Designed the architecture for an application that extracts claims from text and checks them against official sources.', 'Integrated Gemini with Search Grounding and real-time status to prioritize traceability and a trustworthy experience.'],
