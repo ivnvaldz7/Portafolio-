@@ -13,7 +13,6 @@ import { JobProfileModal } from './components/JobProfileModal';
 import { PROJECTS_DATA, ENGLISH_TRANSLATIONS } from './data/portfolioData';
 import { PROJECTS_DATA_EN } from './data/portfolioDataEn';
 import { Project, Language } from './types';
-import { Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const CaseStudyModal = lazy(() => import('./components/CaseStudyModal').then(({ CaseStudyModal }) => ({ default: CaseStudyModal })));
@@ -23,7 +22,6 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [isJobProfileOpen, setIsJobProfileOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [modalInitialTab, setModalInitialTab] = useState<'caseStudy' | 'demo'>('caseStudy');
 
@@ -42,24 +40,17 @@ export default function App() {
     setLanguage((prev) => (prev === 'es' ? 'en' : 'es'));
   };
 
-  // Filter projects by category & search query
+  // Filter projects by category
   const filteredProjects = useMemo(() => {
     const activeProjects = language === 'en' ? PROJECTS_DATA_EN : PROJECTS_DATA;
     return activeProjects.filter((proj) => {
-    const matchesSearch =
-      proj.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      proj.tagline.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      proj.stack.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      proj.skills.some((s) => s.toLowerCase().includes(searchQuery.toLowerCase()));
-
-    if (selectedCategory === 'all') return matchesSearch;
-    if (selectedCategory === 'hero') return matchesSearch && proj.priority === 'hero';
-    if (selectedCategory === 'pwa') return matchesSearch && (proj.demoType === 'elfulbo' || proj.demoType === 'fretlabs');
-    if (selectedCategory === 'ai') return matchesSearch && proj.demoType === 'checar';
-
-    return matchesSearch;
+      if (selectedCategory === 'all') return true;
+      if (selectedCategory === 'hero') return proj.priority === 'hero';
+      if (selectedCategory === 'pwa') return proj.demoType === 'elfulbo' || proj.demoType === 'fretlabs';
+      if (selectedCategory === 'ai') return proj.demoType === 'checar';
+      return true;
     });
-  }, [searchQuery, selectedCategory, language]);
+  }, [selectedCategory, language]);
 
   // Handler when user clicks "Probar Demo Interactiva" on a project card
   const handleOpenDemo = (demoType: Project['demoType']) => {
@@ -109,35 +100,17 @@ export default function App() {
         <section id="proyectos" className="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           
           {/* Section Header & Filters */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[#1a1a1a]/10 pb-6">
-            <div className="space-y-3 max-w-2xl">
+          <div className="space-y-3 border-b border-[#1a1a1a]/10 pb-6">
+            <div>
               <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#0d4d4d] bg-black/5 px-2.5 py-1 inline-block">
                 {isEs ? 'Casos de Estudio & Productos' : 'Featured Case Studies'}
               </span>
+            </div>
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <h2 className="font-serif-editorial text-3xl sm:text-4xl font-normal text-[#1a1a1a] tracking-tight">
                 {isEs ? 'Proyectos Reales con Enfoque de Producto' : ENGLISH_TRANSLATIONS.projectsTitle}
               </h2>
-              <p className="text-[#666666] text-sm leading-relaxed font-sans">
-                {isEs ? 'Explora cada producto para conocer el problema operativo, las decisiones de arquitectura y los aprendizajes técnicos.' : ENGLISH_TRANSLATIONS.projectsSubtitle}
-              </p>
-            </div>
-
-            {/* Search & Category Filter */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
-              {/* Search Bar */}
-              <div className="relative flex-1 sm:w-64">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#666666]" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={isEs ? 'Buscar tecnología o proyecto...' : 'Search stack or project...'}
-                  className="w-full bg-white border border-[#1a1a1a]/20 pl-9 pr-3 py-2 text-xs text-[#1a1a1a] placeholder-stone-400 focus:outline-none focus:border-[#0d4d4d]"
-                />
-              </div>
-
-              {/* Category Pills */}
-              <div className="flex bg-white p-1 border border-[#1a1a1a]/20 text-xs font-mono">
+              <div role="group" aria-label={isEs ? 'Filtrar proyectos' : 'Filter projects'} className="flex shrink-0 self-start bg-white p-1 border border-[#1a1a1a]/20 text-xs font-mono lg:self-auto">
                 <button
                   onClick={() => setSelectedCategory('all')}
                   className={`px-3 py-1.5 uppercase font-bold transition-all ${
@@ -180,6 +153,9 @@ export default function App() {
                 </button>
               </div>
             </div>
+            <p className="max-w-2xl text-[#666666] text-sm leading-relaxed font-sans">
+              {isEs ? 'Explora cada producto para conocer el problema operativo, las decisiones de arquitectura y los aprendizajes técnicos.' : ENGLISH_TRANSLATIONS.projectsSubtitle}
+            </p>
           </div>
 
           {/* Projects Grid */}

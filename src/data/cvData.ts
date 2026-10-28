@@ -1,4 +1,15 @@
 import { Language } from '../types';
+import { PROJECTS_DATA } from './portfolioData';
+import { PROJECTS_DATA_EN } from './portfolioDataEn';
+
+interface CvProject {
+  id: string;
+  name: string;
+  role: string;
+  period: string;
+  focus: string;
+  evidence: string[];
+}
 
 export interface CareerProfile {
   name: string;
@@ -10,19 +21,12 @@ export interface CareerProfile {
   jobSearch: string;
   principles: string[];
   capabilities: Array<{ title: string; description: string }>;
-  selectedProjects: Array<{
-    id: 'checar' | 'fretlabs';
-    name: string;
-    role: string;
-    period: string;
-    focus: string;
-    evidence: string[];
-  }>;
+  projects: CvProject[];
   education: string;
   continuousLearning: string;
 }
 
-const profileByLanguage: Record<Language, CareerProfile> = {
+const profileByLanguage: Record<Language, Omit<CareerProfile, 'projects'>> = {
   es: {
     name: 'Iván Valdez',
     title: 'Desarrollador Web orientado a producto',
@@ -36,16 +40,6 @@ const profileByLanguage: Record<Language, CareerProfile> = {
       { title: 'Producto de punta a punta', description: 'Transformo necesidades operativas en flujos, interfaces y entregables digitales concretos.' },
       { title: 'Frontend con criterio', description: 'Construyo interfaces mantenibles con React, TypeScript, estado claro y atención al uso real.' },
       { title: 'Automatización e integración', description: 'Conecto APIs, procesos y herramientas de IA cuando reducen trabajo manual o mejoran trazabilidad.' },
-    ],
-    selectedProjects: [
-      {
-        id: 'checar', name: 'ChecAR', role: 'Creador & Desarrollador Principal de Producto', period: '2025 — presente', focus: 'Verificación asistida de discurso político',
-        evidence: ['Diseñé la arquitectura de una aplicación que extrae afirmaciones de texto y las contrasta con fuentes oficiales.', 'Integré Gemini con Search Grounding y estado en tiempo real para priorizar trazabilidad y una experiencia confiable.'],
-      },
-      {
-        id: 'fretlabs', name: 'FretLabs', role: 'Desarrollador Frontend & Creador', period: '2026', focus: 'Herramienta de precisión para luthería',
-        evidence: ['Construí una herramienta web que traduce cálculos complejos de trastes en una experiencia visual precisa.', 'Implementé renderizado SVG y exportación para CNC/láser, con funcionamiento offline en el navegador.'],
-      },
     ],
     education: 'Formación autodidacta en sistemas y desarrollo web · Platzi y cursos especializados',
     continuousLearning: 'Formación continua en arquitectura frontend, React, TypeScript y desarrollo de producto.',
@@ -64,21 +58,23 @@ const profileByLanguage: Record<Language, CareerProfile> = {
       { title: 'Purposeful frontend', description: 'I build maintainable interfaces with React, TypeScript, clear state, and attention to real usage.' },
       { title: 'Automation and integration', description: 'I connect APIs, processes, and AI tools when they reduce manual work or improve traceability.' },
     ],
-    selectedProjects: [
-      {
-        id: 'checar', name: 'ChecAR', role: 'Creator & Lead Product Developer', period: '2025 — present', focus: 'Assisted verification of political discourse',
-        evidence: ['Designed the architecture for an application that extracts claims from text and checks them against official sources.', 'Integrated Gemini with Search Grounding and real-time status to prioritize traceability and a trustworthy experience.'],
-      },
-      {
-        id: 'fretlabs', name: 'FretLabs', role: 'Frontend Developer & Creator', period: '2026', focus: 'Precision tool for luthiery',
-        evidence: ['Built a web tool that translates complex fret calculations into a precise visual experience.', 'Implemented SVG rendering and CNC/laser export with offline browser operation.'],
-      },
-    ],
     education: 'Self-directed training in systems and web development · Platzi and specialized courses',
     continuousLearning: 'Continuous learning in frontend architecture, React, TypeScript, and product development.',
   },
 };
 
 export function getCareerProfile(language: Language): CareerProfile {
-  return profileByLanguage[language];
+  const sourceProjects = language === 'es' ? PROJECTS_DATA : PROJECTS_DATA_EN;
+
+  return {
+    ...profileByLanguage[language],
+    projects: sourceProjects.map(({ id, name, role, period, tagline, cvHighlights }) => ({
+      id,
+      name,
+      role,
+      period,
+      focus: tagline,
+      evidence: cvHighlights,
+    })),
+  };
 }

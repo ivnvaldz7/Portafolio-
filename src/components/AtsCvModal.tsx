@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { X } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Download, X } from 'lucide-react';
 import { motion } from 'motion/react';
 import { getCareerProfile } from '../data/cvData';
 import { Language } from '../types';
@@ -14,6 +14,22 @@ export const AtsCvModal: React.FC<AtsCvModalProps> = ({ isOpen, language, onClos
   const modalRef = useRef<HTMLDivElement>(null);
   const profile = getCareerProfile(language);
   const isEs = language === 'es';
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState(false);
+
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    setDownloadError(false);
+    try {
+      const { downloadCareerProfilePdf } = await import('../lib/cvPdf');
+      downloadCareerProfilePdf(profile, language);
+    } catch (error) {
+      console.error('Could not generate CV PDF:', error);
+      setDownloadError(true);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -54,11 +70,19 @@ export const AtsCvModal: React.FC<AtsCvModalProps> = ({ isOpen, language, onClos
               <p className="mt-2 text-base font-semibold text-[#0d4d4d] sm:text-lg">{profile.title}</p>
               <p className="mt-3 text-sm leading-relaxed text-[#666666]">{profile.availability} · {profile.location}</p>
             </div>
-            <button type="button" onClick={onClose} aria-label={isEs ? 'Cerrar perfil profesional' : 'Close professional profile'} className="shrink-0 p-2 text-[#666666] transition-colors hover:text-[#1a1a1a]">
-              <X className="h-5 w-5" />
-            </button>
+            <div className="flex shrink-0 items-start gap-2">
+              <button type="button" onClick={handleDownload} disabled={isDownloading} aria-label={isEs ? 'Descargar CV en PDF' : 'Download CV as PDF'} className="btn-editorial-dark inline-flex items-center gap-2 px-3 py-2 text-xs disabled:cursor-wait disabled:opacity-60">
+                <Download className="h-4 w-4" />
+                <span className="hidden sm:inline">{isDownloading ? (isEs ? 'Generando…' : 'Generating…') : (isEs ? 'Descargar PDF' : 'Download PDF')}</span>
+                <span className="sm:hidden">PDF</span>
+              </button>
+              <button type="button" onClick={onClose} aria-label={isEs ? 'Cerrar perfil profesional' : 'Close professional profile'} className="p-2 text-[#666666] transition-colors hover:text-[#1a1a1a]">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
           </div>
           <p className="mt-5 break-words font-mono text-xs text-[#4f4f4f]">{profile.contact.join('  ·  ')}</p>
+          {downloadError && <p role="alert" className="mt-3 text-sm text-red-700">{isEs ? 'No se pudo generar el PDF. Intenta nuevamente.' : 'Could not generate the PDF. Please try again.'}</p>}
         </header>
 
         <div className="grid gap-10 px-6 py-8 sm:px-10 sm:py-10 lg:grid-cols-[minmax(0,1.45fr)_minmax(16rem,0.8fr)]">
@@ -68,9 +92,9 @@ export const AtsCvModal: React.FC<AtsCvModalProps> = ({ isOpen, language, onClos
               <p className="mt-4 max-w-3xl text-base leading-7 text-[#303030]">{profile.summary}</p>
             </section>
             <section aria-labelledby="cv-projects-title">
-              <h2 id="cv-projects-title" className="border-b border-[#1a1a1a]/15 pb-2 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[#0d4d4d]">{isEs ? 'Evidencia seleccionada' : 'Selected evidence'}</h2>
+              <h2 id="cv-projects-title" className="border-b border-[#1a1a1a]/15 pb-2 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-[#0d4d4d]">{isEs ? 'Proyectos y evidencia' : 'Projects and evidence'}</h2>
               <div className="mt-5 space-y-7">
-                {profile.selectedProjects.map((project) => (
+                {profile.projects.map((project) => (
                   <article key={project.id} className="border-l-2 border-[#0d4d4d]/70 pl-4">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                       <h3 className="text-lg font-bold">{project.name}</h3>

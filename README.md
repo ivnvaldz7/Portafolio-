@@ -19,6 +19,12 @@ Este es un portfolio interactivo full-stack y hub de productos diseñado para ex
 
 ---
 
+## Actualizar proyectos del CV
+
+Edita `src/data/portfolioData.ts` y `src/data/portfolioDataEn.ts` para mantener ambas versiones del portafolio. La modal «Ver perfil CV» y su descarga en PDF toman de cada proyecto `name`, `period`, `role`, `tagline` y `cvHighlights`; no hay una segunda lista de proyectos que actualizar.
+
+---
+
 ## 🛠️ Stack Tecnológico
 
 - **Frontend**: React 19, TypeScript, Vite, Tailwind CSS v4, Motion (Framer Motion), Lucide React Icons, Canvas Confetti.
