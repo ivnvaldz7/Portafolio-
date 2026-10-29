@@ -43,7 +43,7 @@ export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenJobPr
 
     const interval = window.setInterval(() => {
       setActiveCapability((current) => (current + 1) % capabilities.length);
-    }, 3200);
+    }, 4500);
 
     return () => window.clearInterval(interval);
   }, [capabilities.length, prefersReducedMotion]);
@@ -70,22 +70,27 @@ export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenJobPr
               <span className="w-2 h-2 rounded-full bg-[#0d4d4d] animate-pulse" />
               <span>{isEs ? PERSONAL_INFO.location : ENGLISH_TRANSLATIONS.availableBadge}</span>
             </div>
-            <div className="flex min-h-8 max-w-full items-center gap-2 bg-black/5 px-2.5 py-1 text-[#1a1a1a]">
-              <span className="shrink-0 font-mono text-[10px] font-bold uppercase tracking-widest text-[#0d4d4d]">
-                {currentCapability.label}
+            <div className="relative h-13 w-full max-w-full overflow-hidden bg-black/5 text-[#1a1a1a] sm:h-8 sm:w-[26rem]">
+              <span className="sr-only">
+                {capabilities.map(({ label, outcome }) => `${label}: ${outcome}`).join('. ')}
               </span>
-              <span aria-hidden="true" className="text-xs text-[#999999]">→</span>
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span
-                  key={currentCapability.outcome}
-                  initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -4 }}
-                  transition={{ duration: prefersReducedMotion ? 0 : 0.25 }}
-                  className="truncate font-serif-editorial text-sm italic"
+              <AnimatePresence mode="sync" initial={false}>
+                <motion.div
+                  key={`${language}-${activeCapability}`}
+                  aria-hidden="true"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, transition: { duration: prefersReducedMotion ? 0 : 0.16, delay: prefersReducedMotion ? 0 : 0.08 } }}
+                  exit={{ opacity: 0, transition: { duration: prefersReducedMotion ? 0 : 0.12 } }}
+                  className="absolute inset-0 grid grid-cols-[auto_1fr] grid-rows-2 items-center gap-x-2 px-2.5 py-1 sm:flex sm:whitespace-nowrap"
                 >
-                  {currentCapability.outcome}
-                </motion.span>
+                  <span className="col-span-2 font-mono text-[10px] font-bold uppercase tracking-widest text-[#0d4d4d] sm:col-span-1">
+                    {currentCapability.label}
+                  </span>
+                  <span className="text-xs text-[#999999]">→</span>
+                  <span className="font-serif-editorial text-sm italic">
+                    {currentCapability.outcome}
+                  </span>
+                </motion.div>
               </AnimatePresence>
             </div>
           </motion.div>
@@ -226,8 +231,8 @@ export const Hero: React.FC<HeroProps> = ({ language, onOpenCvModal, onOpenJobPr
                 </strong>
                 <span>
                   {isEs
-                    ? 'Uso pragmático de Gemini 2.0 con fuentes oficializadas y cero alucinaciones.'
-                    : 'Pragmatic use of Gemini 2.0 with official sources and zero hallucinations.'}
+                    ? 'Uso pragmático de Gemini 2.5 con fuentes oficiales y resultados auditables.'
+                    : 'Pragmatic use of Gemini 2.5 with official sources and reviewable results.'}
                 </span>
               </div>
             </div>

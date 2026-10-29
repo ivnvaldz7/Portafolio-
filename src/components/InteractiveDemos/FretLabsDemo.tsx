@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { Sliders, Download, Eye, Layers } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Language } from '../../types';
 
 export const FretLabsDemo: React.FC<{ language: Language }> = ({ language }) => {
   const isEs = language === 'es';
+  const reduceMotion = useReducedMotion();
   const [scaleLength, setScaleLength] = useState<number>(25.5); // Inches
   const [scaleType, setScaleType] = useState<'single' | 'multiscale'>('single');
   const [bassScale, setBassScale] = useState<number>(27.0); // Bass scale for multiscale
@@ -56,18 +58,20 @@ export const FretLabsDemo: React.FC<{ language: Language }> = ({ language }) => 
           </div>
           <div>
             <h3 className="font-bold text-base text-white flex items-center gap-2">
-              FretLabs CAD <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono">Live Demo</span>
+              FretLabs CAD <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono">{isEs ? 'Muestra interactiva' : 'Interactive preview'}</span>
             </h3>
             <p className="text-xs text-slate-400">{isEs ? 'Calculador numérico y motor gráfico de diapasones para luthiers' : 'Numerical calculator and fretboard graphics engine for luthiers'}</p>
           </div>
         </div>
-        <button
+        <motion.button
           onClick={handleDownloadSVG}
-          className="px-3.5 py-1.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs rounded-lg transition-all flex items-center gap-1.5 shadow-md shadow-amber-950/40"
+          whileHover={reduceMotion ? undefined : { y: -2 }}
+          whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+          className="px-3.5 py-1.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs rounded-lg transition-colors flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
         >
           <Download className="w-3.5 h-3.5" />
           {isEs ? 'Exportar SVG CNC' : 'Export CNC SVG'}
-        </button>
+        </motion.button>
       </div>
 
       {/* Controls Grid */}
@@ -101,8 +105,9 @@ export const FretLabsDemo: React.FC<{ language: Language }> = ({ language }) => 
           <span className="text-[11px] text-amber-400 font-mono">{(scaleLength * 25.4).toFixed(1)} mm</span>
         </div>
 
+        <AnimatePresence initial={false}>
         {scaleType === 'multiscale' && (
-          <div>
+          <motion.div key="bass-scale" initial={{ opacity: 0, y: reduceMotion ? 0 : 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }} transition={{ duration: reduceMotion ? 0 : 0.22 }}>
             <label className="text-slate-400 block mb-1 font-mono">
               {isEs ? 'Escala Graves' : 'Bass Scale'} ({bassScale}"):
             </label>
@@ -116,8 +121,9 @@ export const FretLabsDemo: React.FC<{ language: Language }> = ({ language }) => 
               className="w-full accent-amber-500"
             />
             <span className="text-[11px] text-amber-400 font-mono">{(bassScale * 25.4).toFixed(1)} mm</span>
-          </div>
+          </motion.div>
         )}
+        </AnimatePresence>
 
           <div>
           <label className="text-slate-400 block mb-1 font-mono">{isEs ? 'Cantidad de Trastes' : 'Number of Frets'}: ({fretCount})</label>

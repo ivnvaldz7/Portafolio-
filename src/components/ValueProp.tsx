@@ -61,7 +61,7 @@ export const ValueProp: React.FC<ValuePropProps> = ({ language }) => {
                   {isEs ? 'IA con Grounding' : 'Grounded AI'}
                 </h3>
                 <p className="text-[#666666] leading-snug text-[11px]">
-                  {isEs ? 'Anclaje de LLMs contra datos oficiales sin alucinaciones.' : 'Anchoring LLMs against official data for zero hallucinations.'}
+                  {isEs ? 'Anclaje de LLMs contra datos oficiales con resultados auditables.' : 'Grounding LLMs in official data to make results reviewable.'}
                 </p>
               </div>
 

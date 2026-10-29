@@ -4,7 +4,7 @@ import { X, ExternalLink, ShieldCheck, Cpu, ArrowLeft, Lightbulb, AlertTriangle,
 import { ChecARDemo } from './InteractiveDemos/ChecARDemo';
 import { FretLabsDemo } from './InteractiveDemos/FretLabsDemo';
 import { ElFulboDemo } from './InteractiveDemos/ElFulboDemo';
-import { motion } from 'motion/react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 
 interface CaseStudyModalProps {
   project: Project | null;
@@ -15,14 +15,13 @@ interface CaseStudyModalProps {
 
 export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, language, initialTab, onClose }) => {
   const [activeTab, setActiveTab] = React.useState<'caseStudy' | 'demo'>(initialTab);
-  if (!project) return null;
-
+  const reduceMotion = useReducedMotion();
   const isEs = language === 'es';
-  const { caseStudy } = project;
   const modalRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    if (!project) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
@@ -31,6 +30,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
   }, [onClose]);
 
   useEffect(() => {
+    if (!project) return;
     previousFocusRef.current = document.activeElement as HTMLElement | null;
     modalRef.current?.focus();
 
@@ -40,6 +40,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
   }, [project]);
 
   useEffect(() => {
+    if (!project) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
@@ -52,10 +53,13 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
     setActiveTab(initialTab);
   }, [initialTab, project]);
 
+  if (!project) return null;
+  const { caseStudy } = project;
+
   const renderDemoWidget = () => {
     switch (project.demoType) {
       case 'checar':
-        return <ChecARDemo language={language} />;
+        return <ChecARDemo language={language} liveUrl={project.liveUrl} />;
       case 'fretlabs':
         return <FretLabsDemo language={language} />;
       case 'elfulbo':
@@ -76,7 +80,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: reduceMotion ? 0 : 0.2 }}
       className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex justify-end outline-none"
     >
       <motion.div
@@ -84,7 +88,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
         initial={{ x: '100%' }}
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
-        transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+        transition={reduceMotion ? { duration: 0 } : { duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
         className="w-full max-w-4xl bg-[#fcfaf7] text-[#1a1a1a] min-h-full p-6 md:p-10 shadow-2xl border-l border-[#1a1a1a]/20 space-y-8 overflow-y-auto"
       >
         {/* Top Sticky Bar */}
@@ -126,8 +130,9 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-[#1a1a1a]/10 pb-4">
+        <div aria-label={isEs ? 'Vistas del proyecto' : 'Project views'} className="flex flex-wrap items-center gap-2 border-b border-[#1a1a1a]/10 pb-4">
           <button
+            aria-pressed={activeTab === 'caseStudy'}
             onClick={() => setActiveTab('caseStudy')}
             className={`px-4 py-2 text-xs font-mono font-bold transition-all ${
               activeTab === 'caseStudy'
@@ -138,6 +143,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
             {isEs ? 'CASO DE ESTUDIO' : 'CASE STUDY'}
           </button>
           <button
+            aria-pressed={activeTab === 'demo'}
             onClick={() => setActiveTab('demo')}
             className={`px-4 py-2 text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
               activeTab === 'demo'
@@ -150,25 +156,30 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
           </button>
         </div>
 
+        <AnimatePresence mode="wait" initial={false}>
         {activeTab === 'demo' ? (
           /* Interactive Live Demo Embedded Section */
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
+          <motion.div
+            key="demo"
+            initial={{ opacity: 0, y: reduceMotion ? 0 : 8 }}
             animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: reduceMotion ? 0 : -6 }}
+            transition={{ duration: reduceMotion ? 0 : 0.22 }}
             className="space-y-3"
           >
             <div className="border border-[#0d4d4d]/20 bg-[#f0f4f4] px-4 py-3 text-xs leading-relaxed text-[#315555]">
-              {isEs
-                ? `Esta es una muestra conceptual del flujo principal. Para verificar el producto completo, usá el ${project.liveUrl ? 'enlace de la aplicación real' : 'enlace al repositorio'} al final del caso.`
-                : `This is a conceptual sample of the main flow. To verify the complete product, use the ${project.liveUrl ? 'live application link' : 'repository link'} at the end of the case study.`}
+              {isEs ? 'Muestra interactiva del flujo principal del producto.' : 'Interactive sample of the product’s main flow.'}
             </div>
             {renderDemoWidget()}
           </motion.div>
         ) : (
           /* Case Study Sections */
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
+          <motion.div
+            key="case-study"
+            initial={{ opacity: 0, y: reduceMotion ? 0 : 8 }}
             animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: reduceMotion ? 0 : -6 }}
+            transition={{ duration: reduceMotion ? 0 : 0.22 }}
             className="space-y-8"
           >
             {/* 1. Contexto & Problema */}
@@ -276,6 +287,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
         </div>
       </motion.div>
       )}
+        </AnimatePresence>
 
         {/* Footer Links */}
         <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#1a1a1a]/10">

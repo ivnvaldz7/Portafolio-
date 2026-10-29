@@ -9,7 +9,7 @@ Este es un portfolio interactivo full-stack y hub de productos diseñado para ex
 ## 🚀 Características Principales
 
 - **Muestras conceptuales integradas**:
-  - **ChecAR**: Asistente con Inteligencia Artificial (Gemini API) para la verificación periodística de afirmaciones políticas con fuentes oficiales.
+  - **ChecAR**: Preview interactiva que separa fragmentos del texto para revisar. No emite veredictos; enlaza a la aplicación completa.
   - **El Fulbo**: PWA para la organización de partidos de fútbol amateur y generación de placas sociales.
   - **FretLabs**: Calculador CAD numérico y diseñador SVG para luthiers con exportación de medidas de trastes.
 - **Perfil profesional y CV**: Modales bilingües de lectura rápida para revisar el posicionamiento, la experiencia seleccionada y el perfil de búsqueda.
@@ -27,9 +27,10 @@ Edita `src/data/portfolioData.ts` y `src/data/portfolioDataEn.ts` para mantener 
 
 ## 🛠️ Stack Tecnológico
 
-- **Frontend**: React 19, TypeScript, Vite, Tailwind CSS v4, Motion (Framer Motion), Lucide React Icons, Canvas Confetti.
+- **Frontend**: React 19, TypeScript, Vite, Tailwind CSS v4, Motion, Lucide React Icons.
 - **Backend / API**: Node.js, Express, TSX, Esbuild.
-- **Inteligencia Artificial**: `@google/genai` (Google Gemini 2.0 Flash / Gemini 1.5).
+- **Muestra ChecAR**: `POST /api/checar/analyze` comparte la lógica de preview entre Express y Netlify. `GET /api/health` está disponible en ambos entornos.
+- **Aplicación ChecAR**: vive en [checar-v2.vercel.app](https://checar-v2.vercel.app) y mantiene su propia integración de IA.
 
 ---
 
@@ -37,7 +38,7 @@ Edita `src/data/portfolioData.ts` y `src/data/portfolioDataEn.ts` para mantener 
 
 ### Requisitos Previos
 - **Node.js**: v20 o superior.
-- **npm** o **bun**.
+- **npm**.
 
 ### Pasos de Instalación
 
@@ -52,17 +53,13 @@ Edita `src/data/portfolioData.ts` y `src/data/portfolioDataEn.ts` para mantener 
    npm install
    ```
 
-3. **Configurar variables de entorno**:
-   Crea un archivo `.env` en la raíz del proyecto basándote en `.env.example`:
-   ```env
-   GEMINI_API_KEY="Tu_API_Key_de_Google_AI_Studio"
-   ```
-
-4. **Iniciar el servidor de desarrollo**:
+3. **Iniciar el servidor de desarrollo**:
    ```bash
    npm run dev
    ```
    Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+
+Para validar los endpoints y el contrato de la preview, ejecutá `npm test`. El chequeo de tipos es `npm run lint`.
 
 ---
 
@@ -87,24 +84,22 @@ npm run start
 
 Puedes desplegar este proyecto en múltiples plataformas gratuitas o de bajo costo:
 
-### Option A: Despliegue en **Netlify** (Frontend SPA + función ChecAR)
+### Opción A: Despliegue en **Netlify** (Frontend SPA + funciones de preview y salud)
 Si deseas desplegarlo rápidamente como una Single Page Application (SPA):
 1. Sube el código a tu repositorio de GitHub.
 2. Conecta el repositorio en [Vercel](https://vercel.com) o [Netlify](https://netlify.com).
 3. Configura los parámetros del proyecto:
    - **Build Command**: `npm run build`
    - **Output Directory**: `dist`
-4. *(Opcional)* Para habilitar el análisis real de ChecAR, agrega la variable de entorno `GEMINI_API_KEY` en el panel de configuración. Sin esa clave, la función devuelve una simulación demostrativa.
+4. La preview de ChecAR funciona sin clave de IA. La aplicación completa tiene su despliegue y configuración independientes.
 
 ### Option B: Despliegue Full-Stack en **Render** / **Railway** / **Fly.io**
-Para mantener el servidor Node.js/Express ejecutándose con el proxy seguro de Gemini:
+Para ejecutar el mismo portafolio con el servidor Node.js/Express:
 1. Crea un nuevo **Web Service** en Render/Railway conectado a tu repositorio GitHub.
 2. Configura los comandos:
    - **Build Command**: `npm run build`
    - **Start Command**: `npm run start`
-3. Agrega las variables de entorno en el panel:
-   - `GEMINI_API_KEY`: Tu API key de Gemini.
-   - `NODE_ENV`: `production`
+3. Configura `NODE_ENV=production` en el servicio.
 
 ---
 

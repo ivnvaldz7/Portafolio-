@@ -1,61 +1,46 @@
-import React, { useState } from 'react';
-import { Search, Sparkles, CheckCircle2, AlertTriangle, XCircle, HelpCircle, ExternalLink, RefreshCw, Layers } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { ArrowUpRight, FileSearch, LoaderCircle, Search, ShieldAlert } from 'lucide-react';
 import { Language } from '../../types';
+import type { PreviewResponse } from '../../lib/checarPreview';
+import { MAX_PREVIEW_TEXT_LENGTH } from '../../lib/checarPreview';
 
-interface ClaimResult {
-  claim: string;
-  verdict: 'VERDADERO' | 'ENGAÑOSO' | 'FALSO' | 'INCOMPROBABLE';
-  explanation: string;
-  source: string;
-  historicalContext: string;
-}
-
-const SAMPLE_ARTICLES = [
+const EXAMPLES = [
   {
-    title: "Declaración sobre Inflación acumulada y Precios INDEC",
-    text: "El vocero oficial afirmó en conferencia de prensa que la inflación acumulada del primer semestre descendió un 42% respecto al período anterior y que el superávit fiscal financiero alcanzado es el mayor en los últimos 20 años de registros continuos del Ministerio de Economía."
+    titleEs: 'Declaración pública',
+    titleEn: 'Public statement',
+    textEs: 'El comunicado afirma que la medida fue aprobada por unanimidad. También sostiene que el presupuesto aumentó un 20% respecto del año anterior.',
+    textEn: 'The statement says the measure was approved unanimously. It also claims the budget rose 20% from the previous year.',
   },
   {
-    title: "Debate sobre Presupuesto Universitario y Masa Salarial",
-    text: "Autoridades del área educativa remarcaron que el presupuesto universitario se incrementó un 300% en términos reales ajustados por IPC nacional, garantizando el funcionamiento de todas las casas de altos estudios públicas."
-  }
+    titleEs: 'Nota periodística',
+    titleEn: 'News article',
+    textEs: 'La nota indica que el programa alcanzó a todas las provincias. Según el artículo, la inversión se duplicó en los últimos dos años.',
+    textEn: 'The article says the program reached every province. According to the report, investment doubled over the last two years.',
+  },
 ];
 
-export const ChecARDemo: React.FC<{ language: Language }> = ({ language }) => {
+export const ChecARDemo: React.FC<{ language: Language; liveUrl?: string }> = ({ language, liveUrl }) => {
   const isEs = language === 'es';
-  const [inputText, setInputText] = useState(SAMPLE_ARTICLES[0].text);
+  const reduceMotion = useReducedMotion();
+  const [inputText, setInputText] = useState(isEs ? EXAMPLES[0].textEs : EXAMPLES[0].textEn);
+  const [selectedExample, setSelectedExample] = useState<number | null>(0);
   const [loading, setLoading] = useState(false);
-  const [progressStep, setProgressStep] = useState<string>('');
-  const [results, setResults] = useState<{ summary: string; claims: ClaimResult[]; liveApi?: boolean } | null>(null);
+  const [results, setResults] = useState<PreviewResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const transition = { duration: reduceMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] as const };
 
-  const handleAnalyze = async (textToUse?: string) => {
-    const text = textToUse || inputText;
-    if (!text || text.trim().length < 5) return;
+  useEffect(() => {
+    if (selectedExample === null) return;
+    setInputText(isEs ? EXAMPLES[selectedExample].textEs : EXAMPLES[selectedExample].textEn);
+    setResults(null);
+  }, [isEs, selectedExample]);
 
+  const handleAnalyze = async (text = inputText) => {
+    if (loading || text.trim().length < 5) return;
     setLoading(true);
     setError(null);
     setResults(null);
-
-    // Simulate real-time streaming progress steps
-    const steps = isEs
-      ? [
-          "Extrayendo texto con @mozilla/readability...",
-          "Identificando afirmaciones verificables clave...",
-          "Anclando búsquedas en fuentes oficiales (INDEC, MECON, BCRA)...",
-          "Sintetizando veredictos con Gemini 2.0 Flash..."
-        ]
-      : [
-          "Extracting text with @mozilla/readability...",
-          "Identifying key verifiable claims...",
-          "Grounding searches in official sources (INDEC, MECON, BCRA)...",
-          "Synthesizing verdicts with Gemini 2.0 Flash..."
-        ];
-
-    for (let i = 0; i < steps.length; i++) {
-      setProgressStep(steps[i]);
-      await new Promise((r) => setTimeout(r, 450));
-    }
 
     try {
       const response = await fetch('/api/checar/analyze', {
@@ -63,199 +48,130 @@ export const ChecARDemo: React.FC<{ language: Language }> = ({ language }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text }),
       });
-
-      const data = await response.json();
-      if (data.success && typeof data.summary === 'string' && Array.isArray(data.claims)) {
-        setResults({
-          summary: data.summary,
-          claims: data.claims,
-          liveApi: data.liveApi
-        });
-      } else {
-        setError(data.error || (isEs ? 'Error al procesar el análisis.' : 'Could not process the analysis.'));
+      const data: unknown = await response.json().catch(() => null);
+      if (!response.ok) {
+        const message = data && typeof data === 'object' && 'error' in data ? String(data.error) : '';
+        const fallback = response.status === 429
+          ? (isEs ? 'Llegaste al límite de intentos. Probá de nuevo en un minuto.' : 'You reached the request limit. Try again in a minute.')
+          : (isEs ? 'No se pudo preparar la muestra.' : 'Could not prepare the preview.');
+        throw new Error(message || fallback);
       }
-    } catch (err: any) {
-      console.error(err);
-      setError(isEs ? 'Error de conexión con el servidor de análisis.' : 'Could not connect to the analysis server.');
+      if (!data || typeof data !== 'object' || !('mode' in data) || data.mode !== 'preview'
+        || !('candidates' in data) || !Array.isArray(data.candidates)) {
+        throw new Error(isEs ? 'La respuesta de la muestra no es válida.' : 'The preview response is invalid.');
+      }
+      setResults(data as PreviewResponse);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : (isEs ? 'Error de conexión.' : 'Connection error.'));
     } finally {
       setLoading(false);
-      setProgressStep('');
-    }
-  };
-
-  const getVerdictBadge = (verdict: ClaimResult['verdict']) => {
-    switch (verdict) {
-      case 'VERDADERO':
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300 text-xs font-bold">
-            <CheckCircle2 className="w-3.5 h-3.5" /> VERDADERO
-          </span>
-        );
-      case 'ENGAÑOSO':
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 text-xs font-bold">
-            <AlertTriangle className="w-3.5 h-3.5" /> ENGAÑOSO
-          </span>
-        );
-      case 'FALSO':
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300 text-xs font-bold">
-            <XCircle className="w-3.5 h-3.5" /> FALSO
-          </span>
-        );
-      default:
-        return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300 text-xs font-bold">
-            <HelpCircle className="w-3.5 h-3.5" /> INCOMPROBABLE
-          </span>
-        );
     }
   };
 
   return (
-    <div className="bg-slate-900 text-slate-100 rounded-2xl p-5 md:p-6 shadow-2xl border border-slate-800 my-4 text-sm font-sans">
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800">
-        <div className="flex items-center gap-2.5">
-          <div className="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">
-            <Sparkles className="w-5 h-5" />
-          </div>
-          <div>
-            <h3 className="font-bold text-base text-white flex items-center gap-2">
-              ChecAR <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">{isEs ? 'Muestra' : 'Sample'}</span>
-            </h3>
-            <p className="text-xs text-slate-400">{isEs ? 'Verificación asistida con IA & Grounding de datos oficiales' : 'AI-assisted verification with official data grounding'}</p>
-          </div>
-        </div>
-        <div className="text-xs text-slate-400 flex items-center gap-2 font-mono">
-          <Layers className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Gemini 2.0 Flash + Grounding</span>
-        </div>
-      </div>
-
-      {/* Preset Selectors */}
-      <div className="mt-4">
-        <label className="text-xs font-semibold text-slate-300 block mb-2">
-          {isEs ? 'Cargar artículo de prueba o pegar texto político:' : 'Load a sample article or paste political text:'}
-        </label>
-        <div className="flex flex-wrap gap-2 mb-3">
-          {SAMPLE_ARTICLES.map((art, idx) => (
-            <button
-              key={idx}
-              type="button"
-              disabled={loading}
-              onClick={() => {
-                setInputText(art.text);
-                handleAnalyze(art.text);
-              }}
-              className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-lg transition-colors text-left"
-            >
-              📄 {art.title}
-            </button>
-          ))}
-        </div>
-
-        {/* Text Area */}
-        <div className="relative">
-          <textarea
-            rows={3}
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            placeholder={isEs ? 'Pega aquí el texto de la noticia, discurso o publicación para verificar...' : 'Paste a news article, speech, or post to verify...'}
-            className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-all font-mono"
-          />
-          <button
-            type="button"
-            disabled={loading}
-            onClick={() => handleAnalyze()}
-            className="mt-2 w-full sm:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs rounded-xl transition-all shadow-lg shadow-emerald-900/30 flex items-center justify-center gap-2 disabled:opacity-50"
-          >
-            {loading ? (
-              <>
-                <RefreshCw className="w-4 h-4 animate-spin text-emerald-200" />
-                <span>Analizando...</span>
-              </>
-            ) : (
-              <>
-                <Search className="w-4 h-4" />
-                <span>{isEs ? 'Ejecutar Análisis ChecAR' : 'Run ChecAR Analysis'}</span>
-              </>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Loading Progress Stream */}
-      {loading && (
-        <div className="mt-5 p-4 rounded-xl bg-slate-950/80 border border-emerald-500/30 flex items-center gap-3 animate-pulse">
-          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-          <span className="text-xs text-emerald-300 font-mono">{progressStep}</span>
-        </div>
-      )}
-
-      {/* Error state */}
-      {error && (
-        <div className="mt-4 p-3 bg-rose-950/50 border border-rose-800 rounded-xl text-rose-300 text-xs">
-          {error}
-        </div>
-      )}
-
-      {/* Results Section */}
-      {results && !loading && (
-        <div className="mt-6 space-y-4 animate-fade-in">
-          {/* Executive Summary */}
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider font-mono">
-                {isEs ? 'Briefing Ejecutivo ChecAR' : 'ChecAR Executive Briefing'}
-              </span>
-              {results.liveApi && (
-                <span className="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800/60 px-2 py-0.5 rounded font-mono">
-                   ● {isEs ? 'Respuesta en Vivo (Gemini 2.0 API)' : 'Live Response (Gemini 2.0 API)'}
+    <div className="my-4 overflow-hidden rounded-2xl border border-slate-800 bg-slate-950 text-slate-100 shadow-xl font-sans">
+      <div className="border-b border-slate-800 bg-slate-900/70 px-5 py-5 md:px-6">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <span className="rounded-lg border border-emerald-400/20 bg-emerald-400/10 p-2 text-emerald-300"><FileSearch className="h-5 w-5" /></span>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-base font-semibold text-white">ChecAR</h3>
+                <span className="rounded-full border border-emerald-400/30 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-emerald-300">
+                  {isEs ? 'Vista previa interactiva' : 'Interactive preview'}
                 </span>
-              )}
-            </div>
-            <p className="text-xs text-slate-200 leading-relaxed">{results.summary}</p>
-          </div>
-
-          {/* Claims List */}
-          <div className="space-y-3">
-            <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider font-mono">
-              {isEs ? 'Afirmaciones Analizadas' : 'Analyzed Claims'} ({results.claims.length})
-            </h4>
-
-            {results.claims.map((item, idx) => (
-              <div
-                key={idx}
-                className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-slate-700 transition-all space-y-2.5"
-              >
-                <div className="flex flex-wrap items-start justify-between gap-2">
-                  <p className="font-semibold text-slate-100 text-xs leading-snug flex-1">
-                    "{item.claim}"
-                  </p>
-                  <div>{getVerdictBadge(item.verdict)}</div>
-                </div>
-
-                <p className="text-xs text-slate-300 leading-relaxed bg-slate-900/60 p-2.5 rounded-lg border border-slate-850">
-                  {item.explanation}
-                </p>
-
-                <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400 pt-1 border-t border-slate-900 font-mono">
-                  <span className="flex items-center gap-1.5 text-emerald-400">
-                    <ExternalLink className="w-3 h-3" />
-                     {isEs ? 'Fuente:' : 'Source:'} {item.source}
-                  </span>
-                  {item.historicalContext && (
-                    <span className="text-slate-400 truncate max-w-full">
-                       📊 {isEs ? 'Contexto:' : 'Context:'} {item.historicalContext}
-                    </span>
-                  )}
-                </div>
               </div>
+              <p className="mt-1 max-w-xl text-xs leading-relaxed text-slate-400">
+                {isEs
+                  ? 'Explorá cómo se separan fragmentos para investigar. El contraste con fuentes y los veredictos pertenecen a la aplicación completa.'
+                  : 'Explore how passages are prepared for investigation. Source checks and verdicts belong to the full application.'}
+              </p>
+            </div>
+          </div>
+          {liveUrl && (
+            <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-400/40 px-3 py-2 text-xs font-semibold text-emerald-200 transition-colors hover:bg-emerald-400/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300">
+              {isEs ? 'Probar app completa' : 'Try full app'} <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
+          )}
+        </div>
+      </div>
+
+      <div className="space-y-5 p-5 md:p-6">
+        <div className="space-y-2">
+          <p className="text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-400">
+            {isEs ? 'Textos de ejemplo ficticios' : 'Fictional sample texts'}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {EXAMPLES.map((example, index) => (
+              <button key={example.titleEs} type="button" disabled={loading} onClick={() => {
+                setSelectedExample(index);
+                setInputText(isEs ? example.textEs : example.textEn);
+                setResults(null);
+                setError(null);
+              }} className={`rounded-lg border px-3 py-2 text-xs transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 ${selectedExample === index ? 'border-emerald-400/60 bg-emerald-400/10 text-emerald-100' : 'border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-900'}`}>
+                {isEs ? example.titleEs : example.titleEn}
+              </button>
             ))}
           </div>
         </div>
-      )}
+
+        <div>
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <label htmlFor="checar-preview-text" className="text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-300">
+              {isEs ? 'Texto para explorar' : 'Text to explore'}
+            </label>
+            <span className="text-[11px] font-mono text-slate-500">{inputText.length}/{MAX_PREVIEW_TEXT_LENGTH}</span>
+          </div>
+          <textarea id="checar-preview-text" rows={4} maxLength={MAX_PREVIEW_TEXT_LENGTH} value={inputText} onChange={(event) => {
+            setInputText(event.target.value);
+            setSelectedExample(null);
+            setResults(null);
+            setError(null);
+          }} className="w-full resize-y rounded-xl border border-slate-700 bg-slate-900 p-3 text-sm leading-relaxed text-slate-100 outline-none transition-colors placeholder:text-slate-500 focus:border-emerald-400" placeholder={isEs ? 'Pegá una declaración o un fragmento de una nota...' : 'Paste a statement or news excerpt...'} />
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-xs text-slate-500">{isEs ? 'La muestra identifica fragmentos; no realiza fact-checking.' : 'This preview finds passages; it does not fact-check.'}</p>
+            <motion.button type="button" disabled={loading || inputText.trim().length < 5} onClick={() => handleAnalyze()} whileHover={reduceMotion ? undefined : { y: -2 }} whileTap={reduceMotion ? undefined : { scale: 0.98 }} className="inline-flex min-w-40 items-center justify-center gap-2 rounded-lg bg-emerald-500 px-4 py-2.5 text-xs font-semibold text-slate-950 transition-colors hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300">
+              {loading ? <LoaderCircle className="h-4 w-4 motion-safe:animate-spin" /> : <Search className="h-4 w-4" />}
+              {loading ? (isEs ? 'Preparando...' : 'Preparing...') : (isEs ? 'Explorar texto' : 'Explore text')}
+            </motion.button>
+          </div>
+        </div>
+
+        <div aria-live="polite" aria-busy={loading}>
+          <AnimatePresence mode="wait" initial={false}>
+            {loading ? (
+              <motion.div key="loading" initial={{ opacity: 0, y: reduceMotion ? 0 : 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduceMotion ? 0 : -6 }} transition={transition} className="rounded-xl border border-slate-700 bg-slate-900 p-4 text-xs text-slate-300">
+                {isEs ? 'Preparando fragmentos para la vista previa…' : 'Preparing passages for the preview…'}
+              </motion.div>
+            ) : error ? (
+              <motion.div key="error" role="alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={transition} className="flex items-start gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 p-4 text-xs text-rose-200">
+                <ShieldAlert className="h-4 w-4 shrink-0" /> {error}
+              </motion.div>
+            ) : results ? (
+              <motion.div key="results" initial={{ opacity: 0, y: reduceMotion ? 0 : 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={transition} className="space-y-4">
+                <div className="rounded-xl border border-emerald-400/20 bg-emerald-400/5 p-4">
+                  <div className="mb-1 flex items-center justify-between gap-2 text-[11px] font-mono font-semibold uppercase tracking-wider text-emerald-300">
+                    <span>{isEs ? 'Resultado de la muestra' : 'Preview result'}</span>
+                    <span>{results.candidates.length} {isEs ? 'fragmentos' : 'passages'}</span>
+                  </div>
+                  <p className="text-xs leading-relaxed text-slate-300">{isEs ? results.summary : `Found ${results.candidates.length} passages to review. This preview does not issue verdicts or consult sources.`}</p>
+                </div>
+                <div className="space-y-2">
+                  {results.candidates.map((candidate, index) => (
+                    <motion.div key={`${index}-${candidate}`} initial={{ opacity: 0, y: reduceMotion ? 0 : 8 }} animate={{ opacity: 1, y: 0 }} transition={{ ...transition, delay: reduceMotion ? 0 : index * 0.07 }} className="flex gap-3 rounded-xl border border-slate-800 bg-slate-900/70 p-4">
+                      <span className="font-mono text-xs text-emerald-300">0{index + 1}</span>
+                      <div className="min-w-0">
+                        <p className="text-sm leading-relaxed text-slate-100">{candidate}</p>
+                        <p className="mt-2 text-[11px] font-mono uppercase tracking-wider text-slate-500">{isEs ? 'Pendiente de contraste con fuentes' : 'Awaiting source verification'}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   );
 };

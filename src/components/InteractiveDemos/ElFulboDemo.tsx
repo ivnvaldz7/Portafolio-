@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Users, Shuffle, Share2, Check, Smartphone, Sparkles } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Language } from '../../types';
 
 interface Player {
@@ -25,6 +25,7 @@ const INITIAL_PLAYERS: Player[] = [
 
 export const ElFulboDemo: React.FC<{ language: Language }> = ({ language }) => {
   const isEs = language === 'es';
+  const reduceMotion = useReducedMotion();
   const [players, setPlayers] = useState<Player[]>(INITIAL_PLAYERS);
   const [teamA, setTeamA] = useState<Player[]>([]);
   const [teamB, setTeamB] = useState<Player[]>([]);
@@ -32,7 +33,9 @@ export const ElFulboDemo: React.FC<{ language: Language }> = ({ language }) => {
   const [copyError, setCopyError] = useState(false);
 
   const toggleConfirm = (id: number) => {
-    setPlayers(players.map(p => p.id === id ? { ...p, confirmed: !p.confirmed } : p));
+    setPlayers(current => current.map(p => p.id === id ? { ...p, confirmed: !p.confirmed } : p));
+    setTeamA([]);
+    setTeamB([]);
   };
 
   const handleDrawTeams = () => {
@@ -52,11 +55,6 @@ export const ElFulboDemo: React.FC<{ language: Language }> = ({ language }) => {
     setTeamA(tA);
     setTeamB(tB);
 
-    confetti({
-      particleCount: 40,
-      spread: 60,
-      origin: { y: 0.8 }
-    });
   };
 
   const generateWhatsAppMessage = () => {
@@ -91,18 +89,21 @@ export const ElFulboDemo: React.FC<{ language: Language }> = ({ language }) => {
           </div>
           <div>
             <h3 className="font-bold text-base text-white flex items-center gap-2">
-              El Fulbo PWA <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">Live Simulator</span>
+              El Fulbo PWA <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">{isEs ? 'Muestra interactiva' : 'Interactive preview'}</span>
             </h3>
             <p className="text-xs text-slate-400">{isEs ? 'Coordinador de grupos, asistencia y sorteo equilibrado para WhatsApp' : 'Group coordination, attendance and balanced draws for WhatsApp'}</p>
           </div>
         </div>
-        <button
+        <motion.button
           onClick={handleDrawTeams}
-          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 shadow-lg shadow-emerald-950/50"
+          disabled={players.filter(p => p.confirmed).length < 4}
+          whileHover={reduceMotion ? undefined : { y: -2 }}
+          whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition-colors flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Shuffle className="w-4 h-4" />
           {isEs ? 'Sorteo Equilibrado' : 'Balanced Draw'}
-        </button>
+        </motion.button>
       </div>
 
       {/* Players Confirmations */}
@@ -114,25 +115,31 @@ export const ElFulboDemo: React.FC<{ language: Language }> = ({ language }) => {
 
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
           {players.map((p) => (
-            <button
+            <motion.button
               key={p.id}
               onClick={() => toggleConfirm(p.id)}
-              className={`p-2 rounded-xl text-left border text-xs transition-all flex items-center justify-between ${
+              aria-pressed={p.confirmed}
+              whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+              layout
+              className={`p-2 rounded-xl text-left border text-xs transition-colors flex items-center justify-between ${
                 p.confirmed
                   ? 'bg-emerald-950/40 border-emerald-600/50 text-emerald-200'
                   : 'bg-slate-950 border-slate-800 text-slate-500 line-through'
               }`}
             >
               <span className="truncate">{p.name}</span>
-              {p.confirmed && <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />}
-            </button>
+              <AnimatePresence initial={false}>
+                {p.confirmed && <motion.span key="check" initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.7 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.7 }} transition={{ duration: reduceMotion ? 0 : 0.18 }}><Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" /></motion.span>}
+              </AnimatePresence>
+            </motion.button>
           ))}
         </div>
       </div>
 
       {/* Sorteo Result Teams */}
+      <AnimatePresence mode="wait" initial={false}>
       {teamA.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4 animate-fade-in">
+        <motion.div key={`${teamA.map(p => p.id).join('-')}:${teamB.map(p => p.id).join('-')}`} initial={{ opacity: 0, y: reduceMotion ? 0 : 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduceMotion ? 0 : -8 }} transition={{ duration: reduceMotion ? 0 : 0.3, ease: [0.22, 1, 0.36, 1] }} className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
           {/* Team A */}
           <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-800/60">
             <h4 className="font-bold text-xs text-emerald-400 uppercase tracking-wider font-mono mb-2.5 flex items-center gap-2">
@@ -162,8 +169,9 @@ export const ElFulboDemo: React.FC<{ language: Language }> = ({ language }) => {
               ))}
             </ul>
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
 
       {/* WhatsApp Shareable Card Output */}
       <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">

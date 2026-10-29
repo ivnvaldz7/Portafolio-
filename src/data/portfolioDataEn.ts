@@ -9,19 +9,20 @@ export const PROJECTS_DATA_EN: Project[] = [
     tagline: "Smart assistant for journalistic fact-checking of Argentine political discourse.",
     problemSummary: "Traditional fact-checking requires manually contrasting public statements against multiple official sources, tax, and budget databases, consuming hours of research under editorial pressure.",
     targetUser: "Journalists, fact-checkers, media analysts, and political communication teams.",
-    myContribution: "Complete frontend and backend architecture design, extraction flow with Readability, verification pipeline with Gemini 2.0 Flash + Search Grounding, and Socket.io for streaming communication.",
+    myContribution: "Complete frontend and backend architecture design, extraction flow with Readability, verification pipeline with Gemini 2.5 Flash + Search Grounding, and Socket.io for streaming communication.",
     period: "2025 - Present", 
     role: "Creator & Lead Product Developer", 
     cvHighlights: [
       "Designed and implemented a web application for automatic verification of Argentine political discourse, extracting up to 7 key claims per text.",
-      "Integrated Gemini 2.0 Flash with Google Search Grounding configured with official domains (INDEC, MECON, BCRA) to ground verdicts with zero hallucinations.",
+      "Integrated Gemini 2.5 Flash with Google Search Grounding to support verdicts with sources users can review.",
       "Made the strategic technical decision to pivot from video transcription to pure text analysis, reducing response times to under 15s and increasing operational stability to 99.9%.",
       "Implemented bidirectional communication with Socket.io to report processing status in real-time, improving user trust."
     ], 
-    stack: ["React 19", "TypeScript", "Vite", "Zustand", "Node.js", "Express", "Socket.io", "Gemini 2.0 Flash", "Google Search Grounding", "@mozilla/readability"],
+    stack: ["React 19", "TypeScript", "Vite", "Zustand", "Node.js", "Express", "Socket.io", "Gemini 2.5 Flash", "Google Search Grounding", "@mozilla/readability"],
     skills: ["AI Application Engineering", "Prompt Design", "Real-time Streaming", "Architectural Pivot", "Content Scraping"],
     demoType: "checar",
     githubUrl: "https://github.com/ivnvaldz7/checar",
+    liveUrl: "https://checar-v2.vercel.app",
     caseStudy: {
       contextAndProblem: "During electoral periods and legislative debates in Argentina, the speed of dissemination of erroneous or misleading data exceeds the response capacity of newsrooms. The manual process involves identifying the claim in a speech, finding the corresponding regulatory document or database (INDEC, Open Budget, BCRA), and writing the contextualization.",
       affectedUsers: "Investigative journalists and fact-checking teams who need to verify up to 10 claims simultaneously with methodical rigor and traceable sources.",
@@ -31,7 +32,7 @@ export const PROJECTS_DATA_EN: Project[] = [
         "Need for a response time of under 15 seconds per article.",
         "Operational instability and fragility in video/audio extraction on serverless servers."
       ],
-      developedSolution: "A lightweight web application where the user pastes a news text. ChecAR cleans the content with @mozilla/readability, automatically identifies up to 7 key verifiable claims, and runs a parallel pipeline in Gemini 2.0 Flash using Google Search Grounding configured with official domains. It returns a structured briefing with a verdict (True, Misleading, False, Untestable), grounded explanation, link to the primary source, and quantitative historical context.",
+      developedSolution: "A lightweight web application where the user pastes a news text. ChecAR cleans the content with @mozilla/readability, automatically identifies up to 7 key verifiable claims, and runs a parallel pipeline in Gemini 2.5 Flash using Google Search Grounding. It returns a structured briefing with a verdict (True, Misleading, False, Untestable), grounded explanation, link to a source, and quantitative historical context.",
       productDecisions: [
         {
           title: "Strategic Pivot: From Video Transcription to Pure Text Analysis",
