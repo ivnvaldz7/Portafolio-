@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileText, Sparkles, Globe, Menu, X, Download } from 'lucide-react';
+import { FileText, Sparkles, Menu, X, Download, QrCode } from 'lucide-react';
 import { Language } from '../types';
 import { motion } from 'motion/react';
 import { AutomationLogo } from './AutomationLogo';
@@ -8,6 +8,7 @@ interface HeaderProps {
   language: Language;
   onToggleLanguage: () => void;
   onOpenCvModal: () => void;
+  onOpenShareQr: () => void;
   onOpenJobProfile: () => void;
   onDownloadSummary?: () => void;
 }
@@ -16,6 +17,7 @@ export const Header: React.FC<HeaderProps> = ({
   language,
   onToggleLanguage,
   onOpenCvModal,
+  onOpenShareQr,
   onOpenJobProfile,
   onDownloadSummary,
 }) => {
@@ -23,7 +25,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-40 bg-[#fcfaf7]/95 backdrop-blur-md border-b border-[#1a1a1a]/10 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand / Animated Automation Wordmark */}
         <AutomationLogo />
 
@@ -56,7 +58,7 @@ export const Header: React.FC<HeaderProps> = ({
         </nav>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-1 sm:gap-2.5">
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -135,10 +137,21 @@ export const Header: React.FC<HeaderProps> = ({
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.96 }}
             onClick={onOpenCvModal}
-            className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 btn-editorial-dark"
+            className="flex h-8 items-center gap-1.5 px-3 sm:px-4 btn-editorial-dark"
           >
             <FileText className="w-3.5 h-3.5 text-[#fcfaf7]" />
             <span className="hidden sm:inline">{language === 'es' ? 'Ver perfil CV' : 'View CV profile'}</span>
+          </motion.button>
+          <motion.button
+            type="button"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.96 }}
+            onClick={onOpenShareQr}
+            aria-label={language === 'es' ? 'Compartir portafolio con código QR' : 'Share portfolio with QR code'}
+            title={language === 'es' ? 'Compartir portafolio' : 'Share portfolio'}
+            className="flex h-8 items-center justify-center px-3 sm:px-4 btn-editorial-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0d4d4d]"
+          >
+            <QrCode className="h-3.5 w-3.5 text-[#fcfaf7]" />
           </motion.button>
         </div>
       </div>

@@ -10,6 +10,7 @@ import { Footer } from './components/Footer';
 import { AtsCvModal } from './components/AtsCvModal';
 import { PortfolioSummaryPrint } from './components/PortfolioSummaryPrint';
 import { JobProfileModal } from './components/JobProfileModal';
+import { ShareQrModal } from './components/ShareQrModal';
 import { PROJECTS_DATA, ENGLISH_TRANSLATIONS } from './data/portfolioData';
 import { PROJECTS_DATA_EN } from './data/portfolioDataEn';
 import { Project, Language } from './types';
@@ -22,6 +23,7 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [isJobProfileOpen, setIsJobProfileOpen] = useState(false);
+  const [isShareQrOpen, setIsShareQrOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [modalInitialTab, setModalInitialTab] = useState<'caseStudy' | 'demo'>('caseStudy');
 
@@ -76,6 +78,7 @@ export default function App() {
         language={language}
         onToggleLanguage={toggleLanguage}
         onOpenCvModal={() => setIsCvOpen(true)}
+        onOpenShareQr={() => setIsShareQrOpen(true)}
         onOpenJobProfile={() => setIsJobProfileOpen(true)}
       />
 
@@ -230,6 +233,10 @@ export default function App() {
             onClose={() => setIsJobProfileOpen(false)}
           />
         )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isShareQrOpen && <ShareQrModal language={language} onClose={() => setIsShareQrOpen(false)} />}
       </AnimatePresence>
     </div>
   );
