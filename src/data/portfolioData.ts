@@ -158,6 +158,37 @@ export const PROJECTS_DATA: Project[] = [
       resultAndLearnings: "Herramienta ampliamente adoptada por la comunidad de luthería digital, convirtiendo un cálculo complejo en un flujo visual de 30 segundos.",
       keyTakeaway: "Traducir un dominio técnico hiper-especializado a una interfaz intuitiva demuestra cómo el frontend puede democratizar herramientas de diseño industrial."
     }
+  },
+  {
+    id: "plataforma-deposito",
+    name: "Plataforma Depósito",
+    typeBadge: "Gestión operativa · Laboratorio",
+    priority: "hero",
+    tagline: "Plataforma interna para gestionar usuarios, depósito y logística comercial desde una sola aplicación.",
+    problemSummary: "La operación de un laboratorio necesita consultar stock por lote, registrar ingresos, preparar pedidos y controlar quién puede actuar en cada área sin perder trazabilidad.",
+    targetUser: "Encargados de depósito, solicitantes de producción, vendedores, armadores de pedidos y administradores de la plataforma.",
+    myContribution: "Desarrollo de una aplicación monolítica modular con interfaz React, API Express, permisos por módulo y datos separados para depósito y logística.",
+    period: "2026", role: "Desarrollador Full-Stack", cvHighlights: ["Desarrollé una plataforma operativa para un laboratorio con administración de usuarios y accesos por módulo.", "Organicé el dominio de depósito alrededor de inventario por lote, actas de ingreso, órdenes de producción y movimientos trazables.", "Integré el flujo comercial de pedidos y despacho en un módulo separado, con estados operativos y actualización de stock al completar pedidos."],
+    stack: ["React 19", "TypeScript", "Express", "PostgreSQL", "Prisma 7", "TanStack Query", "Zustand"],
+    skills: ["Full-Stack Development", "Operational Workflows", "Inventory Traceability", "Role-Based Access"],
+    demoType: "deposito",
+    githubUrl: "https://github.com/ivnvaldz7/deposito/tree/codex/portfolio-public",
+    caseStudy: {
+      contextAndProblem: "En un laboratorio, el depósito y la preparación de pedidos trabajan con información relacionada, pero con responsabilidades distintas. Un ingreso, una salida de producción o un despacho deben poder reconstruirse desde sus registros de origen.",
+      affectedUsers: "Personal de depósito y producción, equipos comerciales y de armado, y administradores que asignan accesos.",
+      realConstraints: ["El stock debe conservar lote, vencimiento y origen de cada movimiento.", "Los permisos deben diferenciar tareas de depósito, logística y administración.", "La muestra pública no puede usar cuentas ni datos operativos reales del laboratorio."],
+      developedSolution: "Una aplicación unificada con administración central de usuarios, un módulo de depósito para inventario, actas y producción, y un módulo comercial Ale-Bet para clientes, pedidos, armado y despacho. La API y la base PostgreSQL comparten plataforma, mientras las rutas y los esquemas de datos mantienen separados los dominios.",
+      productDecisions: [
+        { title: "Una entrada, tres áreas de trabajo", description: "El usuario accede a los módulos habilitados desde una plataforma común.", reasoning: "Reduce la fragmentación de la operación sin mezclar las responsabilidades de administración, depósito y logística." },
+        { title: "Movimientos con origen", description: "Los ingresos, órdenes y pedidos dejan un recorrido de estados y movimientos de stock.", reasoning: "Permite revisar cómo se llegó a una existencia o a un despacho, en lugar de mostrar solo el número final." }
+      ],
+      techDecisions: [
+        { title: "Monolito modular", description: "Cliente React y API Express en un monorepo con contratos compartidos.", reasoning: "Facilita evolucionar los flujos relacionados con una sola plataforma y límites claros entre módulos." },
+        { title: "PostgreSQL con esquemas separados", description: "Los datos de plataforma, depósito y Ale-Bet viven en esquemas distintos gestionados con Prisma.", reasoning: "Hace explícitas las fronteras de cada dominio sin duplicar autenticación ni infraestructura." }
+      ],
+      resultAndLearnings: "La plataforma reúne información y flujos de trabajo internos en una interfaz común. La muestra interactiva del portafolio reproduce decisiones de acceso, ingreso de stock y preparación de pedidos con datos ficticios; no se conecta al sistema del laboratorio.",
+      keyTakeaway: "Unificar la experiencia no exige mezclar los dominios: cada área conserva sus reglas, permisos y trazabilidad."
+    }
   }
 ];
 

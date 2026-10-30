@@ -156,5 +156,36 @@ export const PROJECTS_DATA_EN: Project[] = [
       resultAndLearnings: "Tool widely adopted by the digital lutherie community, converting a complex calculation into a 30-second visual flow.",
       keyTakeaway: "Translating a hyper-specialized technical domain into an intuitive interface demonstrates how the frontend can democratize industrial design tools."
     }
+  },
+  {
+    id: "plataforma-deposito",
+    name: "Depósito Platform",
+    typeBadge: "Operations platform · Laboratory",
+    priority: "hero",
+    tagline: "Internal platform for users, warehouse inventory, and commercial logistics in one application.",
+    problemSummary: "A laboratory needs lot-level stock, receiving records, order preparation, and clear control over who can act in each area while preserving traceability.",
+    targetUser: "Warehouse managers, production requesters, sales staff, order packers, and platform administrators.",
+    myContribution: "Built a modular monolithic application with a React interface, Express API, per-module permissions, and separate data domains for warehouse and logistics.",
+    period: "2026", role: "Full-Stack Developer", cvHighlights: ["Built a laboratory operations platform with centralized user administration and per-module access.", "Structured warehouse operations around lot-level inventory, receiving records, production orders, and traceable movements.", "Integrated a separate commercial order and dispatch workflow with operational states and stock updates when orders are completed."],
+    stack: ["React 19", "TypeScript", "Express", "PostgreSQL", "Prisma 7", "TanStack Query", "Zustand"],
+    skills: ["Full-Stack Development", "Operational Workflows", "Inventory Traceability", "Role-Based Access"],
+    demoType: "deposito",
+    githubUrl: "https://github.com/ivnvaldz7/deposito/tree/codex/portfolio-public",
+    caseStudy: {
+      contextAndProblem: "In a laboratory, warehouse and order preparation use related information but carry different responsibilities. A receipt, production withdrawal, or dispatch must be traceable to its source records.",
+      affectedUsers: "Warehouse and production staff, sales and packing teams, and administrators who assign access.",
+      realConstraints: ["Stock must retain its lot, expiration date, and the origin of every movement.", "Permissions must distinguish warehouse, logistics, and administration tasks.", "The public sample cannot use real laboratory accounts or operational data."],
+      developedSolution: "A unified application with central user administration, a warehouse module for inventory, receiving records and production, and an Ale-Bet commercial module for customers, orders, packing and dispatch. The API and PostgreSQL database are shared, while routes and data schemas keep the domains separate.",
+      productDecisions: [
+        { title: "One entry point, three work areas", description: "Users access the modules enabled for their role through a common platform.", reasoning: "This reduces operational fragmentation while keeping administration, warehouse, and logistics responsibilities distinct." },
+        { title: "Movements with an origin", description: "Receipts, production orders, and customer orders leave a trail of states and stock movements.", reasoning: "A team can review how a stock balance or dispatch was reached, rather than seeing only the final number." }
+      ],
+      techDecisions: [
+        { title: "Modular monolith", description: "React client and Express API in a monorepo with shared contracts.", reasoning: "Related workflows can evolve within one platform while keeping clear module boundaries." },
+        { title: "PostgreSQL with separate schemas", description: "Platform, warehouse, and Ale-Bet data use distinct Prisma-managed schemas.", reasoning: "This makes domain boundaries explicit without duplicating authentication or infrastructure." }
+      ],
+      resultAndLearnings: "The platform brings internal information and workflows into one interface. The portfolio sample reproduces access, receiving, and order preparation decisions with fictional data; it does not connect to the laboratory system.",
+      keyTakeaway: "A unified experience can preserve separate domain rules, permissions, and traceability."
+    }
   }
 ];
