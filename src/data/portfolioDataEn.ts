@@ -130,6 +130,7 @@ export const PROJECTS_DATA_EN: Project[] = [
     demoType: "fretlabs",
     hasInteractiveDemo: false,
     githubUrl: "https://github.com/ivnvaldz7/fretlabs",
+    liveUrl: "https://fretlabs.netlify.app",
     caseStudy: {
       contextAndProblem: "On a custom fretboard, changes to scale lengths, string spacing, or string count alter the geometry. Copying measurements and redrawing the plan separates calculation from fabrication.",
       affectedUsers: "Luthiers and workshops preparing custom fretboards for cutting or machining.",

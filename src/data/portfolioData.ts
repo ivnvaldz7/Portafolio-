@@ -132,6 +132,7 @@ export const PROJECTS_DATA: Project[] = [
     demoType: "fretlabs",
     hasInteractiveDemo: false,
     githubUrl: "https://github.com/ivnvaldz7/fretlabs",
+    liveUrl: "https://fretlabs.netlify.app",
     caseStudy: {
       contextAndProblem: "En un diapasón personalizado, cada cambio de escala, espaciado o número de cuerdas altera la geometría. Copiar medidas a mano y volver a dibujar el plano separa el cálculo de la fabricación.",
       affectedUsers: "Luthiers y talleres que preparan diapasones personalizados para corte o mecanizado.",
