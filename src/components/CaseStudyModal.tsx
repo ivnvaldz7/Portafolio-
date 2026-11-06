@@ -5,6 +5,7 @@ import { ChecARDemo } from './InteractiveDemos/ChecARDemo';
 import { FretLabsDemo } from './InteractiveDemos/FretLabsDemo';
 import { ElFulboDemo } from './InteractiveDemos/ElFulboDemo';
 import { DepositoDemo } from './InteractiveDemos/DepositoDemo';
+import { BondIADemo } from './InteractiveDemos/BondIADemo';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 
 interface CaseStudyModalProps {
@@ -18,6 +19,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
   const [activeTab, setActiveTab] = React.useState<'caseStudy' | 'demo'>(initialTab);
   const reduceMotion = useReducedMotion();
   const isEs = language === 'es';
+  const isConcept = project?.status === 'in-progress';
   const modalRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
@@ -67,6 +69,8 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
         return <ElFulboDemo language={language} />;
       case 'deposito':
         return <DepositoDemo language={language} />;
+      case 'bondia':
+        return <BondIADemo language={language} />;
       default:
         return null;
     }
@@ -92,7 +96,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
         transition={reduceMotion ? { duration: 0 } : { duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-        className="w-full max-w-4xl bg-[#fcfaf7] text-[#1a1a1a] min-h-full p-6 md:p-10 shadow-2xl border-l border-[#1a1a1a]/20 space-y-8 overflow-y-auto"
+        className={`w-full max-w-4xl text-[#1a1a1a] min-h-full p-6 md:p-10 shadow-2xl border-l space-y-8 overflow-y-auto ${isConcept ? 'bg-[#f8f6fb] border-[#a994c6]' : 'bg-[#fcfaf7] border-[#1a1a1a]/20'}`}
       >
         {/* Top Sticky Bar */}
         <div className="sticky top-0 z-10 -mt-6 -mx-6 p-4 bg-[#fcfaf7]/95 backdrop-blur-md border-b border-[#1a1a1a]/10 flex items-center justify-between">
@@ -107,12 +111,12 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
           </motion.button>
 
           <span className="text-xs font-mono font-bold text-[#666666]">
-            {isEs ? 'Caso de Estudio' : 'Case Study'} • {project.name}
+            {isConcept ? (isEs ? 'Concepto en desarrollo' : 'Concept in progress') : (isEs ? 'Caso de Estudio' : 'Case Study')} • {project.name}
           </span>
 
           <button
             onClick={onClose}
-            aria-label={isEs ? 'Cerrar caso de estudio' : 'Close case study'}
+            aria-label={isConcept ? (isEs ? 'Cerrar concepto' : 'Close concept') : (isEs ? 'Cerrar caso de estudio' : 'Close case study')}
             className="p-2 text-[#666666] hover:text-[#1a1a1a] transition-colors"
           >
             <X className="w-5 h-5" />
@@ -121,7 +125,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
 
         {/* Case Study Header */}
         <div className="space-y-3 pt-2">
-          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#0d4d4d] bg-black/5 px-2.5 py-1 inline-block">
+          <span className={`text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 inline-block ${isConcept ? 'bg-[#e8e0f3] text-[#584472]' : 'bg-black/5 text-[#0d4d4d]'}`}>
             {project.typeBadge}
           </span>
           <h2 id="case-study-title" className="font-serif-editorial text-3xl sm:text-4xl font-normal text-[#1a1a1a] tracking-tight">
@@ -139,23 +143,23 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
             onClick={() => setActiveTab('caseStudy')}
             className={`px-4 py-2 text-xs font-mono font-bold transition-all ${
               activeTab === 'caseStudy'
-                ? 'bg-[#0d4d4d] text-white'
+                ? (isConcept ? 'bg-[#584472] text-white' : 'bg-[#0d4d4d] text-white')
                 : 'text-[#666666] hover:bg-black/5'
             }`}
           >
-            {isEs ? 'CASO DE ESTUDIO' : 'CASE STUDY'}
+            {isConcept ? (isEs ? 'CONCEPTO' : 'CONCEPT') : (isEs ? 'CASO DE ESTUDIO' : 'CASE STUDY')}
           </button>
           {project.hasInteractiveDemo !== false && <button
             aria-pressed={activeTab === 'demo'}
             onClick={() => setActiveTab('demo')}
             className={`px-4 py-2 text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
               activeTab === 'demo'
-                ? 'bg-[#0d4d4d] text-white'
+                ? (isConcept ? 'bg-[#584472] text-white' : 'bg-[#0d4d4d] text-white')
                 : 'text-[#666666] hover:bg-black/5'
             }`}
           >
             <Play className={`w-3 h-3 ${activeTab === 'demo' ? 'fill-current' : ''}`} />
-            {isEs ? 'MUESTRA INTERACTIVA' : 'INTERACTIVE SAMPLE'}
+            {isConcept ? (isEs ? 'PROTOTIPO INTERACTIVO' : 'INTERACTIVE PROTOTYPE') : (isEs ? 'MUESTRA INTERACTIVA' : 'INTERACTIVE SAMPLE')}
           </button>}
         </div>
 
@@ -170,8 +174,10 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
             transition={{ duration: reduceMotion ? 0 : 0.22 }}
             className="space-y-3"
           >
-            <div className="border border-[#0d4d4d]/20 bg-[#f0f4f4] px-4 py-3 text-xs leading-relaxed text-[#315555]">
-              {project.demoType === 'fretlabs'
+            <div className={`border px-4 py-3 text-xs leading-relaxed ${isConcept ? 'border-[#a994c6] bg-[#eee8f6] text-[#584472]' : 'border-[#0d4d4d]/20 bg-[#f0f4f4] text-[#315555]'}`}>
+              {isConcept
+                ? (isEs ? 'Prototipo de navegación con recorridos, paradas y estados simulados. No muestra datos de transporte en vivo.' : 'Navigation prototype with simulated routes, stops, and service states. It does not show live transit data.')
+                : project.demoType === 'fretlabs'
                 ? (isEs ? 'Probá FretLabs directamente aquí. Esta vista carga la aplicación publicada desde su repositorio real.' : 'Try FretLabs here. This view loads the published application from its real repository.')
                 : (isEs ? 'Muestra interactiva del flujo principal del producto.' : 'Interactive sample of the product’s main flow.')}
             </div>
@@ -228,7 +234,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
         <div className="p-6 bg-white border border-[#1a1a1a]/15 space-y-3">
           <h3 className="font-serif-editorial text-lg text-[#1a1a1a] font-normal flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-[#0d4d4d]" />
-            {isEs ? '3. Solución de Producto Desarrollada' : '3. Developed Product Solution'}
+            {isConcept ? (isEs ? '3. Solución de Producto Propuesta' : '3. Proposed Product Solution') : (isEs ? '3. Solución de Producto Desarrollada' : '3. Developed Product Solution')}
           </h3>
           <p className="text-xs sm:text-sm text-[#666666] leading-relaxed font-sans">
             {caseStudy.developedSolution}
@@ -278,10 +284,10 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
         </div>
 
         {/* 6. Resultado, Aprendizaje & Key Takeaway */}
-        <div className="p-6 bg-[#0d4d4d] text-[#fcfaf7] space-y-3">
+        <div className={`p-6 text-[#fcfaf7] space-y-3 ${isConcept ? 'bg-[#584472]' : 'bg-[#0d4d4d]'}`}>
           <h3 className="font-serif-editorial text-lg font-normal flex items-center gap-2 text-white">
             <Layers className="w-5 h-5 text-emerald-300" />
-            {isEs ? '6. Resultado, Aprendizaje & Conclusión de Producto' : '6. Result, Learning & Product Conclusion'}
+            {isConcept ? (isEs ? '6. Estado y Próximos Pasos' : '6. Status and Next Steps') : (isEs ? '6. Resultado, Aprendizaje & Conclusión de Producto' : '6. Result, Learning & Product Conclusion')}
           </h3>
           <p className="text-xs sm:text-sm text-[#fcfaf7]/90 leading-relaxed font-sans">
             {caseStudy.resultAndLearnings}
@@ -327,7 +333,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
             onClick={onClose}
             className="px-6 py-2.5 btn-editorial-dark text-xs"
           >
-            {isEs ? 'Cerrar Caso de Estudio' : 'Close Case Study'}
+            {isConcept ? (isEs ? 'Cerrar concepto' : 'Close concept') : (isEs ? 'Cerrar Caso de Estudio' : 'Close Case Study')}
           </motion.button>
         </div>
       </motion.div>

@@ -188,5 +188,37 @@ export const PROJECTS_DATA_EN: Project[] = [
       resultAndLearnings: "Teams can follow receiving, stock balances, and orders from their source records with fewer entry steps and visible state changes. The portfolio sample illustrates these workflows with fictional data and no connection to the laboratory system.",
       keyTakeaway: "An efficient workflow reuses recorded information and makes each transition visible while preserving permissions and traceability."
     }
+  },
+  {
+    id: "bond-ia",
+    name: "Bond-IA",
+    typeBadge: "AMBA transit · Concept",
+    priority: "standard",
+    status: "in-progress",
+    tagline: "A concept for checking bus routes, stops, and line status across Greater Buenos Aires in one place.",
+    problemSummary: "Before a trip, riders often need separate sources to see where a line goes, which stop to use, and whether its service has delays or detours.",
+    targetUser: "People traveling by bus across Greater Buenos Aires who need to plan or adjust a journey.",
+    myContribution: "Defined the lookup flow and built an interactive prototype with simulated lines, stops, and service states to evaluate the experience.",
+    period: "Concept 2026",
+    role: "Product concept and prototype",
+    cvHighlights: [],
+    stack: ["React", "TypeScript", "UX prototype", "Simulated data"],
+    skills: ["Product design", "Route visualization", "Service states"],
+    demoType: "bondia",
+    caseStudy: {
+      contextAndProblem: "The idea starts with an everyday question: which line to take, where its stops are, and what changes when service is disrupted. Bond-IA is not yet a source of live transit information.",
+      affectedUsers: "Riders who transfer between lines, wait at stops, or need to replan after a service change.",
+      realConstraints: ["Routes and stops will need verified, regularly updated sources.", "Service status will need a source and update time so it cannot be mistaken for a prediction.", "The interface must remain clear on phones and under variable connectivity."],
+      developedSolution: "The prototype lets riders choose a line and direction, inspect stops on a schematic route, and review a service state. The demo simulates normal service, delays, and detours; all routes, stops, and times are illustrative.",
+      productDecisions: [
+        { title: "Line, direction, and stop in one flow", description: "The lookup starts with a line and shows its route and selected stop without switching screens.", reasoning: "This reduces source switching when riders need a quick answer before or during a trip." },
+        { title: "Status with context", description: "An incident appears beside the route and explains what might change for a rider.", reasoning: "A status label alone should not be mistaken for enough information to make a travel decision." }
+      ],
+      techDecisions: [
+        { title: "Prototype separated from real data", description: "The sample uses local fictional data without a transit API or geolocation.", reasoning: "It allows interaction testing without claiming accuracy or live updates from an integration that does not exist yet." }
+      ],
+      resultAndLearnings: "This phase delivers a navigable demo to evaluate information hierarchy, stop selection, and incident messaging. The next step is to define and validate route and status sources before building the operational app.",
+      keyTakeaway: "A transit product must clearly separate published routes, reported incidents, and estimates."
+    }
   }
 ];

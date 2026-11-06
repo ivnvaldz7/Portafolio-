@@ -49,6 +49,7 @@ export default function App() {
       if (selectedCategory === 'all') return true;
       if (selectedCategory === 'hero') return proj.priority === 'hero';
       if (selectedCategory === 'pwa') return proj.demoType === 'elfulbo' || proj.demoType === 'fretlabs';
+      if (selectedCategory === 'concept') return proj.status === 'in-progress';
       if (selectedCategory === 'ai') return proj.demoType === 'checar';
       return true;
     });
@@ -106,14 +107,14 @@ export default function App() {
           <div className="space-y-3 border-b border-[#1a1a1a]/10 pb-6">
             <div>
               <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#0d4d4d] bg-black/5 px-2.5 py-1 inline-block">
-                {isEs ? 'Casos de Estudio & Productos' : 'Featured Case Studies'}
+                {isEs ? 'Proyectos & Conceptos' : 'Projects & Concepts'}
               </span>
             </div>
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
               <h2 className="font-serif-editorial text-3xl sm:text-4xl font-normal text-[#1a1a1a] tracking-tight">
-                {isEs ? 'Proyectos Reales con Enfoque de Producto' : ENGLISH_TRANSLATIONS.projectsTitle}
+                {isEs ? 'Proyectos y Conceptos con Enfoque de Producto' : ENGLISH_TRANSLATIONS.projectsTitle}
               </h2>
-              <div role="group" aria-label={isEs ? 'Filtrar proyectos' : 'Filter projects'} className="flex shrink-0 self-start bg-white p-1 border border-[#1a1a1a]/20 text-xs font-mono lg:self-auto">
+              <div role="group" aria-label={isEs ? 'Filtrar proyectos' : 'Filter projects'} className="flex flex-wrap shrink-0 self-start bg-white p-1 border border-[#1a1a1a]/20 text-xs font-mono lg:self-auto">
                 <button
                   onClick={() => setSelectedCategory('all')}
                   className={`px-3 py-1.5 uppercase font-bold transition-all ${
@@ -154,10 +155,16 @@ export default function App() {
                 >
                   PWA
                 </button>
+                <button
+                  onClick={() => setSelectedCategory('concept')}
+                  className={`px-3 py-1.5 uppercase font-bold transition-all ${selectedCategory === 'concept' ? 'bg-[#584472] text-white' : 'text-[#584472] hover:bg-[#f3f0f8]'}`}
+                >
+                  {isEs ? 'En desarrollo' : 'In progress'}
+                </button>
               </div>
             </div>
             <p className="max-w-2xl text-[#666666] text-sm leading-relaxed font-sans">
-              {isEs ? 'Explora cada producto para conocer el problema operativo, las decisiones de arquitectura y los aprendizajes técnicos.' : ENGLISH_TRANSLATIONS.projectsSubtitle}
+              {isEs ? 'Explorá productos publicados y conceptos en desarrollo, sus decisiones y sus próximos pasos.' : ENGLISH_TRANSLATIONS.projectsSubtitle}
             </p>
           </div>
 
@@ -193,7 +200,7 @@ export default function App() {
       <Footer language={language} />
 
       {/* Printable Portfolio Summary Document */}
-      <PortfolioSummaryPrint language={language} projects={isEs ? PROJECTS_DATA : PROJECTS_DATA_EN} />
+      <PortfolioSummaryPrint language={language} projects={(isEs ? PROJECTS_DATA : PROJECTS_DATA_EN).filter((project) => project.status !== 'in-progress')} />
 
       {/* Deep Case Study Modal / Drawer */}
       <Suspense fallback={selectedProject ? (

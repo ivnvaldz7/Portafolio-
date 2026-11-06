@@ -190,6 +190,38 @@ export const PROJECTS_DATA: Project[] = [
       resultAndLearnings: "Los equipos pueden seguir ingresos, existencias y pedidos desde sus registros de origen, con menos pasos de carga y cambios de estado visibles. La muestra interactiva del portafolio ilustra esos flujos con datos ficticios, sin conexión con el sistema del laboratorio.",
       keyTakeaway: "Un flujo eficiente reutiliza la información ya registrada y hace visible cada transición, sin perder permisos ni trazabilidad."
     }
+  },
+  {
+    id: "bond-ia",
+    name: "Bond-IA",
+    typeBadge: "Movilidad AMBA · Concepto",
+    priority: "standard",
+    status: "in-progress",
+    tagline: "Una propuesta para consultar recorridos, paradas y estado de líneas de colectivo del AMBA en un solo lugar.",
+    problemSummary: "Antes de viajar, cuesta reunir en una misma vista por dónde pasa una línea, dónde conviene subir y si su servicio tiene demoras o desvíos.",
+    targetUser: "Personas que viajan en colectivo por el AMBA y necesitan planificar o ajustar su recorrido.",
+    myContribution: "Definí el flujo de consulta y construí un prototipo interactivo con líneas, paradas y estados simulados para validar la experiencia.",
+    period: "Concepto 2026",
+    role: "Diseño de producto y prototipo",
+    cvHighlights: [],
+    stack: ["React", "TypeScript", "Prototipo UX", "Datos simulados"],
+    skills: ["Diseño de producto", "Visualización de recorridos", "Estados de servicio"],
+    demoType: "bondia",
+    caseStudy: {
+      contextAndProblem: "La idea nace de una pregunta cotidiana: qué línea tomar, dónde están sus paradas y qué cambia si hay una incidencia. Bond-IA todavía no es una fuente de información de transporte en vivo.",
+      affectedUsers: "Pasajeros que combinan líneas, esperan en paradas o necesitan reorganizar un viaje ante un cambio de servicio.",
+      realConstraints: ["La información de recorridos y paradas deberá proceder de fuentes verificables y mantenerse actualizada.", "El estado del servicio necesitará indicar origen y momento de actualización para no confundirse con una predicción.", "La interfaz deberá funcionar con claridad en el celular y bajo conectividad variable."],
+      developedSolution: "El prototipo propone elegir una línea y un sentido, recorrer sus paradas en un esquema y consultar un estado de servicio. La demo permite simular servicio normal, demoras y desvíos; todos sus recorridos, paradas y tiempos son ilustrativos.",
+      productDecisions: [
+        { title: "Línea, sentido y parada en un mismo flujo", description: "La consulta parte de la línea y muestra el recorrido y la parada elegida sin cambiar de pantalla.", reasoning: "Reduce los saltos entre fuentes cuando alguien necesita una respuesta rápida antes de salir o durante el viaje." },
+        { title: "Estado visible y con contexto", description: "Una incidencia se muestra junto al recorrido y explica qué podría cambiar para el pasajero.", reasoning: "Evita que una etiqueta de estado aislada se interprete como información suficiente para decidir un viaje." }
+      ],
+      techDecisions: [
+        { title: "Prototipo desacoplado de datos reales", description: "La muestra usa datos locales y ficticios, sin API de transporte ni geolocalización.", reasoning: "Permite probar la interacción sin atribuir exactitud o tiempo real a una integración que aún no existe." }
+      ],
+      resultAndLearnings: "La fase actual entrega una demo navegable para evaluar jerarquía de información, selección de paradas y comunicación de incidencias. El próximo paso es definir y validar fuentes de recorridos y estados antes de construir la aplicación operativa.",
+      keyTakeaway: "Un producto de movilidad debe distinguir con claridad el recorrido publicado, la incidencia reportada y cualquier estimación."
+    }
   }
 ];
 
@@ -318,8 +350,8 @@ export const ENGLISH_TRANSLATIONS = {
   ctaProjects: "Explore Case Studies",
   ctaCv: "View / Print ATS CV",
   ctaPitch: "Copy Pitches & Bio",
-  projectsTitle: "Featured Case Studies & Products",
-  projectsSubtitle: "Deep dive into real problem solving, product trade-offs, and technical architecture.",
+  projectsTitle: "Products and Concepts with a Product Focus",
+  projectsSubtitle: "Explore published products and work in progress, their decisions and next steps.",
   processTitle: "From Operational Friction to Deployed Product",
   processSubtitle: "How I approach product design, architecture, and engineering.",
   stackTitle: "Technical Capabilities Matrix",

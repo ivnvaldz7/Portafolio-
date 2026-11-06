@@ -68,7 +68,7 @@ export function getCareerProfile(language: Language): CareerProfile {
 
   return {
     ...profileByLanguage[language],
-    projects: sourceProjects.map(({ id, name, role, period, tagline, cvHighlights }) => ({
+    projects: sourceProjects.filter((project) => project.status !== 'in-progress').map(({ id, name, role, period, tagline, cvHighlights }) => ({
       id,
       name,
       role,

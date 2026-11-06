@@ -30,6 +30,7 @@ export interface Project {
   targetUser: string;
   myContribution: string;
   priority: ProjectPriority;
+  status?: 'in-progress';
   period: string;
   role: string;
   cvHighlights: string[];
