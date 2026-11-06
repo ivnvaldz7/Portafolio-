@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { Project, Language } from '../types';
 import { X, ExternalLink, ShieldCheck, Cpu, ArrowLeft, Lightbulb, AlertTriangle, Layers, Play } from 'lucide-react';
 import { ChecARDemo } from './InteractiveDemos/ChecARDemo';
-import { FretLabsDemo } from './InteractiveDemos/FretLabsDemo';
 import { ElFulboDemo } from './InteractiveDemos/ElFulboDemo';
 import { DepositoDemo } from './InteractiveDemos/DepositoDemo';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
@@ -61,8 +60,6 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
     switch (project.demoType) {
       case 'checar':
         return <ChecARDemo language={language} liveUrl={project.liveUrl} />;
-      case 'fretlabs':
-        return <FretLabsDemo language={language} />;
       case 'elfulbo':
         return <ElFulboDemo language={language} />;
       case 'deposito':
@@ -145,7 +142,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
           >
             {isEs ? 'CASO DE ESTUDIO' : 'CASE STUDY'}
           </button>
-          <button
+          {project.hasInteractiveDemo !== false && <button
             aria-pressed={activeTab === 'demo'}
             onClick={() => setActiveTab('demo')}
             className={`px-4 py-2 text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
@@ -156,7 +153,7 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
           >
             <Play className={`w-3 h-3 ${activeTab === 'demo' ? 'fill-current' : ''}`} />
             {isEs ? 'MUESTRA INTERACTIVA' : 'INTERACTIVE SAMPLE'}
-          </button>
+          </button>}
         </div>
 
         <AnimatePresence mode="wait" initial={false}>

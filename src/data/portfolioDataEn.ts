@@ -112,49 +112,49 @@ export const PROJECTS_DATA_EN: Project[] = [
   {
     id: "fretlabs",
     name: "FretLabs",
-    typeBadge: "CAD & Precision Tool for Luthiers",
+    typeBadge: "Fretboard design · Lutherie",
     priority: "featured",
-    tagline: "Professional fretboard and instrument designer for luthiers with CNC/Laser export.",
-    problemSummary: "Calculating fret scales (especially multiscale/fanned frets and microtonal systems) requires complex mathematical formulas and heavy CAD software that is difficult to access in lutherie workshops.",
-    targetUser: "Luthiers, guitar/bass builders, and stringed instrument designers.",
-    myContribution: "Mathematical engine for fret calculation, real-time SVG rendering in the browser, DXF/SVG file generator for CNC, and 100% offline PWA support.",
+    tagline: "Design single-scale, multiscale, or microtonal fretboards and export plans for fabrication.",
+    problemSummary: "Moving fret measurements from a calculator into CAD means redrawing the fretboard and risks transcription errors.",
+    targetUser: "Luthiers and workshops designing fretboards for stringed instruments and preparing files for CAD, CNC, or laser cutting.",
+    myContribution: "I built the TypeScript fret calculation, the responsive SVG preview, and browser-based plan and measurement exports.",
     period: "2026", 
     role: "Frontend Developer & Creator", 
     cvHighlights: [
-      "Created a mathematical precision tool for luthiers that calculates distances for simple frets, fanned frets, and microtonal scales.",
-      "Developed a native client-side SVG vector rendering engine that exports DXF/SVG files for CNC machinery and laser cutting.",
-      "Developed a 100% browser-executable solution, with no server costs or backend dependencies."
+      "Built a fretboard designer supporting single, multiscale, and per-string lengths, configurable temperaments, and Scala .scl files.",
+      "Separated calculation, SVG rendering, and exporters to produce DXF/SVG plans and CSV measurement tables from the same design.",
+      "Added instrument presets, design comparison, undo/redo, and an installable PWA for offline workshop use after first load."
     ], 
-    stack: ["React", "TypeScript", "Tailwind CSS v4", "SVG Engine", "PWA Offline"],
-    skills: ["Precision Mathematics", "Vector Graphics Rendering", "Standalone Browser Architecture", "Niche Domain Translation"],
+    stack: ["React 19", "TypeScript", "Tailwind CSS v4", "Vite", "SVG", "PWA"],
+    skills: ["Geometric calculations", "SVG rendering", "CAD export", "Product design"],
     demoType: "fretlabs",
+    hasInteractiveDemo: false,
     githubUrl: "https://github.com/ivnvaldz7/fretlabs",
-    liveUrl: "https://fretlabs.vercel.app",
     caseStudy: {
-      contextAndProblem: "Luthiers building multiscale guitars must calculate the exact position of each fret with hundredths-of-a-millimeter precision to ensure the instrument's intonation.",
-      affectedUsers: "Artisanal luthiers and CNC digital cutting workshops manufacturing custom necks and fretboards.",
+      contextAndProblem: "On a custom fretboard, changes to scale lengths, string spacing, or string count alter the geometry. Copying measurements and redrawing the plan separates calculation from fabrication.",
+      affectedUsers: "Luthiers and workshops preparing custom fretboards for cutting or machining.",
       realConstraints: [
-        "100% millimeter precision required for real manufacturing.",
-        "Workshop environments with older computers or no internet connection.",
-        "Need to export in formats compatible with lasers and CNC routers without payment gateways or servers."
+        "Keep a consistent internal unit for position and geometry calculations.",
+        "Represent single, multiscale, and per-string lengths, including temperaments and Scala .scl files.",
+        "Provide measurements and vectors reusable in CAD/CAM tools, including offline workshops."
       ],
-      developedSolution: "A standalone web tool executable in any browser without a backend server. It dynamically calculates distances using the 12-tone equal temperament formula or custom microtonal systems, draws the vectorized and interactive preview, and exports vectors ready for manufacturing.",
+      developedSolution: "A React app that calculates fretboard geometry in the browser and updates its SVG preview when scale lengths, strings, frets, spacing, or compensation change. It offers presets, a position table, DXF/SVG/CSV exports, and a print-to-PDF layout at actual scale.",
       productDecisions: [
         {
-          title: "Zero Backend, 100% Local Processing",
-          description: "All calculations and SVG/DXF file generation are executed on the client's GPU/CPU.",
-          reasoning: "Guarantees total privacy of the luthier's blueprints and makes the tool available for life for free and without server costs."
+          title: "From parameter to plan",
+          description: "The same design drives the preview, measurement table, and export formats.",
+          reasoning: "This avoids reentering data and reduces manual steps between calculation and fabrication file preparation."
         }
       ],
       techDecisions: [
         {
-          title: "Mathematical Rendering in Native SVG with React",
-          description: "Use of SVG elements with a dynamic mathematical viewBox.",
-          reasoning: "Allows scaling the design from a phone screen to a 1-meter blueprint without loss of resolution or aliasing."
+          title: "Calculation engine separate from the UI",
+          description: "A TypeScript module calculates geometry in millimeters; the SVG renderer and exporters consume its result.",
+          reasoning: "The math can be tested independently while the preview and downloaded files remain consistent."
         }
       ],
-      resultAndLearnings: "Tool widely adopted by the digital lutherie community, converting a complex calculation into a 30-second visual flow.",
-      keyTakeaway: "Translating a hyper-specialized technical domain into an intuitive interface demonstrates how the frontend can democratize industrial design tools."
+      resultAndLearnings: "The repository combines calculation, preview, and export in one flow. It also includes engine tests, presets, design comparison, and offline PWA support.",
+      keyTakeaway: "A shared calculation result keeps the visible design, measurements, and exported plan aligned."
     }
   },
   {

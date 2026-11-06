@@ -131,7 +131,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           <ArrowUpRight className="w-3.5 h-3.5 text-[#0d4d4d] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </motion.button>
 
-        <motion.button
+        {project.hasInteractiveDemo !== false && <motion.button
           aria-label={isEs ? `Ver muestra interactiva de ${project.name}` : `View interactive sample for ${project.name}`}
           whileHover={{ scale: 1.04, y: -1 }}
           whileTap={{ scale: 0.96 }}
@@ -140,7 +140,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         >
           <Play className="w-3 h-3 fill-current text-[#fcfaf7]" />
           <span>{isEs ? 'Ver Muestra Interactiva' : 'View Interactive Sample'}</span>
-        </motion.button>
+        </motion.button>}
       </div>
     </motion.article>
   );

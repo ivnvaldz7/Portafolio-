@@ -37,6 +37,7 @@ export interface Project {
   skills: string[];
   caseStudy: CaseStudy;
   demoType: string;
+  hasInteractiveDemo?: boolean;
   githubUrl?: string;
   liveUrl?: string;
 }

@@ -121,42 +121,42 @@ export const PROJECTS_DATA: Project[] = [
   {
     id: "fretlabs",
     name: "FretLabs",
-    typeBadge: "CAD & Precision Tool for Luthiers",
+    typeBadge: "Diseño de diapasones · Luthería",
     priority: "featured",
-    tagline: "Diseñador profesional de diapasones e instrumentos para luthiers con exportación CNC/Láser.",
-    problemSummary: "Calcular la escala de trastes (especialmente multiescala/fanned frets y sistemas microtonales) requiere fórmulas matemáticas complejas y software CAD pesado de difícil acceso en talleres de luthería.",
-    targetUser: "Luthiers, fabricantes de guitarras/bajos y diseñadores de instrumentos de cuerda.",
-    myContribution: "Motor matemático de cálculo de trastes, renderizado SVG en tiempo real en el navegador, generador de archivos DXF/SVG para CNC y soporte PWA 100% offline.",
-    period: "2026", role: "Desarrollador Frontend & Creador", cvHighlights: ["Creé una herramienta de precisión matemática para luthiers que calcula distancias de trastes simples, fanned frets y escalas microtonales.", "Desarrollé un motor de renderizado vectorial SVG nativo en el cliente que exporta archivos DXF/SVG para maquinaria CNC y corte láser.", "Desarrollé una solución ejecutable 100% en el navegador, sin costo de servidor ni dependencias de backend."], stack: ["React", "TypeScript", "Tailwind CSS v4", "SVG Engine", "PWA Offline"],
-    skills: ["Precision Mathematics", "Vector Graphics Rendering", "Standalone Browser Architecture", "Niche Domain Translation"],
+    tagline: "Diseña diapasones de escala simple, multiescala o microtonales y exporta planos para fabricación.",
+    problemSummary: "Pasar medidas de trastes desde una calculadora a un programa CAD obliga a redibujar el diapasón y expone el trabajo a errores de transcripción.",
+    targetUser: "Luthiers y talleres que diseñan diapasones para instrumentos de cuerda y preparan archivos para CAD, CNC o láser.",
+    myContribution: "Desarrollé el cálculo de trastes en TypeScript, la vista SVG que responde a los parámetros y la exportación de planos y medidas desde el navegador.",
+    period: "2026", role: "Desarrollador Frontend & Creador", cvHighlights: ["Construí un diseñador de diapasones con escalas simples, multiescala y por cuerda, además de temperamentos configurables y archivos Scala .scl.", "Separé el motor de cálculo, el renderizado SVG y los exportadores para generar planos DXF/SVG y tablas CSV desde el mismo diseño.", "Incorporé presets de instrumentos, comparación de diseños, historial de cambios y una PWA instalable para consultar medidas sin conexión tras la primera carga."], stack: ["React 19", "TypeScript", "Tailwind CSS v4", "Vite", "SVG", "PWA"],
+    skills: ["Cálculo geométrico", "Renderizado SVG", "Exportación CAD", "Diseño de producto"],
     demoType: "fretlabs",
+    hasInteractiveDemo: false,
     githubUrl: "https://github.com/ivnvaldz7/fretlabs",
-    liveUrl: "https://fretlabs.vercel.app",
     caseStudy: {
-      contextAndProblem: "Los luthiers que construyen guitarras multiescala deben calcular la posición exacta de cada traste con precisión de centésimas de milímetro para garantizar la afinación intonada del instrumento.",
-      affectedUsers: "Luthiers artesanales y talleres de corte digital CNC que fabrican cuellos y diapasones personalizados.",
+      contextAndProblem: "En un diapasón personalizado, cada cambio de escala, espaciado o número de cuerdas altera la geometría. Copiar medidas a mano y volver a dibujar el plano separa el cálculo de la fabricación.",
+      affectedUsers: "Luthiers y talleres que preparan diapasones personalizados para corte o mecanizado.",
       realConstraints: [
-        "100% de precisión milimétrica requerida para la fabricación real.",
-        "Ambientes de taller con computadoras antiguas o sin conexión a internet.",
-        "Necesidad de exportar en formatos compatibles con lásers y fresadoras CNC sin pasarelas de pago ni servidores."
+        "Conservar una unidad interna consistente al calcular posiciones y geometría.",
+        "Representar escalas simples, multiescala y por cuerda, incluidos temperamentos y archivos Scala .scl.",
+        "Entregar medidas y vectores reutilizables en herramientas CAD/CAM, incluso desde un taller sin conexión."
       ],
-      developedSolution: "Una herramienta web autónoma ejecutable en cualquier navegador sin servidor backend. Calcula dinámicamente las distancias usando la fórmula temperada igual de 12 tonos o sistemas microtonales personalizados, dibuja la previsualización vectorizada e interactiva y exporta vectoriales listos para manufactura.",
+      developedSolution: "Una aplicación React que calcula el diapasón en el navegador y actualiza su vista SVG al cambiar longitudes de escala, cuerdas, trastes, espaciado o compensación. Ofrece presets, tabla de posiciones y exportación DXF, SVG, CSV y una vista imprimible a escala para PDF.",
       productDecisions: [
         {
-          title: "Cero Backend, 100% Procesamiento Local",
-          description: "Todos los cálculos y la generación de archivos SVG/DXF se ejecutan en la GPU/CPU del cliente.",
-          reasoning: "Garantiza privacidad total de los planos del luthier y disponibiliza la herramienta de por vida de forma gratuita y sin costos de servidor."
+          title: "Del parámetro al plano",
+          description: "El mismo diseño alimenta la vista previa, la tabla de medidas y los formatos de exportación.",
+          reasoning: "Evita volver a cargar datos y reduce los pasos manuales entre el cálculo y la preparación del archivo para fabricación."
         }
       ],
       techDecisions: [
         {
-          title: "Renderizado Matemático en SVG Nativo con React",
-          description: "Uso de elementos SVG con viewBox matemático dinámico.",
-          reasoning: "Permite escalar el diseño desde una pantalla de teléfono hasta un plano de 1 metro sin pérdida de resolución ni aliasing."
+          title: "Motor de cálculo separado de la interfaz",
+          description: "Un módulo TypeScript calcula la geometría en milímetros; el renderizador SVG y los exportadores consumen ese resultado.",
+          reasoning: "Permite verificar la matemática de forma aislada y mantener coherentes la previsualización y los archivos descargados."
         }
       ],
-      resultAndLearnings: "Herramienta ampliamente adoptada por la comunidad de luthería digital, convirtiendo un cálculo complejo en un flujo visual de 30 segundos.",
-      keyTakeaway: "Traducir un dominio técnico hiper-especializado a una interfaz intuitiva demuestra cómo el frontend puede democratizar herramientas de diseño industrial."
+      resultAndLearnings: "El repositorio reúne cálculo, previsualización y exportación en un único flujo. También incluye pruebas del motor, presets, comparación de diseños y soporte sin conexión mediante PWA.",
+      keyTakeaway: "Una fuente de cálculo compartida mantiene alineados el diseño visible, las medidas y el plano exportado."
     }
   },
   {
@@ -304,7 +304,7 @@ export const PITCHES_DATA: PitchVersion[] = [
     title: "Sección 'Acerca de' para LinkedIn",
     badge: "LinkedIn Bio",
     subtitle: "Copia y pega este texto directamente en tu perfil profesional de LinkedIn",
-    content: "Ivan Valdez | Product-focused Web Developer | React · TypeScript · Automatización · IA aplicada\n\nNo construyo solo interfaces; construyo herramientas que resuelven problemas operativos reales.\n\nMi enfoque combina desarrollo frontend moderno con comprensión profunda del flujo de trabajo. Me dedico a identificar puntos de fricción, eliminar tareas repetitivas y crear productos web intuitivos que las personas disfrutan usar.\n\n📍 ¿Qué hago?\n- Desarrollo aplicaciones web responsivas e interactivas con React 19, TypeScript y Tailwind CSS.\n- Diseño arquitecturas frontend limpias con gestión de estado optimizada (Zustand) y navegación fluida.\n- Automatizo flujos de trabajo e integro modelos de Inteligencia Artificial (Gemini API) con anclaje en fuentes verificables (Grounding) para facilitar la revisión de resultados.\n- Construyo soluciones offline-first (PWA) y herramientas de tiempo real (Socket.io, Express).\n\n💡 Proyectos destacados:\n- ChecAR: Asistente con IA para la verificación periodística de contenido político mediante fuentes oficiales.\n- El Fulbo: PWA para la organización y coordinación de fútbol amateur.\n- FretLabs: Diseñador CAD y calculador numérico para luthiers con exportación CNC/Láser.\n\n🎯 Busco oportunidades como Frontend Developer, Full-Stack Developer, Automation Developer, AI Application Developer o Product Engineer en modalidades remotas o híbridas en Argentina y Latinoamérica.\n\n📬 Contacto: ivnvaldz@gmail.com | LinkedIn: https://www.linkedin.com/in/ivnvaldz/ | GitHub: https://github.com/ivnvaldz7",
+    content: "Ivan Valdez | Product-focused Web Developer | React · TypeScript · Automatización · IA aplicada\n\nNo construyo solo interfaces; construyo herramientas que resuelven problemas operativos reales.\n\nMi enfoque combina desarrollo frontend moderno con comprensión profunda del flujo de trabajo. Me dedico a identificar puntos de fricción, eliminar tareas repetitivas y crear productos web intuitivos que las personas disfrutan usar.\n\n📍 ¿Qué hago?\n- Desarrollo aplicaciones web responsivas e interactivas con React 19, TypeScript y Tailwind CSS.\n- Diseño arquitecturas frontend limpias con gestión de estado optimizada (Zustand) y navegación fluida.\n- Automatizo flujos de trabajo e integro modelos de Inteligencia Artificial (Gemini API) con anclaje en fuentes verificables (Grounding) para facilitar la revisión de resultados.\n- Construyo soluciones offline-first (PWA) y herramientas de tiempo real (Socket.io, Express).\n\n💡 Proyectos destacados:\n- ChecAR: Asistente con IA para la verificación periodística de contenido político mediante fuentes oficiales.\n- El Fulbo: PWA para la organización y coordinación de fútbol amateur.\n- FretLabs: Diseñador de diapasones para luthiers con cálculo de trastes y exportación DXF/SVG.\n\n🎯 Busco oportunidades como Frontend Developer, Full-Stack Developer, Automation Developer, AI Application Developer o Product Engineer en modalidades remotas o híbridas en Argentina y Latinoamérica.\n\n📬 Contacto: ivnvaldz@gmail.com | LinkedIn: https://www.linkedin.com/in/ivnvaldz/ | GitHub: https://github.com/ivnvaldz7",
     usageAdvice: "Copia este bloque en la sección 'Acerca de' / 'About' de tu LinkedIn."
   }
 ];
