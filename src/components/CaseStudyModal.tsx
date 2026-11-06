@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Project, Language } from '../types';
 import { X, ExternalLink, ShieldCheck, Cpu, ArrowLeft, Lightbulb, AlertTriangle, Layers, Play } from 'lucide-react';
 import { ChecARDemo } from './InteractiveDemos/ChecARDemo';
+import { FretLabsDemo } from './InteractiveDemos/FretLabsDemo';
 import { ElFulboDemo } from './InteractiveDemos/ElFulboDemo';
 import { DepositoDemo } from './InteractiveDemos/DepositoDemo';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
@@ -60,6 +61,8 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
     switch (project.demoType) {
       case 'checar':
         return <ChecARDemo language={language} liveUrl={project.liveUrl} />;
+      case 'fretlabs':
+        return project.liveUrl ? <FretLabsDemo language={language} liveUrl={project.liveUrl} /> : null;
       case 'elfulbo':
         return <ElFulboDemo language={language} />;
       case 'deposito':
@@ -168,7 +171,9 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({ project, languag
             className="space-y-3"
           >
             <div className="border border-[#0d4d4d]/20 bg-[#f0f4f4] px-4 py-3 text-xs leading-relaxed text-[#315555]">
-              {isEs ? 'Muestra interactiva del flujo principal del producto.' : 'Interactive sample of the product’s main flow.'}
+              {project.demoType === 'fretlabs'
+                ? (isEs ? 'Probá FretLabs directamente aquí. Esta vista carga la aplicación publicada desde su repositorio real.' : 'Try FretLabs here. This view loads the published application from its real repository.')
+                : (isEs ? 'Muestra interactiva del flujo principal del producto.' : 'Interactive sample of the product’s main flow.')}
             </div>
             {renderDemoWidget()}
           </motion.div>

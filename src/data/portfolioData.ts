@@ -130,7 +130,7 @@ export const PROJECTS_DATA: Project[] = [
     period: "2026", role: "Desarrollador Frontend & Creador", cvHighlights: ["Construí un diseñador de diapasones con escalas simples, multiescala y por cuerda, además de temperamentos configurables y archivos Scala .scl.", "Separé el motor de cálculo, el renderizado SVG y los exportadores para generar planos DXF/SVG y tablas CSV desde el mismo diseño.", "Incorporé presets de instrumentos, comparación de diseños, historial de cambios y una PWA instalable para consultar medidas sin conexión tras la primera carga."], stack: ["React 19", "TypeScript", "Tailwind CSS v4", "Vite", "SVG", "PWA"],
     skills: ["Cálculo geométrico", "Renderizado SVG", "Exportación CAD", "Diseño de producto"],
     demoType: "fretlabs",
-    hasInteractiveDemo: false,
+    hasInteractiveDemo: true,
     githubUrl: "https://github.com/ivnvaldz7/fretlabs",
     liveUrl: "https://fretlabs.netlify.app",
     caseStudy: {

@@ -128,7 +128,7 @@ export const PROJECTS_DATA_EN: Project[] = [
     stack: ["React 19", "TypeScript", "Tailwind CSS v4", "Vite", "SVG", "PWA"],
     skills: ["Geometric calculations", "SVG rendering", "CAD export", "Product design"],
     demoType: "fretlabs",
-    hasInteractiveDemo: false,
+    hasInteractiveDemo: true,
     githubUrl: "https://github.com/ivnvaldz7/fretlabs",
     liveUrl: "https://fretlabs.netlify.app",
     caseStudy: {
