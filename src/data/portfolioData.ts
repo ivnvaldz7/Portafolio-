@@ -164,30 +164,30 @@ export const PROJECTS_DATA: Project[] = [
     name: "Plataforma Depósito",
     typeBadge: "Gestión operativa · Laboratorio",
     priority: "featured",
-    tagline: "Plataforma interna para gestionar usuarios, depósito y logística comercial desde una sola aplicación.",
-    problemSummary: "La operación de un laboratorio necesita consultar stock por lote, registrar ingresos, preparar pedidos y controlar quién puede actuar en cada área sin perder trazabilidad.",
+    tagline: "Plataforma interna que conecta usuarios, depósito y logística en flujos operativos claros y trazables.",
+    problemSummary: "Registrar ingresos, consultar stock por lote y preparar pedidos en pasos desconectados obliga a repetir datos y dificulta seguir cada movimiento.",
     targetUser: "Encargados de depósito, solicitantes de producción, vendedores, armadores de pedidos y administradores de la plataforma.",
-    myContribution: "Desarrollo de una aplicación monolítica modular con interfaz React, API Express, permisos por módulo y datos separados para depósito y logística.",
-    period: "2026", role: "Desarrollador Full-Stack", cvHighlights: ["Desarrollé una plataforma operativa para un laboratorio con administración de usuarios y accesos por módulo.", "Organicé el dominio de depósito alrededor de inventario por lote, actas de ingreso, órdenes de producción y movimientos trazables.", "Integré el flujo comercial de pedidos y despacho en un módulo separado, con estados operativos y actualización de stock al completar pedidos."],
+    myContribution: "Desarrollo de flujos para registrar una vez los datos, guiar cada tarea por estados y actualizar existencias con movimientos trazables, con accesos separados por módulo.",
+    period: "2026", role: "Desarrollador Full-Stack", cvHighlights: ["Desarrollé una plataforma operativa para un laboratorio con administración de usuarios y accesos por módulo.", "Organicé ingresos, inventario por lote y órdenes de producción en flujos que reutilizan los datos registrados y conservan el origen de cada movimiento.", "Integré pedidos y despacho en un módulo separado, con estados claros y actualización automática de stock al completar cada pedido."],
     stack: ["React 19", "TypeScript", "Express", "PostgreSQL", "Prisma 7", "TanStack Query", "Zustand"],
     skills: ["Full-Stack Development", "Operational Workflows", "Inventory Traceability", "Role-Based Access"],
     demoType: "deposito",
     githubUrl: "https://github.com/ivnvaldz7/deposito/tree/codex/portfolio-public",
     caseStudy: {
-      contextAndProblem: "En un laboratorio, el depósito y la preparación de pedidos trabajan con información relacionada, pero con responsabilidades distintas. Un ingreso, una salida de producción o un despacho deben poder reconstruirse desde sus registros de origen.",
+      contextAndProblem: "En un laboratorio, un mismo producto pasa por ingresos, inventario, producción y pedidos. Cuando cada tarea exige volver a cargar o consultar datos por separado, crecen los pasos manuales y cuesta reconstruir qué ocurrió con el stock.",
       affectedUsers: "Personal de depósito y producción, equipos comerciales y de armado, y administradores que asignan accesos.",
-      realConstraints: ["El stock debe conservar lote, vencimiento y origen de cada movimiento.", "Los permisos deben diferenciar tareas de depósito, logística y administración.", "La muestra pública no puede usar cuentas ni datos operativos reales del laboratorio."],
-      developedSolution: "Una aplicación unificada con administración central de usuarios, un módulo de depósito para inventario, actas y producción, y un módulo comercial Ale-Bet para clientes, pedidos, armado y despacho. La API y la base PostgreSQL comparten plataforma, mientras las rutas y los esquemas de datos mantienen separados los dominios.",
+      realConstraints: ["Cada movimiento debe conservar lote, vencimiento y registro de origen.", "Los permisos deben diferenciar tareas de depósito, logística y administración.", "La muestra pública debe usar datos ficticios, sin conexión con la operación del laboratorio."],
+      developedSolution: "La plataforma reúne administración de usuarios, depósito y logística en una aplicación. Un acta registra el ingreso y guía su distribución; el inventario refleja cada movimiento sin volver a cargar el producto. En logística, los pedidos avanzan por aprobación, armado y despacho, y el stock se actualiza al completar el flujo. Cada área conserva sus permisos y datos separados.",
       productDecisions: [
-        { title: "Una entrada, tres áreas de trabajo", description: "El usuario accede a los módulos habilitados desde una plataforma común.", reasoning: "Reduce la fragmentación de la operación sin mezclar las responsabilidades de administración, depósito y logística." },
-        { title: "Movimientos con origen", description: "Los ingresos, órdenes y pedidos dejan un recorrido de estados y movimientos de stock.", reasoning: "Permite revisar cómo se llegó a una existencia o a un despacho, en lugar de mostrar solo el número final." }
+        { title: "Una entrada, tres áreas de trabajo", description: "El usuario accede a los módulos habilitados desde una plataforma común.", reasoning: "Evita saltar entre herramientas y mantiene claras las responsabilidades de administración, depósito y logística." },
+        { title: "Datos que acompañan el flujo", description: "Actas, órdenes y pedidos reutilizan los datos del producto y muestran su avance por estados.", reasoning: "Reduce la carga repetitiva, evita pasos de transcripción y permite seguir el origen de cada cambio de stock." }
       ],
       techDecisions: [
         { title: "Monolito modular", description: "Cliente React y API Express en un monorepo con contratos compartidos.", reasoning: "Facilita evolucionar los flujos relacionados con una sola plataforma y límites claros entre módulos." },
-        { title: "PostgreSQL con esquemas separados", description: "Los datos de plataforma, depósito y Ale-Bet viven en esquemas distintos gestionados con Prisma.", reasoning: "Hace explícitas las fronteras de cada dominio sin duplicar autenticación ni infraestructura." }
+        { title: "PostgreSQL con esquemas separados", description: "Los datos de usuarios, depósito y logística viven en esquemas distintos gestionados con Prisma.", reasoning: "Mantiene cada flujo independiente y conserva una base común de acceso y trazabilidad." }
       ],
-      resultAndLearnings: "La plataforma reúne información y flujos de trabajo internos en una interfaz común. La muestra interactiva del portafolio reproduce decisiones de acceso, ingreso de stock y preparación de pedidos con datos ficticios; no se conecta al sistema del laboratorio.",
-      keyTakeaway: "Unificar la experiencia no exige mezclar los dominios: cada área conserva sus reglas, permisos y trazabilidad."
+      resultAndLearnings: "Los equipos pueden seguir ingresos, existencias y pedidos desde sus registros de origen, con menos pasos de carga y cambios de estado visibles. La muestra interactiva del portafolio ilustra esos flujos con datos ficticios, sin conexión con el sistema del laboratorio.",
+      keyTakeaway: "Un flujo eficiente reutiliza la información ya registrada y hace visible cada transición, sin perder permisos ni trazabilidad."
     }
   }
 ];

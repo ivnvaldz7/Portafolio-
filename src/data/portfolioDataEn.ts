@@ -162,30 +162,30 @@ export const PROJECTS_DATA_EN: Project[] = [
     name: "Depósito Platform",
     typeBadge: "Operations platform · Laboratory",
     priority: "featured",
-    tagline: "Internal platform for users, warehouse inventory, and commercial logistics in one application.",
-    problemSummary: "A laboratory needs lot-level stock, receiving records, order preparation, and clear control over who can act in each area while preserving traceability.",
+    tagline: "Internal platform connecting users, warehouse, and logistics through clear, traceable workflows.",
+    problemSummary: "Disconnected receiving, lot-level stock checks, and order preparation force teams to repeat data entry and make movements harder to trace.",
     targetUser: "Warehouse managers, production requesters, sales staff, order packers, and platform administrators.",
-    myContribution: "Built a modular monolithic application with a React interface, Express API, per-module permissions, and separate data domains for warehouse and logistics.",
-    period: "2026", role: "Full-Stack Developer", cvHighlights: ["Built a laboratory operations platform with centralized user administration and per-module access.", "Structured warehouse operations around lot-level inventory, receiving records, production orders, and traceable movements.", "Integrated a separate commercial order and dispatch workflow with operational states and stock updates when orders are completed."],
+    myContribution: "Built workflows that capture data once, guide tasks through clear states, and update stock with traceable movements while keeping access separate by module.",
+    period: "2026", role: "Full-Stack Developer", cvHighlights: ["Built a laboratory operations platform with centralized user administration and per-module access.", "Connected receiving, lot-level inventory, and production orders in workflows that reuse recorded data and preserve the origin of each movement.", "Integrated a separate order and dispatch workflow with clear states and automatic stock updates when each order is completed."],
     stack: ["React 19", "TypeScript", "Express", "PostgreSQL", "Prisma 7", "TanStack Query", "Zustand"],
     skills: ["Full-Stack Development", "Operational Workflows", "Inventory Traceability", "Role-Based Access"],
     demoType: "deposito",
     githubUrl: "https://github.com/ivnvaldz7/deposito/tree/codex/portfolio-public",
     caseStudy: {
-      contextAndProblem: "In a laboratory, warehouse and order preparation use related information but carry different responsibilities. A receipt, production withdrawal, or dispatch must be traceable to its source records.",
+      contextAndProblem: "In a laboratory, the same product moves through receiving, inventory, production, and customer orders. When each task requires separate entry or lookup, manual steps multiply and stock changes become difficult to reconstruct.",
       affectedUsers: "Warehouse and production staff, sales and packing teams, and administrators who assign access.",
-      realConstraints: ["Stock must retain its lot, expiration date, and the origin of every movement.", "Permissions must distinguish warehouse, logistics, and administration tasks.", "The public sample cannot use real laboratory accounts or operational data."],
-      developedSolution: "A unified application with central user administration, a warehouse module for inventory, receiving records and production, and an Ale-Bet commercial module for customers, orders, packing and dispatch. The API and PostgreSQL database are shared, while routes and data schemas keep the domains separate.",
+      realConstraints: ["Every movement must retain its lot, expiration date, and source record.", "Permissions must distinguish warehouse, logistics, and administration tasks.", "The public sample must use fictional data and stay disconnected from laboratory operations."],
+      developedSolution: "The platform brings user administration, warehouse, and logistics into one application. A receiving record guides distribution, and inventory reflects each movement without entering the product again. In logistics, orders move through approval, packing, and dispatch, with stock updated when the workflow is completed. Each area keeps separate permissions and data.",
       productDecisions: [
-        { title: "One entry point, three work areas", description: "Users access the modules enabled for their role through a common platform.", reasoning: "This reduces operational fragmentation while keeping administration, warehouse, and logistics responsibilities distinct." },
-        { title: "Movements with an origin", description: "Receipts, production orders, and customer orders leave a trail of states and stock movements.", reasoning: "A team can review how a stock balance or dispatch was reached, rather than seeing only the final number." }
+        { title: "One entry point, three work areas", description: "Users access the modules enabled for their role through a common platform.", reasoning: "This removes tool switching while keeping administration, warehouse, and logistics responsibilities clear." },
+        { title: "Data that follows the workflow", description: "Receiving records, production orders, and customer orders reuse product data and show progress through states.", reasoning: "This reduces repeated entry and transcription while preserving the origin of every stock change." }
       ],
       techDecisions: [
         { title: "Modular monolith", description: "React client and Express API in a monorepo with shared contracts.", reasoning: "Related workflows can evolve within one platform while keeping clear module boundaries." },
-        { title: "PostgreSQL with separate schemas", description: "Platform, warehouse, and Ale-Bet data use distinct Prisma-managed schemas.", reasoning: "This makes domain boundaries explicit without duplicating authentication or infrastructure." }
+        { title: "PostgreSQL with separate schemas", description: "User, warehouse, and logistics data use distinct Prisma-managed schemas.", reasoning: "Each workflow stays independent while sharing access control and traceability." }
       ],
-      resultAndLearnings: "The platform brings internal information and workflows into one interface. The portfolio sample reproduces access, receiving, and order preparation decisions with fictional data; it does not connect to the laboratory system.",
-      keyTakeaway: "A unified experience can preserve separate domain rules, permissions, and traceability."
+      resultAndLearnings: "Teams can follow receiving, stock balances, and orders from their source records with fewer entry steps and visible state changes. The portfolio sample illustrates these workflows with fictional data and no connection to the laboratory system.",
+      keyTakeaway: "An efficient workflow reuses recorded information and makes each transition visible while preserving permissions and traceability."
     }
   }
 ];
